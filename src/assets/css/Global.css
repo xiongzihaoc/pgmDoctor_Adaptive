@@ -1,0 +1,42 @@
+.el-dialog__header {
+    background-color: #409EFF;
+}
+
+.el-dialog__title {
+    color: #fff !important;
+}
+
+.el-icon-close:before {
+    color: #fff;
+}
+
+.el-breadcrumb {
+    margin-bottom: 30px;
+}
+
+.el-pagination {
+    margin-top: 1%;
+}
+
+.el-pagination {
+    padding-bottom: 2%;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+.el-card.is-always-shadow,
+.el-card.is-hover-shadow:focus,
+.el-card.is-hover-shadow:hover {
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !important;
+}
