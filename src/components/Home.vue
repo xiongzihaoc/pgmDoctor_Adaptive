@@ -96,7 +96,7 @@ export default {
           id: "7"
         }
       ],
-      activePath: ""
+      activePath: "/home/index"
     };
   },
   created() {
@@ -116,7 +116,6 @@ export default {
     },
     // 保持连接的激活状态
     saveNavState(activePath) {
-      console.log(activePath);
       window.sessionStorage.setItem("activePath", activePath);
     }
   }

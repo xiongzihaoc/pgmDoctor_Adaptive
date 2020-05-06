@@ -15,11 +15,7 @@
 }
 
 .el-pagination {
-    margin-top: 1%;
-}
-
-.el-pagination {
-    padding-bottom: 2%;
+    margin-top: 2%;
 }
 
 a {
@@ -39,4 +35,10 @@ ul {
 .el-card.is-hover-shadow:focus,
 .el-card.is-hover-shadow:hover {
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !important;
+}
+
+.el-button--primary.is-plain {
+    color: #409EFF;
+    background: #fff;
+    border-color: #409EFF;
 }
