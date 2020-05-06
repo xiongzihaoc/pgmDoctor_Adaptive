@@ -137,6 +137,7 @@ export default {
   height: 100%;
 }
 .searchBox {
+    display: -webkit-flex;
   display: flex;
 }
 .searchInput {

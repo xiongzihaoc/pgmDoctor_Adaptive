@@ -172,6 +172,7 @@ h4 {
 }
 .personalInformation li {
   padding: 5px 0;
+  display: -webkit-flex;
   display: flex;
 }
 .testContent {

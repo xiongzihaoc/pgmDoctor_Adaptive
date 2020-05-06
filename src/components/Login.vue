@@ -16,6 +16,7 @@
             v-model="LoginForm.userPassword"
             prefix-icon="el-icon-view"
             placeholder="请输入密码"
+            @keyup.13.native="handleLogin"
           ></el-input>
         </el-form-item>
         <div class="btnBox">

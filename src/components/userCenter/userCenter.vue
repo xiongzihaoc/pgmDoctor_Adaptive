@@ -138,6 +138,7 @@ export default {
   height: 86% !important;
 }
 .progressPerson {
+    display: -webkit-flex;
   display: flex;
   box-sizing: border-box;
 }

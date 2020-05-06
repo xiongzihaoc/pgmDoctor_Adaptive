@@ -9,7 +9,7 @@
         active-text-color="#fff"
         :unique-opened="true"
         router
-        :default-active="$route.path"
+        :default-active="activePath"
       >
         <!-- 一级菜单 -->
         <el-menu-item
@@ -53,7 +53,12 @@ export default {
     return {
       hosMess: {},
       menuList: [
-        { icon: "iconfont icon-shouye", name: "首   页", path: "home/index", id: "1" },
+        {
+          icon: "iconfont icon-shouye",
+          name: "首   页",
+          path: "home/index",
+          id: "1"
+        },
         {
           icon: "iconfont icon-yonhu",
           name: "用户中心",
@@ -91,11 +96,11 @@ export default {
           id: "7"
         }
       ],
-      i: 0,
-      currentPath: "index"
+      activePath: ""
     };
   },
   created() {
+    this.activePath = window.sessionStorage.getItem("activePath");
     this.hosMess = JSON.parse(window.localStorage.getItem("mess"));
   },
   methods: {
@@ -107,10 +112,11 @@ export default {
       this.$router.push("/login");
     },
     jumpconsulation() {
-      this.$router.push('consultation')
+      this.$router.push("consultation");
     },
     // 保持连接的激活状态
     saveNavState(activePath) {
+      console.log(activePath);
       window.sessionStorage.setItem("activePath", activePath);
     }
   }
@@ -140,6 +146,7 @@ body {
 }
 .header {
   overflow: hidden;
+  display: -webkit-flex;
   display: flex;
   justify-content: flex-end;
   align-items: center;
