@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>111</div>
+    <div>团队</div>
   </div>
 </template>
 <script>

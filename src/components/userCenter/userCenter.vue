@@ -1,19 +1,18 @@
 <template>
   <div style="height:100%">
-    <!-- 面包屑 -->
-    <el-breadcrumb separator="/">
-      <el-breadcrumb-item>用户中心</el-breadcrumb-item>
-      <el-breadcrumb-item style="font-weight:700;">个人列表</el-breadcrumb-item>
-    </el-breadcrumb>
     <!-- 动态切换组件 -->
-    <component :is="currentView" v-on:jumpTeam="toggle($event)"></component>
+    <keep-alive>
+      <component :is="currentView" v-on:jumpTeam="toggle($event)"></component>
+    </keep-alive>
   </div>
 </template>
 <script>
 import perList from "../UserList/personageList";
 import TeamList from "../UserList/teamList";
+import AddNewPer from "../UserList/AddNewPer";
+import AddNewTeam from "../UserList/AddNewTeam";
 export default {
-  components: { perList, TeamList },
+  components: { perList, TeamList, AddNewPer, AddNewTeam },
   data() {
     return {
       currentView: "perList"
@@ -23,6 +22,10 @@ export default {
     toggle(info) {
       if (info == "jumpTeam") {
         this.currentView = "TeamList";
+      } else if (info == "jumpAddPer") {
+        this.currentView = "AddNewPer";
+      } else if (info == "jumpAddTeam") {
+        this.currentView = "AddNewTeam";
       } else {
         this.currentView = "perList";
       }

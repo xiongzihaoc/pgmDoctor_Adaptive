@@ -1,6 +1,11 @@
 
 <template>
   <div class="connect">
+    <!-- 面包屑 -->
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item>用户中心</el-breadcrumb-item>
+      <el-breadcrumb-item style="font-weight:700;">团队列表</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-card>
       <div class="searchBox">
         <el-button
@@ -98,8 +103,8 @@ export default {
         query: { phone: info.phone }
       });
     },
-    newAddPerson(info) {
-    //   this.$router.push("/addPerson");
+    newAddPerson() {
+      this.$emit("jumpTeam", "jumpAddTeam");
     },
     editDialogClosed() {},
     // 搜索

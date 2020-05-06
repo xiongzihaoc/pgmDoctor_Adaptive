@@ -1,6 +1,12 @@
 
 <template>
   <div class="connect">
+    <!-- 面包屑 -->
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item>用户中心</el-breadcrumb-item>
+      <el-breadcrumb-item style="font-weight:700;">个人列表</el-breadcrumb-item>
+    </el-breadcrumb>
+
     <el-card>
       <div class="searchBox">
         <el-button type="primary" size="small" style="margin-left:2%">个人列表</el-button>
@@ -87,13 +93,15 @@ export default {
     },
     // 查看跳转
     showEditdialog(info) {
+      window.sessionStorage.setItem("activePath", "/home/userCenter");
       this.$router.push({
         path: "/home/userCenter/userDetails",
         query: { phone: info.phone }
       });
+      window.location.reload(true)
     },
-    newAddPerson(info) {
-      this.$router.push('/home/');
+    newAddPerson() {
+      this.$emit("jumpTeam", "jumpAddPer");
     },
     editDialogClosed() {},
     // 搜索

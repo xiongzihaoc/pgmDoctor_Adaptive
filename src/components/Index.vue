@@ -1,9 +1,5 @@
 <template>
   <div style="height:100%">
-    <!-- 面包屑 -->
-    <el-breadcrumb separator="/">
-      <el-breadcrumb-item>首页</el-breadcrumb-item>
-    </el-breadcrumb>
     <!-- 动态切换组件 -->
     <component :is="currentView" v-on:jumpTeam="toggle($event)"></component>
   </div>
