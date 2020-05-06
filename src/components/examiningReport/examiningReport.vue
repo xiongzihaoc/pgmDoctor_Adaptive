@@ -12,6 +12,8 @@
             class="searchInput"
             placeholder="请输入手机号/姓名"
             prefix-icon="el-icon-search"
+            v-model="input"
+            @input="serchIn"
           ></el-input>
         </div>
         <!-- 调用公用表格组件 -->
@@ -78,7 +80,10 @@ export default {
     // 获取检查单列表
     async getCardList() {
       const { data: res } = await this.$http.post("checkList/list", {
-        state: "3"
+        state: "3",
+        pageSize: this.pageSize,
+        pageNum: this.pageNum,
+        name: this.input
       });
       this.userList = res.rows;
       this.total = res.total;
@@ -89,6 +94,10 @@ export default {
         path: "/home/examiningReport/examiningDetail",
         query: { orderNo: info.orderNo }
       });
+    },
+    // 搜索
+    serchIn() {
+      this.getCardList()
     },
     // 分页
     handleSizeChange(newSize) {
@@ -132,5 +141,8 @@ export default {
 }
 .searchInput {
   width: 20%;
+}
+.el-card {
+  overflow: auto;
 }
 </style>

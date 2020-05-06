@@ -12,6 +12,7 @@
           prefix-icon="el-icon-search"
           size="medium"
           v-model="input"
+          @input="searchin"
         ></el-input>
       </div>
       <!-- 调用公用表格组件 -->
@@ -40,9 +41,9 @@
         :total="total"
       ></el-pagination>
     </el-card>
- <div>
-        <router-view></router-view>
- </div>
+    <div>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 <script>
@@ -71,7 +72,11 @@ export default {
   methods: {
     // 获取检查单列表
     async getCardList() {
-      const { data: res } = await this.$http.post("doc/getPatients", {});
+      const { data: res } = await this.$http.post("doc/getPatients", {
+        pageSize: this.pageSize,
+        pageNum: this.pageNum,
+        name: this.input
+      });
       this.userList = res.rows;
       this.total = res.total;
     },
@@ -86,6 +91,10 @@ export default {
       this.$router.push("/addPerson");
     },
     editDialogClosed() {},
+    // 搜索
+    searchin() {
+      this.getCardList();
+    },
     // 分页
     handleSizeChange(newSize) {
       this.pageSize = newSize;
@@ -138,6 +147,9 @@ export default {
 
 .connect .el-breadcrumb__item:last-child .el-breadcrumb__inner {
   font-weight: 700;
+}
+.el-card {
+  overflow: auto;
 }
 </style>
 
