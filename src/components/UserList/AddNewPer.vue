@@ -4,102 +4,104 @@
       <el-breadcrumb-item :to="{ path: '/home/index' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>新增个人</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card style="height:85%;padding-top:8%;box-sizing:border-box;">
-      <el-form :model="editAddForm" label-width="80px" :rules="Addrules" ref="addInfoRef">
-        <li style="width:100%;display:flex;justify-content: center;">
-          <el-form-item label="医生姓名" prop="docName" style="margin-right:5%">
-            <el-input v-model="editAddForm.docName"></el-input>
-          </el-form-item>
-          <el-form-item label="出生日期" prop="birth" class="birth">
-            <el-date-picker
-              clear-icon="el-icon-date"
-              v-model="editAddForm.birth"
-              type="date"
-              placeholder="选择日期"
-            ></el-date-picker>
-          </el-form-item>
-        </li>
-        <li style="display:flex;justify-content: center;">
-          <el-form-item label="姓名" prop="name" style="margin-right:5%">
-            <el-input v-model="editAddForm.name"></el-input>
-          </el-form-item>
-          <el-form-item label="性  别" prop="sex">
-            <el-select v-model="editAddForm.sex" placeholder="请选择性别">
-              <el-option label="男" value="男"></el-option>
-              <el-option label="女" value="女"></el-option>
-            </el-select>
-          </el-form-item>
-        </li>
-        <li style="display:flex;justify-content: center;">
-          <el-form-item label="年  龄" prop="age" style="margin-right:5%">
-            <el-input v-model="editAddForm.age"></el-input>
-          </el-form-item>
-          <el-form-item label="职  业" prop="job">
-            <el-select v-model="editAddForm.job" placeholder="请选择职业">
-              <el-option
-                v-for="item in jobList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.name"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </li>
-        <li style="display:flex;justify-content: center;">
-          <el-form-item label="地  址" prop="address" style="margin-right:5%">
-            <el-input v-model="editAddForm.address"></el-input>
-          </el-form-item>
-          <el-form-item label="教  育" prop="edu">
-            <el-select v-model="editAddForm.edu" placeholder="请选择职业">
-              <el-option
-                v-for="item in eduList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.name"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </li>
-        <li style="display:flex;justify-content: center;">
-          <el-form-item label="手  机" prop="phone" style="margin-right:5%">
-            <el-input v-model="editAddForm.phone"></el-input>
-          </el-form-item>
-          <el-form-item label="婚  姻" prop="marriage">
-            <el-select v-model="editAddForm.marriage" placeholder="请选择">
-              <el-option label="未婚" value="未婚"></el-option>
-              <el-option label="已婚" value="已婚"></el-option>
-            </el-select>
-          </el-form-item>
-        </li>
-        <li style="display:flex;justify-content: center;">
-          <el-form-item label="套  餐" style="margin-right:5%">
-            <el-input
-              v-model="strUserName"
-              placeholder="请选择套餐"
-              @focus="chooseCombo"
-              suffix-icon="el-icon-caret-bottom"
-            ></el-input>
-            <ul class="taoCanList" style="wdith:100%" v-show="openOrcls">
-              <li
-                v-for="(item,index) in taocanList"
-                :key="index"
-                @click="chooseCombo"
-              >{{item.sheetName}}</li>
-            </ul>
-          </el-form-item>
-          <!-- 占位隐藏布局 -->
-          <el-form-item style="visibility:hidden">
-            <el-select v-model="editAddForm.marriage" disabled></el-select>
-          </el-form-item>
-        </li>
-        <li style="display:flex;justify-content: center;">
-          <el-form-item>
-            <el-button type="primary" @click.prevent.stop="enterSave">确定提交</el-button>
-          </el-form-item>
-        </li>
-      </el-form>
-    </el-card>
-    <el-dialog title="选择套餐" :visible.sync="dialogVisible" width="40%">
+    <div style="height:100%;overflow:hidden">
+      <el-card style="height:85%;padding-top:8%;box-sizing:border-box;">
+        <el-form :model="editAddForm" label-width="80px" :rules="Addrules" ref="addInfoRef">
+          <li style="width:100%;display:flex;justify-content: center;">
+            <el-form-item label="医生姓名" prop="docName" style="margin-right:5%">
+              <el-input v-model="editAddForm.docName"></el-input>
+            </el-form-item>
+            <el-form-item label="出生日期" prop="birth" class="birth">
+              <el-date-picker
+                clear-icon="el-icon-date"
+                v-model="editAddForm.birth"
+                type="date"
+                placeholder="选择日期"
+              ></el-date-picker>
+            </el-form-item>
+          </li>
+          <li style="display:flex;justify-content: center;">
+            <el-form-item label="姓名" prop="name" style="margin-right:5%">
+              <el-input v-model="editAddForm.name"></el-input>
+            </el-form-item>
+            <el-form-item label="性  别" prop="sex">
+              <el-select v-model="editAddForm.sex" placeholder="请选择性别">
+                <el-option label="男" value="男"></el-option>
+                <el-option label="女" value="女"></el-option>
+              </el-select>
+            </el-form-item>
+          </li>
+          <li style="display:flex;justify-content: center;">
+            <el-form-item label="年  龄" prop="age" style="margin-right:5%">
+              <el-input v-model="editAddForm.age"></el-input>
+            </el-form-item>
+            <el-form-item label="职  业" prop="job">
+              <el-select v-model="editAddForm.job" placeholder="请选择职业">
+                <el-option
+                  v-for="item in jobList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </li>
+          <li style="display:flex;justify-content: center;">
+            <el-form-item label="地  址" prop="address" style="margin-right:5%">
+              <el-input v-model="editAddForm.address"></el-input>
+            </el-form-item>
+            <el-form-item label="教  育" prop="edu">
+              <el-select v-model="editAddForm.edu" placeholder="请选择职业">
+                <el-option
+                  v-for="item in eduList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </li>
+          <li style="display:flex;justify-content: center;">
+            <el-form-item label="手  机" prop="phone" style="margin-right:5%">
+              <el-input v-model="editAddForm.phone"></el-input>
+            </el-form-item>
+            <el-form-item label="婚  姻" prop="marriage">
+              <el-select v-model="editAddForm.marriage" placeholder="请选择">
+                <el-option label="未婚" value="未婚"></el-option>
+                <el-option label="已婚" value="已婚"></el-option>
+              </el-select>
+            </el-form-item>
+          </li>
+          <li style="display:flex;justify-content: center;">
+            <el-form-item label="套  餐" style="margin-right:5%">
+              <el-input
+                v-model="strUserName"
+                placeholder="请选择套餐"
+                @focus="chooseCombo"
+                suffix-icon="el-icon-caret-bottom"
+              ></el-input>
+              <ul class="taoCanList" style="wdith:100%" v-show="openOrcls">
+                <li
+                  v-for="(item,index) in taocanList"
+                  :key="index"
+                  @click="chooseCombo"
+                >{{item.sheetName}}</li>
+              </ul>
+            </el-form-item>
+            <!-- 占位隐藏布局 -->
+            <el-form-item style="visibility:hidden">
+              <el-select v-model="editAddForm.marriage" disabled></el-select>
+            </el-form-item>
+          </li>
+          <li style="display:flex;justify-content: center;">
+            <el-form-item>
+              <el-button type="primary" @click.prevent.stop="enterSave">确定提交</el-button>
+            </el-form-item>
+          </li>
+        </el-form>
+      </el-card>
+    </div>
+    <el-dialog title="选择套餐" :visible.sync="dialogVisible">
       <ul class="chooseTac">
         <li v-for="(item,index) in comboList" :key="index">
           <h3>{{item.type}}</h3>
@@ -153,11 +155,11 @@ export default {
         // ]
       },
       editAddForm: {
-        docName: "",
+        docName: "熊紫豪",
         name: "",
         phone: 18682308445,
         sex: "女",
-        birth: "2015-03-12",
+        birth: "2020-10-01",
         job: "前端",
         marriage: "已婚",
         age: "24",
@@ -279,20 +281,20 @@ export default {
 .AddConnect {
   height: 100%;
 }
-.addPersonal .chooseTac li {
+.AddConnect .chooseTac li {
   border-bottom: 1px solid #e5e5e5;
 }
-.addPersonal .chooseTac li:nth-child(1) {
+.AddConnect .chooseTac li:nth-child(1) {
   border-top: 1px solid #e5e5e5;
 }
-.addPersonal .el-dialog__header {
+.AddConnect .el-dialog__header {
   margin-bottom: 10px;
 }
-.addPersonal .el-dialog__body {
+.AddConnect .el-dialog__body {
   font-size: 14px;
   padding: 0;
 }
-.addPersonal h3 {
+.chooseTac h3 {
   margin-bottom: 10px;
 }
 .taoCanList {
@@ -308,5 +310,6 @@ export default {
 }
 .el-card {
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 </style>

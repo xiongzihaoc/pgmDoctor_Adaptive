@@ -9,7 +9,7 @@
         active-text-color="#fff"
         :unique-opened="true"
         router
-        :default-active="$route.path"
+        :default-active="activePath"
       >
         <!-- 一级菜单 -->
         <el-menu-item
@@ -100,7 +100,6 @@ export default {
     };
   },
   created() {
-    this.activePath = window.sessionStorage.getItem("activePath");
     this.hosMess = JSON.parse(window.localStorage.getItem("mess"));
   },
   methods: {
@@ -118,6 +117,9 @@ export default {
     saveNavState(activePath) {
       window.sessionStorage.setItem("activePath", activePath);
     }
+  },
+  mounted() {
+    this.activePath = window.sessionStorage.getItem("activePath");
   }
 };
 </script>

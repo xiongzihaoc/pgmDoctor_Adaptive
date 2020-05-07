@@ -176,6 +176,7 @@ export default {
   float: left;
   width: 60%;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   height: 100%;
 }
 .cardRight {

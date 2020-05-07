@@ -215,5 +215,6 @@ export default {
 }
 .el-card {
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 </style>

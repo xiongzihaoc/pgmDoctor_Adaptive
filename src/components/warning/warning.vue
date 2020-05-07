@@ -4,55 +4,49 @@
     <el-breadcrumb separator="/">
       <el-breadcrumb-item>预警</el-breadcrumb-item>
     </el-breadcrumb>
-    <div class="CardBox">
-      <el-card>
-        <div class="searchBox">
-          <el-input
-            size="medium"
-            class="searchInput"
-            placeholder="请输入手机号/姓名"
-            prefix-icon="el-icon-search"
-            v-model="input"
-            @input="serchIn"
-          ></el-input>
-        </div>
-        <!-- 调用公用表格组件 -->
-        <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
-          <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
-            <template slot-scope="scope">
-              <div>{{timesChangeDate(scope.row.createTime)}}</div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            slot="fixed"
-            fixed="right"
-            label="测试情况"
-            prop="state"
-            :formatter="ifendcaseJck"
-          ></el-table-column>
-          <el-table-column align="center" slot="fixed" fixed="right" label="操作">
-            <template slot-scope="scope">
-              <el-button
-                type="primary"
-                size="mini"
-                @click.prevent.stop="JumpUserCenter(scope.row)"
-              >查看</el-button>
-            </template>
-          </el-table-column>
-        </ElTable>
-        <!-- 分页 -->
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChangev"
-          :current-page="pageNum"
-          :page-sizes="[10, 20,50]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        ></el-pagination>
-      </el-card>
-    </div>
+    <el-card>
+      <div class="searchBox">
+        <el-input
+          size="medium"
+          class="searchInput"
+          placeholder="请输入手机号/姓名"
+          prefix-icon="el-icon-search"
+          v-model="input"
+          @input="serchIn"
+        ></el-input>
+      </div>
+      <!-- 调用公用表格组件 -->
+      <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
+        <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
+          <template slot-scope="scope">
+            <div>{{timesChangeDate(scope.row.createTime)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          slot="fixed"
+          fixed="right"
+          label="测试情况"
+          prop="state"
+          :formatter="ifendcaseJck"
+        ></el-table-column>
+        <el-table-column align="center" slot="fixed" fixed="right" label="操作">
+          <template slot-scope="scope">
+            <el-button type="primary" size="mini" @click.prevent.stop="JumpUserCenter(scope.row)">查看</el-button>
+          </template>
+        </el-table-column>
+      </ElTable>
+      <!-- 分页 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChangev"
+        :current-page="pageNum"
+        :page-sizes="[10, 20,50]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
+    </el-card>
   </div>
 </template>
 <script>
@@ -141,6 +135,8 @@ export default {
   max-width: 300px;
 }
 .el-card {
-  overflow: auto;
+  overflow-y: scroll;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 </style>
