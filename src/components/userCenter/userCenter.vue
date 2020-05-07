@@ -87,12 +87,10 @@ export default {
     },
     // 查看跳转
     showEditdialog(info) {
-      window.sessionStorage.setItem("activePath", "/home/userCenter");
       this.$router.push({
         path: "/home/userCenter/userDetails",
         query: { phone: info.phone }
       });
-      // window.location.reload(true)
     },
     newAddPerson() {
       this.$router.push("/home/userCenter/addNewPer");
@@ -127,7 +125,7 @@ export default {
         d = "0" + d;
       }
       console.log(y);
-      
+
       return `${y}-${mon}-${d}`;
     },
     // 检测卡类型状态码数字转中文

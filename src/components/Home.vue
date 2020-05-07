@@ -108,18 +108,21 @@ export default {
       const { data: res } = await this.$http.post("doc/loginOut", {});
       if (res.code != 200) return this.$message.error("退出失败");
       window.sessionStorage.clear();
-      this.$router.push("/login");
+      window.localStorage.clear();
+      this.$router.push("/");
     },
     jumpconsulation() {
-      this.$router.push("consultation");
+      this.$router.push("/home/consultation");
+      this.activePath = "/home/consultation";
     },
     // 保持连接的激活状态
     saveNavState(activePath) {
-      window.sessionStorage.setItem("activePath", activePath);
+      this.activePath = activePath;
+      // window.sessionStorage.setItem("activePath", activePath);
     }
   },
   mounted() {
-    this.activePath = window.sessionStorage.getItem("activePath");
+    this.activePath = this.$route.path;
   }
 };
 </script>
