@@ -97,7 +97,7 @@ export default {
     },
     // 搜索
     serchIn() {
-      this.getCardList()
+      this.getCardList();
     },
     // 分页
     handleSizeChange(newSize) {
@@ -137,11 +137,12 @@ export default {
   height: 100%;
 }
 .searchBox {
-    display: -webkit-flex;
+  display: -webkit-flex;
   display: flex;
 }
 .searchInput {
-  width: 20%;
+  width: 25%;
+  max-width: 300px;
 }
 .el-card {
   overflow: auto;

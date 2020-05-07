@@ -24,6 +24,12 @@
             v-model="input"
             @input="searchin"
           ></el-input>
+          <el-button
+            type="primary"
+            size="small"
+            @click.prevent.stop="newAddPerson"
+            style="margin-left:2%"
+          >新增团队</el-button>
         </div>
         <!-- 调用公用表格组件 -->
         <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:2%;" height="100">
@@ -120,6 +126,10 @@ export default {
     searchin() {
       this.getCardList();
     },
+    // 团队新增
+    newAddPerson() {
+      this.$router.push("/home/userCenter/addNewTeam");
+    },
     JumpUserCenter(info) {
       this.$router.push("/home/userCenter");
     },
@@ -185,7 +195,7 @@ export default {
 }
 .searchInput {
   width: 45%;
-  max-width: 220px;
+  max-width: 300px;
   margin-left: 4%;
 }
 .title {

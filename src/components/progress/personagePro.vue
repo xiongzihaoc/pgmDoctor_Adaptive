@@ -8,7 +8,7 @@
     <div class="CardBox">
       <el-card class="cardLeft">
         <div class="searchBox">
-          <el-button type="primary" size="small" style="margin-left:3%">个人进度</el-button>
+          <el-button type="primary" size="small">个人进度</el-button>
           <el-button type="primary" plain size="small" @click.prevent.stop="TeamPro">团队进度</el-button>
           <el-input
             size="small"
@@ -18,6 +18,12 @@
             v-model="input"
             @input="searchin"
           ></el-input>
+          <el-button
+            type="primary"
+            size="small"
+            @click.prevent.stop="newAddPerson"
+            style="margin-left:2%"
+          >新增个人</el-button>
         </div>
         <!-- 调用公用表格组件 -->
         <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:2%;" height="100">
@@ -111,8 +117,12 @@ export default {
       this.userList = res.rows;
       this.total = res.total;
     },
+    // 搜索
     searchin() {
       this.getCardList();
+    },
+    newAddPerson() {
+      this.$router.push("/home/userCenter/addNewPer");
     },
     JumpUserCenter(info) {
       this.$router.push("/home/userCenter");
@@ -179,7 +189,7 @@ export default {
 }
 .searchInput {
   width: 45%;
-  max-width: 220px;
+  max-width: 300px;
   margin-left: 4%;
 }
 .title {

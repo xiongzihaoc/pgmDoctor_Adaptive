@@ -43,3 +43,16 @@ ul {
     background: #fff;
     border-color: #409EFF;
 }
+
+.AddConnect .el-input--suffix .el-input__inner {
+    padding: 0 15px !important
+}
+
+.AddConnect .el-select .el-input__inner {
+    cursor: pointer;
+    padding-right: 35px !important;
+}
+
+.AddConnect .birth .el-input--suffix .el-input__inner {
+    padding: 0 30px !important;
+}

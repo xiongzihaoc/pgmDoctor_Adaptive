@@ -1,16 +1,16 @@
 <template>
-  <div style="height:100%"> 
+  <div class="AddConnect">
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/home/userCenter' }">用户中心</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home/index' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>新增个人</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card style="height:85%;padding-top:8%;box-sizing:border-box;">
       <el-form :model="editAddForm" label-width="80px" :rules="Addrules" ref="addInfoRef">
         <li style="width:100%;display:flex;justify-content: center;">
-          <el-form-item label="医生姓名" prop="docName" style="margin-right:10%">
+          <el-form-item label="医生姓名" prop="docName" style="margin-right:5%">
             <el-input v-model="editAddForm.docName"></el-input>
           </el-form-item>
-          <el-form-item label="出生日期" prop="birth">
+          <el-form-item label="出生日期" prop="birth" class="birth">
             <el-date-picker
               clear-icon="el-icon-date"
               v-model="editAddForm.birth"
@@ -20,7 +20,7 @@
           </el-form-item>
         </li>
         <li style="display:flex;justify-content: center;">
-          <el-form-item label="姓名" prop="name" style="margin-right:10%">
+          <el-form-item label="姓名" prop="name" style="margin-right:5%">
             <el-input v-model="editAddForm.name"></el-input>
           </el-form-item>
           <el-form-item label="性  别" prop="sex">
@@ -31,7 +31,7 @@
           </el-form-item>
         </li>
         <li style="display:flex;justify-content: center;">
-          <el-form-item label="年  龄" prop="age" style="margin-right:10%">
+          <el-form-item label="年  龄" prop="age" style="margin-right:5%">
             <el-input v-model="editAddForm.age"></el-input>
           </el-form-item>
           <el-form-item label="职  业" prop="job">
@@ -46,7 +46,7 @@
           </el-form-item>
         </li>
         <li style="display:flex;justify-content: center;">
-          <el-form-item label="地  址" prop="address" style="margin-right:10%">
+          <el-form-item label="地  址" prop="address" style="margin-right:5%">
             <el-input v-model="editAddForm.address"></el-input>
           </el-form-item>
           <el-form-item label="教  育" prop="edu">
@@ -61,7 +61,7 @@
           </el-form-item>
         </li>
         <li style="display:flex;justify-content: center;">
-          <el-form-item label="手  机" prop="phone" style="margin-right:10%">
+          <el-form-item label="手  机" prop="phone" style="margin-right:5%">
             <el-input v-model="editAddForm.phone"></el-input>
           </el-form-item>
           <el-form-item label="婚  姻" prop="marriage">
@@ -72,7 +72,7 @@
           </el-form-item>
         </li>
         <li style="display:flex;justify-content: center;">
-          <el-form-item label="套  餐" style="margin-right:10%">
+          <el-form-item label="套  餐" style="margin-right:5%">
             <el-input
               v-model="strUserName"
               placeholder="请选择套餐"
@@ -87,11 +87,9 @@
               >{{item.sheetName}}</li>
             </ul>
           </el-form-item>
-          <el-form-item label="婚  姻" prop="marriage" style="visiblity:hidden">
-            <el-select v-model="editAddForm.marriage" placeholder="请选择">
-              <el-option label="未婚" value="未婚"></el-option>
-              <el-option label="已婚" value="已婚"></el-option>
-            </el-select>
+          <!-- 占位隐藏布局 -->
+          <el-form-item style="visibility:hidden">
+            <el-select v-model="editAddForm.marriage" disabled></el-select>
           </el-form-item>
         </li>
         <li style="display:flex;justify-content: center;">
@@ -101,7 +99,7 @@
         </li>
       </el-form>
     </el-card>
-    <!-- <el-dialog title="选择套餐" :visible.sync="dialogVisible" width="40%">
+    <el-dialog title="选择套餐" :visible.sync="dialogVisible" width="40%">
       <ul class="chooseTac">
         <li v-for="(item,index) in comboList" :key="index">
           <h3>{{item.type}}</h3>
@@ -118,7 +116,7 @@
         <el-button @click="dialogVisibleCancel">取 消</el-button>
         <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
       </span>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -217,7 +215,7 @@ export default {
         });
         if (res.code != 200) return this.$message.error("添加失败");
         this.$message.success("添加成功");
-        this.$router.push("/userCenter");
+        this.$router.push("/home/index");
       });
     },
     editDialogClosed() {},
@@ -278,8 +276,10 @@ export default {
 };
 </script>
 <style scoped>
+.AddConnect {
+  height: 100%;
+}
 .addPersonal .chooseTac li {
-  padding: 10px;
   border-bottom: 1px solid #e5e5e5;
 }
 .addPersonal .chooseTac li:nth-child(1) {
@@ -306,7 +306,7 @@ export default {
   overflow: hidden;
   cursor: pointer;
 }
-.el-input--suffix .el-input__inner {
-  padding-right: 0 !important;
+.el-card {
+  overflow: auto;
 }
 </style>
