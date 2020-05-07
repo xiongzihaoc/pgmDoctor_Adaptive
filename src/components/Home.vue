@@ -9,7 +9,7 @@
         active-text-color="#fff"
         :unique-opened="true"
         router
-        :default-active="activePath"
+        :default-active="$route.path"
       >
         <!-- 一级菜单 -->
         <el-menu-item

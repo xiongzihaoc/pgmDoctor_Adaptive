@@ -4,7 +4,7 @@
     <el-breadcrumb separator="/">
       <el-breadcrumb-item>医生自评量表</el-breadcrumb-item>
     </el-breadcrumb>
-    <div class="CardBox">
+    <div>
       <el-card>
         <div class="searchBox">
           <el-input
@@ -133,7 +133,7 @@ export default {
   height: 100%;
 }
 .searchBox {
-    display: -webkit-flex;
+  display: -webkit-flex;
   display: flex;
 }
 .searchInput {

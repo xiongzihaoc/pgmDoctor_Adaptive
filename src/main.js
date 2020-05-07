@@ -10,13 +10,9 @@ import 'nprogress/nprogress.css'
 // v-charts导入
 import VCharts from 'v-charts'
 Vue.use(VCharts)
-// import BootstrapVue from 'bootstrap-vue'
-// import 'bootstrap/dist/css/bootstrap.css'
-// import 'bootstrap-vue/dist/bootstrap-vue.css'
-// Vue.use(BootstrapVue)
-// import Vant from 'vant';
-// import 'vant/lib/index.css';
-// Vue.use(Vant);
+import Vant from 'vant';
+import 'vant/lib/index.css';
+Vue.use(Vant);
 // md5加密
 import md5 from 'js-md5'
 Vue.prototype.$md5 = md5;

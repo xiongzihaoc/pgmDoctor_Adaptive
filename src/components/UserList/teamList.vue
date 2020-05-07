@@ -104,7 +104,7 @@ export default {
       });
     },
     newAddPerson() {
-      this.$emit("jumpTeam", "jumpAddTeam");
+      this.$router.push("/home/userCenter/addNewTeam");
     },
     editDialogClosed() {},
     // 搜索

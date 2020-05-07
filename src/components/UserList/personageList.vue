@@ -6,7 +6,6 @@
       <el-breadcrumb-item>用户中心</el-breadcrumb-item>
       <el-breadcrumb-item style="font-weight:700;">个人列表</el-breadcrumb-item>
     </el-breadcrumb>
-
     <el-card>
       <div class="searchBox">
         <el-button type="primary" size="small" style="margin-left:2%">个人列表</el-button>
@@ -52,9 +51,6 @@
         :total="total"
       ></el-pagination>
     </el-card>
-    <div>
-      <router-view></router-view>
-    </div>
   </div>
 </template>
 <script>
@@ -98,10 +94,10 @@ export default {
         path: "/home/userCenter/userDetails",
         query: { phone: info.phone }
       });
-      window.location.reload(true)
+      // window.location.reload(true)
     },
     newAddPerson() {
-      this.$emit("jumpTeam", "jumpAddPer");
+      this.$router.push("/home/userCenter/addNewPer");
     },
     editDialogClosed() {},
     // 搜索

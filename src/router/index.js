@@ -34,7 +34,22 @@ const routes = [{
         meta: {
           title: '用户中心',
         },
-
+      },
+      {
+        path: '/home/userCenter/addNewPer',
+        name: "个人新增",
+        component: () => import('@/components/UserList/AddNewPer.vue'),
+        meta: {
+          title: '个人新增',
+        },
+      },
+      {
+        path: '/home/userCenter/addNewTeam',
+        name: "团队新增",
+        component: () => import('@/components/UserList/AddNewTeam.vue'),
+        meta: {
+          title: '团队新增',
+        },
       },
       {
         path: '/home/userCenter/userDetails',

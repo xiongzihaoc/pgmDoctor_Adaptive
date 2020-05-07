@@ -1,7 +1,9 @@
 <template>
   <div style="height:100%">
     <!-- 动态切换组件 -->
-    <component :is="currentView" v-on:jumpTeam="toggle($event)"></component>
+    <keep-alive>
+      <component :is="currentView" v-on:jumpTeam="toggle($event)"></component>
+    </keep-alive>
   </div>
 </template>
 <script>

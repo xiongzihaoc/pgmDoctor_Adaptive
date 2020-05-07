@@ -1,5 +1,5 @@
 <template>
-  <div class="CONTENT">
+  <div class="CONTENTLogin">
     <div class="login_box animated bounceInRight">
       <h3>欢迎登录</h3>
       <el-form ref="LoginFormRef" :model="LoginForm" :rules="loginRules">
@@ -51,8 +51,6 @@ export default {
     // 登录
     handleLogin() {
       this.$refs.LoginFormRef.validate(async valid => {
-        console.log(valid);
-
         if (!valid) return;
         const { data: res } = await this.$http.post("doc/login", {
           userName: this.LoginForm.loginName.trim(),
@@ -75,15 +73,15 @@ export default {
   }
 };
 </script>
-<style>
-.CONTENT {
+<style scoped>
+.CONTENTLogin {
   width: 100%;
   height: 100%;
   overflow: hidden;
   background: #060709 url("../assets/images/dq.jpg") no-repeat center;
   background-size: contain;
 }
-.login_box {
+.CONTENTLogin .login_box {
   overflow: hidden;
   margin: 0 auto;
   margin-top: 15%;
@@ -96,12 +94,12 @@ export default {
   opacity: 0.8;
 }
 
-form {
+.CONTENTLogin form {
   width: 80%;
   margin: 0 auto;
   max-width: 300px;
 }
-h3 {
+.CONTENTLogin h3 {
   font-size: 20px;
   font-weight: 700;
   text-align: center;
