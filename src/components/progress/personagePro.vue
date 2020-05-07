@@ -29,7 +29,7 @@
         <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:2%;" height="100">
           <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
             <template slot-scope="scope">
-              <div>{{timesChangeDate(scope.row.createTime)}}</div>
+              <div>{{scope.row.createTime}}</div>
             </template>
           </el-table-column>
           <el-table-column
@@ -114,6 +114,8 @@ export default {
         pageNum: this.pageNum,
         name: this.input
       });
+      console.log(res);
+
       this.userList = res.rows;
       this.total = res.total;
     },
@@ -137,20 +139,6 @@ export default {
     handleCurrentChangev(newPage) {
       this.pageNum = newPage;
       this.getCardList();
-    },
-    // 转换时间格式
-    timesChangeDate(times) {
-      var date = new Date(times);
-      var y = date.getFullYear();
-      var mon = date.getMonth() + 1;
-      var d = date.getDate();
-      if (mon < 10) {
-        mon = "0" + mon;
-      }
-      if (d < 10) {
-        d = "0" + d;
-      }
-      return `${y}-${mon}-${d}`;
     },
     // 检测卡类型状态码数字转中文
     ifendcaseJck(val) {

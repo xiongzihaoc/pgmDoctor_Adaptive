@@ -148,4 +148,5 @@ export default {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
+
 </style>

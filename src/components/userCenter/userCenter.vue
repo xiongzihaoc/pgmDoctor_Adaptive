@@ -126,6 +126,8 @@ export default {
       if (d < 10) {
         d = "0" + d;
       }
+      console.log(y);
+      
       return `${y}-${mon}-${d}`;
     },
     // 检测卡类型状态码数字转中文

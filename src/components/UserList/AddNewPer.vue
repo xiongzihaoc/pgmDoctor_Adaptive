@@ -101,7 +101,7 @@
         </el-form>
       </el-card>
     </div>
-    <el-dialog title="选择套餐" :visible.sync="dialogVisible">
+    <el-dialog title="选择套餐" :visible.sync="dialogVisible" v-dialogDrag>
       <ul class="chooseTac">
         <li v-for="(item,index) in comboList" :key="index">
           <h3>{{item.type}}</h3>

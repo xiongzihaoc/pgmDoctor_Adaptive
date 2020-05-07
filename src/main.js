@@ -41,7 +41,8 @@ axios.interceptors.response.use(function (config) {
 // 全局挂载axios this.$http调用即可
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
-
+// 弹框拖拽功能
+import './assets/js/directives.js'
 new Vue({
   router,
   render: h => h(App)

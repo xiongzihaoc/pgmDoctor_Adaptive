@@ -50,3 +50,15 @@ ul {
 .AddConnect .birth .el-input--suffix .el-input__inner {
     padding: 0 30px !important;
 }
+
+.el-input--small .el-input__inner {
+    line-height: normal;
+}
+
+.el-input--medium .el-input__inner {
+    line-height: normal;
+}
+
+.el-input__inner {
+    line-height: normal;
+}
