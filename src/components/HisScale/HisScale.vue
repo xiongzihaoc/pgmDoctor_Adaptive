@@ -4,7 +4,7 @@
     <el-breadcrumb separator="/">
       <el-breadcrumb-item>医生自评量表</el-breadcrumb-item>
     </el-breadcrumb>
-    <div>
+    <div class="card_box">
       <el-card>
         <div class="searchBox">
           <el-input
@@ -132,6 +132,11 @@ export default {
 .connect {
   height: 100%;
 }
+.card_box {
+  width: 100%;
+  height: 85%;
+  overflow: hidden;
+}
 .searchBox {
   display: -webkit-flex;
   display: flex;
@@ -141,6 +146,8 @@ export default {
   max-width: 300px;
 }
 .el-card {
+  width: 100%;
+  height: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }

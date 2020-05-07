@@ -4,8 +4,8 @@
     <el-breadcrumb separator="/">
       <el-breadcrumb-item>检测报告</el-breadcrumb-item>
     </el-breadcrumb>
-    <div class="CardBox">
-      <el-card>
+    <div class="card_box">
+      <el-card class="cardLeft">
         <div class="searchBox">
           <el-input
             size="medium"
@@ -136,6 +136,11 @@ export default {
 .connect {
   height: 100%;
 }
+.card_box {
+  width: 100%;
+  height: 85%;
+  overflow: hidden;
+}
 .searchBox {
   display: -webkit-flex;
   display: flex;
@@ -144,9 +149,10 @@ export default {
   width: 25%;
   max-width: 300px;
 }
-.el-card {
+.cardLeft {
+  width: 100%;
+  height: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
-
 </style>

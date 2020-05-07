@@ -6,49 +6,55 @@
       <el-breadcrumb-item>用户中心</el-breadcrumb-item>
       <el-breadcrumb-item style="font-weight:700;">个人列表</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card>
-      <div class="searchBox">
-        <el-input
-          placeholder="请输入手机号/姓名"
-          prefix-icon="el-icon-search"
-          size="medium"
-          v-model="input"
-          class="searchInput"
-          @input="searchin"
-        ></el-input>
-        <el-button
-          type="primary"
-          size="small"
-          @click.prevent.stop="newAddPerson"
-          style="margin-left:2%"
-        >新增用户</el-button>
-      </div>
-      <!-- 调用公用表格组件 -->
-      <EleTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
-        <!-- 出生日期 -->
-        <el-table-column align="center" slot="fixed" fixed="right" label="出生日期" prop="birthday">
-          <template slot-scope="scope">
-            <div>{{timesChangeDate(scope.row.birthday)}}</div>
-          </template>
-        </el-table-column>
-        <!-- 操作 -->
-        <el-table-column align="center" slot="fixed" fixed="right" label="操作">
-          <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click.prevent.stop="showEditdialog(scope.row)">查看</el-button>
-          </template>
-        </el-table-column>
-      </EleTable>
-      <!-- 分页 -->
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChangev"
-        :current-page="pageNum"
-        :page-sizes="[10, 20,50]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
-    </el-card>
+    <div class="card_box">
+      <el-card>
+        <div class="searchBox">
+          <el-input
+            placeholder="请输入手机号/姓名"
+            prefix-icon="el-icon-search"
+            size="medium"
+            v-model="input"
+            class="searchInput"
+            @input="searchin"
+          ></el-input>
+          <el-button
+            type="primary"
+            size="small"
+            @click.prevent.stop="newAddPerson"
+            style="margin-left:2%"
+          >新增用户</el-button>
+        </div>
+        <!-- 调用公用表格组件 -->
+        <EleTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
+          <!-- 出生日期 -->
+          <el-table-column align="center" slot="fixed" fixed="right" label="出生日期" prop="birthday">
+            <template slot-scope="scope">
+              <div>{{timesChangeDate(scope.row.birthday)}}</div>
+            </template>
+          </el-table-column>
+          <!-- 操作 -->
+          <el-table-column align="center" slot="fixed" fixed="right" label="操作">
+            <template slot-scope="scope">
+              <el-button
+                type="primary"
+                size="mini"
+                @click.prevent.stop="showEditdialog(scope.row)"
+              >查看</el-button>
+            </template>
+          </el-table-column>
+        </EleTable>
+        <!-- 分页 -->
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChangev"
+          :current-page="pageNum"
+          :page-sizes="[10, 20,50]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
+      </el-card>
+    </div>
   </div>
 </template>
 <script>
@@ -145,14 +151,14 @@ export default {
 .connect {
   height: 100%;
 }
-.el-card {
-  height: 84% !important;
-}
-
-.connect .el-breadcrumb__item:last-child .el-breadcrumb__inner {
-  font-weight: 700;
+.card_box {
+  width: 100%;
+  height: 85%;
+  overflow: hidden;
 }
 .el-card {
+  width: 100%;
+  height: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
