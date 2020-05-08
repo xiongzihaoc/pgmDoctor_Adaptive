@@ -13,7 +13,6 @@
             </el-form-item>
             <el-form-item label="出生日期" prop="birth" class="birth">
               <el-date-picker
-                clear-icon="el-icon-date"
                 v-model="editAddForm.birth"
                 type="date"
                 placeholder="选择日期"
@@ -101,6 +100,7 @@
         </el-form>
       </el-card>
     </div>
+    <!-- 弹框 -->
     <el-dialog title="选择套餐" :visible.sync="dialogVisible" width="40%" v-dialogDrag>
       <ul class="chooseTac">
         <li v-for="(item,index) in comboList" :key="index">

@@ -50,6 +50,8 @@ export default {
   methods: {
     // 登录
     handleLogin() {
+      console.log(111);
+      
       this.$refs.LoginFormRef.validate(async valid => {
         if (!valid) return;
         const { data: res } = await this.$http.post("doc/login", {
