@@ -45,6 +45,30 @@
         <router-view></router-view>
       </div>
     </div>
+    <!-- 修改密码弹框 -->
+    <el-dialog title="选择套餐" :visible.sync="dialogVisible" :rules="loginRules" v-dialogDrag>
+      <el-form
+        ref="loginFormRef"
+        :model="editAddForm"
+        label-width="80px"
+        :rules="loginRules"
+        @closed="editDialogClosed"
+      >
+        <el-form-item label="登录名" prop="userName">
+          <el-input v-model="editAddForm.userName"></el-input>
+        </el-form-item>
+        <el-form-item label="原密码" prop="srcPwd">
+          <el-input :key="passwordType" :type="passwordType" v-model="editAddForm.srcPwd"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码" prop="password">
+          <el-input :key="passwordType" :type="passwordType" v-model="editAddForm.password"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible==false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -96,6 +120,27 @@ export default {
           id: "7"
         }
       ],
+      passwordType: "password",
+      loginRules: {
+        userName: [
+          { required: true, message: "请输入登录名", trigger: "blur" },
+          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
+        ],
+        password: [
+          { required: true, message: "请输入新密码", trigger: "blur" },
+          { min: 5, max: 16, message: "长度在 5 到 16 个字符", trigger: "blur" }
+        ],
+        srcPwd: [
+          { required: true, message: "请输入原密码", trigger: "blur" },
+          { min: 5, max: 16, message: "长度在 5 到 16 个字符", trigger: "blur" }
+        ]
+      },
+      editAddForm: {
+        userName: "",
+        srcPwd: "",
+        password: ""
+      },
+      dialogVisible: false,
       activePath: "/home/index"
     };
   },
@@ -119,14 +164,35 @@ export default {
     saveNavState(activePath) {
       this.activePath = activePath;
       // window.sessionStorage.setItem("activePath", activePath);
-    }
+    },
+    // 修改密码
+    editPassword() {
+      this.dialogVisible = true;
+    },
+    dialogVisibleEnter() {
+      this.$refs.loginFormRef.validate(async valid => {
+        if (!valid) return;
+        const { data: res } = await this.$http.post("doc/updPwd", {
+          userName: this.editAddForm.userName,
+          srcPwd: this.$md5(this.editAddForm.srcPwd),
+          password: this.$md5(this.editAddForm.password)
+        });
+        if (res.code != 200) return this.$message.error(res.data);
+        this.$message.success(res.msg);
+        this.editDialogVisible = false;
+        window.sessionStorage.clear();
+        this.$router.push("/login");
+      });
+    },
+    editDialogClosed() {}
   },
+
   mounted() {
     this.activePath = this.$route.path;
   }
 };
 </script>
-<style scoped>
+<style>
 html,
 body {
   height: 100%;
@@ -234,5 +300,9 @@ a {
 .el-menu-item.is-active:hover {
   background-color: #2c8cf0 !important;
   color: #fff !important;
+}
+.connect .el-dialog {
+  width: 60%;
+  max-width: 700px;
 }
 </style>

@@ -97,7 +97,12 @@
       </el-card>
     </div>
     <!-- 弹框 -->
-    <el-dialog title="选择套餐" :visible.sync="dialogVisible" v-dialogDrag>
+    <el-dialog
+      title="选择套餐"
+      :visible.sync="dialogVisible"
+      v-dialogDrag
+      @closed="dialogVisibleCancel"
+    >
       <ul class="chooseTac">
         <li v-for="(item,index) in comboList" :key="index">
           <h3>{{item.type}}</h3>
@@ -111,7 +116,7 @@
         </li>
       </ul>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisibleCancel">取 消</el-button>
+        <el-button @click="dialogVisible=false">取 消</el-button>
         <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
       </span>
     </el-dialog>

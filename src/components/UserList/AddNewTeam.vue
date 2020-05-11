@@ -4,8 +4,7 @@
       <el-breadcrumb-item :to="{ path: '/home/index' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>新增团队</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card style="height:85%;padding-top:8%;box-sizing:border-box;">
-    </el-card>
+    <el-card style="height:85%;padding-top:8%;box-sizing:border-box;"></el-card>
     <el-dialog title="选择套餐" :visible.sync="dialogVisible" width="40%">
       <ul class="chooseTac">
         <li v-for="(item,index) in comboList" :key="index">
@@ -20,7 +19,7 @@
         </li>
       </ul>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisibleCancel">取 消</el-button>
+        <el-button @click="dialogVisible=false">取 消</el-button>
         <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
       </span>
     </el-dialog>
