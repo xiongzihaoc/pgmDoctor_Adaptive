@@ -8,8 +8,8 @@ import './assets/iconfont/iconfont.css'
 import Nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 // v-charts导入
-// import VCharts from 'v-charts'
-// Vue.use(VCharts)
+import VCharts from 'v-charts'
+Vue.use(VCharts)
 import Vant from 'vant';
 import 'vant/lib/index.css';
 Vue.use(Vant);

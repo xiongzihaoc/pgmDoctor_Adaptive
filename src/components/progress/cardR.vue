@@ -9,13 +9,51 @@
         </el-select>
         <el-button type="primary" plain size="small" class="payNum">充值次数</el-button>
       </div>
+      <div>
+        <ve-ring
+          :data="chartData"
+          :settings="chartSettings"
+          :legend-visible="false"
+          :title="{text: '检测卡次数统计', left: 'center', top: 'top'}"
+        ></ve-ring>
+      </div>
+      <div style="display:flex">
+        <div style="flex:1">
+          <ve-ring
+            :data="chartData"
+            :settings="chartSettings"
+            :legend-visible="false"
+            :title="{text: '检测卡次数统计', left: 'center', top: 'top'}"
+          ></ve-ring>
+        </div>
+        <div style="flex:1">
+          <ve-ring
+            :data="chartData"
+            :settings="chartSettings"
+            :legend-visible="false"
+            :title="{text: '检测卡次数统计', left: 'center', top: 'top'}"
+          ></ve-ring>
+        </div>
+      </div>
     </el-card>
   </div>
 </template>
 <script>
 export default {
   data() {
+    this.chartSettings = {
+      radius: [30, 80],
+      offsetY: 120
+    };
     return {
+      chartData: {
+        columns: ["已使用次数", "未使用次数", "总次数"],
+        rows: [
+          { 已使用次数: 100, 未使用次数: 200, 总次数: 300 },
+          { 已用次数: 200, 未使用次数: 100, 总次数: 400 },
+          { 已使用次数: 150, 未使用次数: 150, 总次数: 500 }
+        ]
+      },
       screen: "",
       options: [
         { id: 1, label: "总次数", value: "1" },

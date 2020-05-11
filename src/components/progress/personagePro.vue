@@ -97,8 +97,6 @@ export default {
         pageNum: this.pageNum,
         name: this.input
       });
-      console.log(res);
-
       this.userList = res.rows;
       this.total = res.total;
     },

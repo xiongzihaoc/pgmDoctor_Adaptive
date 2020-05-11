@@ -12,11 +12,7 @@
               <el-input v-model="editAddForm.docName"></el-input>
             </el-form-item>
             <el-form-item label="出生日期" prop="birth" class="birth">
-              <el-date-picker
-                v-model="editAddForm.birth"
-                type="date"
-                placeholder="选择日期"
-              ></el-date-picker>
+              <el-date-picker v-model="editAddForm.birth" type="date" placeholder="选择日期"></el-date-picker>
             </el-form-item>
           </li>
           <li style="display:flex;justify-content: center;">
@@ -101,7 +97,7 @@
       </el-card>
     </div>
     <!-- 弹框 -->
-    <el-dialog title="选择套餐" :visible.sync="dialogVisible" width="40%" v-dialogDrag>
+    <el-dialog title="选择套餐" :visible.sync="dialogVisible" v-dialogDrag>
       <ul class="chooseTac">
         <li v-for="(item,index) in comboList" :key="index">
           <h3>{{item.type}}</h3>
@@ -277,11 +273,12 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style>
 .AddConnect {
   height: 100%;
 }
 .AddConnect .chooseTac li {
+  padding: 1%;
   border-bottom: 1px solid #e5e5e5;
 }
 .AddConnect .chooseTac li:nth-child(1) {
@@ -311,5 +308,9 @@ export default {
 .el-card {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+}
+.AddConnect .el-dialog {
+  width: 60%;
+  max-width: 700px;
 }
 </style>
