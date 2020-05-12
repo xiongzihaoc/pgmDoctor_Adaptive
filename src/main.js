@@ -21,7 +21,7 @@ import axios from 'axios'
 import animated from 'animate.css' // npm install animate.css --save安装，在引入
 Vue.use(animated)
 // // 配置axios
-axios.defaults.baseURL = 'http://192.168.0.142:8086/zhuoya-sheet/'
+axios.defaults.baseURL = 'http://192.168.0.130:8086/zhuoya-sheet/'
 // axios请求拦截器
 axios.interceptors.request.use(function (config) {
   Nprogress.start()

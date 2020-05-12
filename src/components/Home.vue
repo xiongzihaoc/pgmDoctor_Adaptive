@@ -1,5 +1,5 @@
 <template>
-  <div class="connect">
+  <div class="ConnectHo">
     <div class="asdie">
       <img :src="this.hosMess.photoUrl" alt class="logoImg" />
       <h3>{{hosMess.hospital}}</h3>
@@ -55,7 +55,7 @@
         @closed="editDialogClosed"
       >
         <el-form-item label="登录名" prop="userName">
-          <el-input v-model="editAddForm.userName"></el-input>
+          <el-input v-model="this.hosMess.userName" disabled></el-input>
         </el-form-item>
         <el-form-item label="原密码" prop="srcPwd">
           <el-input :key="passwordType" :type="passwordType" v-model="editAddForm.srcPwd"></el-input>
@@ -122,10 +122,10 @@ export default {
       ],
       passwordType: "password",
       loginRules: {
-        userName: [
-          { required: true, message: "请输入登录名", trigger: "blur" },
-          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
-        ],
+        // userName: [
+        //   { required: true, message: "请输入登录名", trigger: "blur" },
+        //   { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
+        // ],
         password: [
           { required: true, message: "请输入新密码", trigger: "blur" },
           { min: 5, max: 16, message: "长度在 5 到 16 个字符", trigger: "blur" }
@@ -173,18 +173,20 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return;
         const { data: res } = await this.$http.post("doc/updPwd", {
-          userName: this.editAddForm.userName,
+          userName: this.hosMess.userName,
           srcPwd: this.$md5(this.editAddForm.srcPwd),
           password: this.$md5(this.editAddForm.password)
         });
         if (res.code != 200) return this.$message.error(res.data);
         this.$message.success(res.msg);
-        this.editDialogVisible = false;
+        this.dialogVisible = false;
         window.sessionStorage.clear();
         this.$router.push("/login");
       });
     },
-    editDialogClosed() {}
+    editDialogClosed() {
+      this.editAddForm = {};
+    }
   },
 
   mounted() {
@@ -197,7 +199,7 @@ html,
 body {
   height: 100%;
 }
-.connect {
+.ConnectHo {
   overflow: hidden;
   height: 100%;
 }
@@ -241,12 +243,12 @@ body {
   border-radius: 50%;
   margin: 0 auto;
 }
-h3 {
+.asdie h3 {
   font-weight: 700;
   font-size: 20px;
   text-align: center;
 }
-a {
+.userName a {
   color: #2c8cf0;
 }
 .loginDiv {
@@ -301,7 +303,7 @@ a {
   background-color: #2c8cf0 !important;
   color: #fff !important;
 }
-.connect .el-dialog {
+.ConnectHo .el-dialog {
   width: 60%;
   max-width: 700px;
 }
