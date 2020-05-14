@@ -16,6 +16,8 @@ Vue.use(Vant);
 // md5加密
 import md5 from 'js-md5'
 Vue.prototype.$md5 = md5;
+import Print from 'vue-print-nb'
+Vue.use(Print);  //注册
 // 导入axios
 import axios from 'axios'
 import animated from 'animate.css' // npm install animate.css --save安装，在引入

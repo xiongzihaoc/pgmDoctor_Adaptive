@@ -18,19 +18,19 @@
         </div>
         <!-- 调用公用表格组件 -->
         <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
+          <el-table-column
+            align="center"
+            slot="fixed"
+            fixed="right"
+            label="审核状态"
+            prop="checkState"
+            :formatter="ifendcaseJck"
+          ></el-table-column>
           <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
             <template slot-scope="scope">
               <div>{{timesChangeDate(scope.row.createTime)}}</div>
             </template>
           </el-table-column>
-          <el-table-column
-            align="center"
-            slot="fixed"
-            fixed="right"
-            label="测试情况"
-            prop="state"
-            :formatter="ifendcaseJck"
-          ></el-table-column>
           <el-table-column align="center" slot="fixed" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -99,6 +99,16 @@ export default {
     serchIn() {
       this.getCardList();
     },
+    // 检测卡类型状态码数字转中文
+    ifendcaseJck(val) {
+      if (val.checkState == "0") {
+        return "未审核";
+      } else if (val.checkState == "1") {
+        return "已审核";
+      } else if (val.checkState == "2") {
+        return "已打印";
+      }
+    },
     // 分页
     handleSizeChange(newSize) {
       this.pageSize = newSize;
@@ -120,14 +130,6 @@ export default {
         d = "0" + d;
       }
       return `${y}-${mon}-${d}`;
-    },
-    // 检测卡类型状态码数字转中文
-    ifendcaseJck(val) {
-      if (val.state == "1") {
-        return "已检测";
-      } else if (val.state == "2") {
-        return "未检测";
-      }
     }
   }
 };

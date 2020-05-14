@@ -81,13 +81,15 @@ export default {
     this.getCardList();
   },
   methods: {
-    // 获取检查单列表
+    // 获取列表
     async getCardList() {
       const { data: res } = await this.$http.post("doc/getPatients", {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        name: this.input
+        name: this.input,
       });
+      console.log(res);
+      
       this.userList = res.rows;
       this.total = res.total;
     },

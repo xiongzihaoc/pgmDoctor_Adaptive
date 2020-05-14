@@ -43,9 +43,16 @@
           <el-table-column align="center" slot="fixed" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
+                v-if="scope.row.state!=3"
+                type="danger"
+                size="mini"
+                @click.prevent.stop="JumpEdit(scope.row)"
+              >修改</el-button>
+              <el-button
                 type="primary"
                 size="mini"
                 @click.prevent.stop="JumpUserCenter(scope.row)"
+                v-else
               >查看</el-button>
             </template>
           </el-table-column>
@@ -97,6 +104,8 @@ export default {
         pageNum: this.pageNum,
         name: this.input
       });
+      console.log(res);
+
       this.userList = res.rows;
       this.total = res.total;
     },
@@ -108,7 +117,17 @@ export default {
       this.$router.push("/home/userCenter/addNewPer");
     },
     JumpUserCenter(info) {
-      this.$router.push("/home/userCenter");
+      console.log(info);
+
+      this.$router.push({
+        path: "/home/examiningReport/examiningDetail",
+        query: { orderNo: info.orderNo }
+      });
+    },
+    // 跳转修改
+    JumpEdit(info) {
+      window.sessionStorage.setItem("editInfo", JSON.stringify(info));
+      this.$router.push({ path: "/home/userCenter/addNewPer"});
     },
     TeamPro() {
       this.$emit("jumpTeam", "jumpTeam");
@@ -123,9 +142,9 @@ export default {
     },
     // 检测卡类型状态码数字转中文
     ifendcaseJck(val) {
-      if (val.state == "1") {
+      if (val.state == "3") {
         return "已检测";
-      } else if (val.state == "2") {
+      } else {
         return "未检测";
       }
     }

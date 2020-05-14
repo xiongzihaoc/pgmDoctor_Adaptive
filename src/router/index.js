@@ -76,6 +76,14 @@ const routes = [{
         }
       },
       {
+        path: '/home/examiningReport/AnsDetail',
+        name: "答题详情",
+        component: () => import('@/components/examiningReport/AnswerDetail.vue'),
+        meta: {
+          title: '答题详情',
+        }
+      },
+      {
         path: '/home/examiningReport/examiningDetail',
         name: "报告详情",
         component: () => import('@/components/examiningReport/examiningDetail.vue'),

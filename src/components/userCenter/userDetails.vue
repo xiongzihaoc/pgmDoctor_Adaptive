@@ -2,6 +2,8 @@
   <div class="connect">
     <!-- 面包屑 -->
     <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/home/userCenter' }">用户中心</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home/userCenter' }">个人列表</el-breadcrumb-item>
       <el-breadcrumb-item>检测报告</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="CardBox">
@@ -37,6 +39,14 @@
                 type="primary"
                 size="mini"
                 @click.prevent.stop="JumpUserCenter(scope.row)"
+                v-if="scope.row.state!=3"
+                disabled
+              >查看</el-button>
+              <el-button
+                type="primary"
+                size="mini"
+                @click.prevent.stop="JumpUserCenter(scope.row)"
+                v-else
               >查看</el-button>
             </template>
           </el-table-column>
@@ -82,7 +92,7 @@ export default {
     // 获取检查单列表
     async getCardList() {
       const { data: res } = await this.$http.post("checkList/list", {
-        phone: this.phoneNum,
+        phone: 18682308445,
         pageSize: this.pageSize,
         pageNum: this.pageNum,
         name: this.input
@@ -90,8 +100,11 @@ export default {
       this.userList = res.rows;
       this.total = res.total;
     },
-    JumpUserCenter() {
-      this.$router.push("userCenter");
+    JumpUserCenter(info) {
+      this.$router.push({
+        path: "/home/examiningReport/examiningDetail",
+        query: { orderNo: info.orderNo }
+      });
     },
     // 搜索
     serchIn() {
@@ -121,10 +134,14 @@ export default {
     },
     // 检测卡类型状态码数字转中文
     ifendcaseJck(val) {
-      if (val.state == "1") {
-        return "已检测";
-      } else if (val.state == "2") {
+      if (val.state == "0") {
         return "未检测";
+      } else if (val.state == "1") {
+        return "检测中";
+      } else if (val.state == "2") {
+        return "已检测";
+      } else if (val.state == "3") {
+        return "检测完成";
       }
     }
   }

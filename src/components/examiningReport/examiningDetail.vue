@@ -3,68 +3,88 @@
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/home/examiningReport' }">检测报告</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/home/examiningReport' }">列表</el-breadcrumb-item>
-      <el-breadcrumb-item>详情</el-breadcrumb-item>
+      <el-breadcrumb-item>报告详情</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card style="height:85%;overflow:auto">
-      <h4>{{infoObj.name}}的检测报告</h4>
-      <div class="personalInformation">
-        <p class="title">基本信息</p>
-        <ul class="content">
-          <li>
-            <span style="flex:1">姓名: {{infoObj.name}}</span>
-            <span style="flex:1">手机: {{infoObj.phone}}</span>
-            <span style="flex:1">性别: {{infoObj.sex}}</span>
-            <span style="flex:1">年龄: {{infoObj.age}}</span>
-          </li>
-          <li>
-            <span style="flex:1">婚姻状况: {{infoObj.marriage}}</span>
-            <span style="flex:1">文化程度: {{infoObj.edu}}</span>
-            <span style="flex:1">所属:</span>
-            <span style="flex:1">职业: {{infoObj.job}}</span>
-          </li>
-          <li>
-            <span style="flex:1">科室:</span>
-          </li>
-          <li class="testContent">
-            <span style="flex:1">检测卡号: {{infoObj.orderNo}}</span>
-            <span style="flex:1">医生: {{infoObj.createBy}}</span>
-          </li>
-          <li>
-            <span style="flex:1">检测时间: {{timesChangeDate(infoObj.createTime)}}</span>
-            <span style="flex:1">报告时间: {{timesChangeDate(infoObj.createTime)}}</span>
-          </li>
-          <li>
-            <span style="flex:1">套餐名称: {{str}}</span>
-          </li>
-        </ul>
-      </div>
-      <div class="singleSheet" v-for="(item,index) in Arr" :key="index">
-        <p class="sheetName">{{item.sheetName}}</p>
-        <p class="title">检测结果统计图</p>
-        <div style="width:60%;margin:0 auto;">
-          <ve-histogram
-            :data="chartData"
-            :extend="extend"
-            :settings="chartSettings"
-            :legend-visible="false"
-          ></ve-histogram>
+      <div style="height:100%" id="printDiv">
+        <h4>{{infoObj.name}}的检测报告</h4>
+        <div class="personalInformation">
+          <div style="display:flex;flex-direction: row;justify-content: space-between;">
+            <p class="title">基本信息</p>
+            <el-button type="primary" size="mini" v-show="this.infoObj.checkState == 0">确认审核</el-button>
+            <el-button
+              type="danger"
+              size="mini"
+              v-show="this.infoObj.checkState != 0"
+              v-print="'#printDiv'"
+            >打印</el-button>
+          </div>
+          <ul class="content">
+            <li>
+              <span style="flex:1">姓名: {{infoObj.name}}</span>
+              <span style="flex:1">手机: {{infoObj.phone}}</span>
+              <span style="flex:1">性别: {{infoObj.sex}}</span>
+              <span style="flex:1">年龄: {{infoObj.age}}</span>
+            </li>
+            <li>
+              <span style="flex:1">婚姻状况: {{infoObj.marriage}}</span>
+              <span style="flex:1">文化程度: {{infoObj.edu}}</span>
+              <span style="flex:1">所属:</span>
+              <span style="flex:1">职业: {{infoObj.job}}</span>
+            </li>
+            <li>
+              <span style="flex:1">科室:</span>
+            </li>
+            <li class="testContent">
+              <span style="flex:1">检测卡号: {{infoObj.orderNo}}</span>
+              <span style="flex:1">医生: {{infoObj.createBy}}</span>
+            </li>
+            <li>
+              <span style="flex:1">检测时间: {{timesChangeDate(infoObj.createTime)}}</span>
+              <span style="flex:1">报告时间: {{timesChangeDate(infoObj.createTime)}}</span>
+            </li>
+            <li>
+              <span style="flex:1">套餐名称: {{str}}</span>
+            </li>
+          </ul>
         </div>
-        <div style="text-align:center;overflow:hidden">
-          <span class="score">总分：{{item.score}}</span>
-          <span
-            class="score"
-            v-for="(subItem,i) in item.factor"
-            :key="i"
-          >{{subItem.name}}：{{subItem.score}}</span>
+        <!-- 单个检测报告图表等 -->
+        <div class="singleSheet" v-for="(item,index) in Arr" :key="index">
+          <p class="sheetName">{{item.sheetName}}</p>
+          <div v-if="item.isZh == 'Y'" v-show="false" style="width:60%;margin:0 auto;">
+            <p class="title">检测结果统计图</p>
+            <ve-histogram
+              :data="chartData"
+              :extend="extend"
+              :settings="chartSettings"
+              :legend-visible="false"
+            ></ve-histogram>
+          </div>
+
+          <div style="text-align:center;overflow:hidden">
+            <span class="score">总分：{{item.score}}</span>
+            <span
+              class="score"
+              v-for="(subItem,i) in item.factor"
+              :key="i"
+            >{{subItem.name}}：{{subItem.score}}</span>
+          </div>
+          <p class="title" style="padding-top:60px">答题记录</p>
+          <div class="answer">
+            <el-button type="primary" @click.prevent.stop="jumpAnsDet(item)">答题详情</el-button>
+          </div>
+          <p class="title" style="padding-top:60px">检测评语</p>
+          <p class="TitleContent" v-html="item.comment"></p>
+          <div v-if="item.isZh == 'Y'" v-show="false">
+            <p class="title">检测建议</p>
+            <p class="TitleContent" v-html="item.suggestion"></p>
+          </div>
         </div>
-        <p class="title" style="padding-top:60px">答题记录</p>
-        <div class="answer">
-          <el-button type="primary" @click.prevent.stop="jumpAnsDet(item)">答题详情</el-button>
+        <!-- 总建议 -->
+        <div v-show="this.infoObj.isZh == 'Y'">
+          <p class="title">检测建议</p>
+          <p class="title" v-html="this.advice"></p>
         </div>
-        <p class="title" style="padding-top:60px">检测评语</p>
-        <p class="TitleContent" v-html="item.comment"></p>
-        <p class="title">检测建议</p>
-        <p class="TitleContent" v-html="item.suggestion"></p>
       </div>
     </el-card>
   </div>
@@ -100,6 +120,7 @@ export default {
     };
     return {
       Number: "",
+      advice: "",
       infoObj: {},
       reportList: [],
       str: "",
@@ -121,7 +142,7 @@ export default {
       });
       // 个人资料数据
       console.log(res);
-
+      this.advice = res.data.advice;
       this.infoObj = res.data.info;
       this.reportList = res.data.report;
       // 量表建议评语等数据
@@ -133,13 +154,12 @@ export default {
           sheetName: item.sheetName,
           comment: item.comment,
           suggestion: item.suggestion,
-          score: item.score
+          score: item.score,
+          isZh: item.isZh
         };
         this.Arr.push(obj);
       });
       // 图表数据
-      console.log(this.Arr);
-
       var Array = this.Arr[0].factor;
       // 循环添加rows
       var RowsArr = [];
@@ -161,7 +181,7 @@ export default {
     jumpAnsDet(info) {
       this.$router.push({
         path: "AnsDetail",
-        query: { ansUuid: info.ansUuid }
+        query: { ansUuid: info.ansUuid, Number: this.Number }
       });
     },
     // 转换时间格式

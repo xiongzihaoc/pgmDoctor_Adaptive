@@ -23,14 +23,6 @@
               <div>{{timesChangeDate(scope.row.createTime)}}</div>
             </template>
           </el-table-column>
-          <el-table-column
-            align="center"
-            slot="fixed"
-            fixed="right"
-            label="测试情况"
-            prop="state"
-            :formatter="ifendcaseJck"
-          ></el-table-column>
           <el-table-column align="center" slot="fixed" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -80,7 +72,7 @@ export default {
     // 获取检查单列表
     async getCardList() {
       const { data: res } = await this.$http.post("checkList/list", {
-        isWarning: "1",
+        isWarning: "Y",
         pageSize: this.pageSize,
         pageNum: this.pageNum,
         name: this.input
@@ -116,14 +108,6 @@ export default {
         d = "0" + d;
       }
       return `${y}-${mon}-${d}`;
-    },
-    // 检测卡类型状态码数字转中文
-    ifendcaseJck(val) {
-      if (val.state == "1") {
-        return "已检测";
-      } else if (val.state == "2") {
-        return "未检测";
-      }
     }
   }
 };
