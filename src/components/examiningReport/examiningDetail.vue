@@ -1,9 +1,11 @@
 <template>
-  <div>
+  <div style="height:100%">
     <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/home/examiningReport' }">检测报告</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home/examiningReport' }">列表</el-breadcrumb-item>
       <el-breadcrumb-item>详情</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card>
+    <el-card style="height:85%;overflow:auto">
       <h4>{{infoObj.name}}的检测报告</h4>
       <div class="personalInformation">
         <p class="title">基本信息</p>
@@ -40,17 +42,27 @@
         <p class="sheetName">{{item.sheetName}}</p>
         <p class="title">检测结果统计图</p>
         <div style="width:60%;margin:0 auto;">
-          <ve-histogram :data="chartData" :extend="extend" :legend-visible="false"></ve-histogram>
+          <ve-histogram
+            :data="chartData"
+            :extend="extend"
+            :settings="chartSettings"
+            :legend-visible="false"
+          ></ve-histogram>
         </div>
         <div style="text-align:center;overflow:hidden">
-          <span class="score" v-for="(subItem,i) in item.factor" :key="i">{{ subItem.name}}</span>
+          <span class="score">总分：{{item.score}}</span>
+          <span
+            class="score"
+            v-for="(subItem,i) in item.factor"
+            :key="i"
+          >{{subItem.name}}：{{subItem.score}}</span>
         </div>
         <p class="title" style="padding-top:60px">答题记录</p>
         <div class="answer">
           <el-button type="primary" @click.prevent.stop="jumpAnsDet(item)">答题详情</el-button>
         </div>
         <p class="title" style="padding-top:60px">检测评语</p>
-        <p class="TitleContent">{{item.comment}}</p>
+        <p class="TitleContent" v-html="item.comment"></p>
         <p class="title">检测建议</p>
         <p class="TitleContent" v-html="item.suggestion"></p>
       </div>
@@ -60,6 +72,12 @@
 <script>
 export default {
   data() {
+    this.chartSettings = {
+      labelMap: {
+        type: "因子类型",
+        def: "得分"
+      }
+    };
     this.extend = {
       series: {
         label: {
@@ -84,19 +102,11 @@ export default {
       Number: "",
       infoObj: {},
       reportList: [],
-      factorList: [],
       str: "",
       Arr: [],
       chartData: {
-        columns: ["因子类型", "得分"],
-        rows: [
-          { 因子类型: "平和质(A型)", 得分: 1093 },
-          { 因子类型: "气虚质(B型)", 得分: 3230 },
-          { 因子类型: "阳虚质(C型)", 得分: 2623 },
-          { 因子类型: "阴虚质(D型)", 得分: 1423 },
-          { 因子类型: "痰湿型(E型)", 得分: 3492 },
-          { 因子类型: "湿热型(F型)", 得分: 4293 }
-        ]
+        columns: ["type", "def"],
+        rows: []
       }
     };
   },
@@ -109,10 +119,12 @@ export default {
       const { data: res } = await this.$http.post("checkList/getReport", {
         orderNo: this.Number
       });
+      // 个人资料数据
       console.log(res);
 
       this.infoObj = res.data.info;
       this.reportList = res.data.report;
+      // 量表建议评语等数据
       var obj = {};
       this.reportList.forEach(item => {
         obj = {
@@ -120,10 +132,26 @@ export default {
           factor: eval(item.factor),
           sheetName: item.sheetName,
           comment: item.comment,
-          suggestion: item.suggestion
+          suggestion: item.suggestion,
+          score: item.score
         };
         this.Arr.push(obj);
       });
+      // 图表数据
+      console.log(this.Arr);
+
+      var Array = this.Arr[0].factor;
+      // 循环添加rows
+      var RowsArr = [];
+      var RowObj = {};
+      Array.forEach(item => {
+        RowObj = {
+          type: item.name,
+          def: item.score
+        };
+        RowsArr.push(RowObj);
+      });
+      this.chartData.rows = RowsArr;
       // 循环添加量表名称
       var arr = res.data.report;
       for (var i = 0; i < arr.length; i++) {
@@ -172,7 +200,6 @@ h4 {
 }
 .personalInformation li {
   padding: 5px 0;
-  display: -webkit-flex;
   display: flex;
 }
 .testContent {
