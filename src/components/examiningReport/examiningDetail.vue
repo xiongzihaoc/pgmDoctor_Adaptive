@@ -19,7 +19,13 @@
         <div class="personalInformation">
           <div style="display:flex;flex-direction: row;justify-content: space-between;">
             <p class="title">基本信息</p>
-            <el-button type="primary" size="mini" v-show="this.infoObj.checkState == 0" v-cloak>确认审核</el-button>
+            <el-button
+              type="primary"
+              size="mini"
+              v-show="this.infoObj.checkState == 0"
+              v-cloak
+              @click.prevent.stop="hasConfirm"
+            >确认审核</el-button>
           </div>
           <ul class="content">
             <li>
@@ -51,7 +57,7 @@
           </ul>
         </div>
         <!-- 单个检测报告图表等 -->
-        <div class="singleSheet" v-for="(item,index) in Arr" :key="index">
+        <div class="singleSheet" v-for="(item,index) in reportList" :key="index">
           <p class="sheetName">{{item.sheetName}}</p>
           <div v-if="item.isZh == 'Y'" v-show="false" style="width:60%;margin:0 auto;">
             <p class="title">检测结果统计图</p>
@@ -142,43 +148,45 @@ export default {
       const { data: res } = await this.$http.post("checkList/getReport", {
         orderNo: this.Number
       });
-      // 个人资料数据
       console.log(res);
+
+      // 个人资料数据
       this.advice = res.data.advice;
       this.infoObj = res.data.info;
       this.reportList = res.data.report;
       // 量表建议评语等数据
       var obj = {};
       this.reportList.forEach(item => {
-        obj = {
-          ansUuid: item.ansUuid,
-          factor: eval(item.factor),
-          sheetName: item.sheetName,
-          comment: item.comment,
-          suggestion: item.suggestion,
-          score: item.score,
-          isZh: item.isZh
-        };
-        this.Arr.push(obj);
+        item.factor = eval(item.factor);
       });
+      // console.log(this.reportList);
+
       // 图表数据
-      var Array = this.Arr[0].factor;
+      // var Array = this.Arr[0].factor;
       // 循环添加rows
-      var RowsArr = [];
-      var RowObj = {};
-      Array.forEach(item => {
-        RowObj = {
-          type: item.name,
-          def: item.score
-        };
-        RowsArr.push(RowObj);
-      });
-      this.chartData.rows = RowsArr;
+      // var RowsArr = [];
+      // var RowObj = {};
+      // Array.forEach(item => {
+      //   RowObj = {
+      //     type: item.name,
+      //     def: item.score
+      //   };
+      //   RowsArr.push(RowObj);
+      // });
+      // this.chartData.rows = RowsArr;
       // 循环添加量表名称
       var arr = res.data.report;
       for (var i = 0; i < arr.length; i++) {
         this.str += arr[i].sheetName + " , ";
       }
+    },
+    // 确认审核
+    async hasConfirm() {
+      const { data: res } = await this.$http.post("checkList/update", {
+        checkState: "1"
+      });
+      console.log(res);
+      
     },
     jumpAnsDet(info) {
       this.$router.push({

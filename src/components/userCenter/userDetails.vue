@@ -36,7 +36,7 @@
           <el-table-column align="center" slot="fixed" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
-                type="primary"
+                type="danger"
                 size="mini"
                 @click.prevent.stop="JumpUserCenter(scope.row)"
                 v-if="scope.row.state!=3"
@@ -133,15 +133,12 @@ export default {
       return `${y}-${mon}-${d}`;
     },
     // 检测卡类型状态码数字转中文
+    // 检测卡类型状态码数字转中文
     ifendcaseJck(val) {
-      if (val.state == "0") {
-        return "未检测";
-      } else if (val.state == "1") {
-        return "检测中";
-      } else if (val.state == "2") {
+      if (val.state == "3") {
         return "已检测";
-      } else if (val.state == "3") {
-        return "检测完成";
+      } else {
+        return "未检测";
       }
     }
   }

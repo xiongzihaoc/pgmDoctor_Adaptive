@@ -126,6 +126,8 @@ export default {
     },
     // 跳转修改
     JumpEdit(info) {
+      console.log(info);
+      
       window.sessionStorage.setItem("editInfo", JSON.stringify(info));
       this.$router.push({ path: "/home/userCenter/addNewPer"});
     },
@@ -136,9 +138,7 @@ export default {
     handleSizeChange(newSize) {
       this.pageSize = newSize;
     },
-    handleCurrentChangev(newPage) {
-      this.pageNum = newPage;
-      this.getCardList();
+    handleCurrentChangev(newPage) { 
     },
     // 检测卡类型状态码数字转中文
     ifendcaseJck(val) {
