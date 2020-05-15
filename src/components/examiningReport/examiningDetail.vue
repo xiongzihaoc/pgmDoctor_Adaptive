@@ -5,19 +5,21 @@
       <el-breadcrumb-item :to="{ path: '/home/examiningReport' }">列表</el-breadcrumb-item>
       <el-breadcrumb-item>报告详情</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card style="height:85%;overflow:auto">
+    <el-card style="height:85%;overflow:auto;position: relative;">
+      <el-button
+        type="danger"
+        size="mini"
+        v-cloak
+        v-show="this.infoObj.checkState != 0"
+        v-print="'#printDiv'"
+        style="position: absolute;top:58px;right:22px"
+      >打印</el-button>
       <div style="height:100%" id="printDiv">
         <h4>{{infoObj.name}}的检测报告</h4>
         <div class="personalInformation">
           <div style="display:flex;flex-direction: row;justify-content: space-between;">
             <p class="title">基本信息</p>
-            <el-button type="primary" size="mini" v-show="this.infoObj.checkState == 0">确认审核</el-button>
-            <el-button
-              type="danger"
-              size="mini"
-              v-show="this.infoObj.checkState != 0"
-              v-print="'#printDiv'"
-            >打印</el-button>
+            <el-button type="primary" size="mini" v-show="this.infoObj.checkState == 0" v-cloak>确认审核</el-button>
           </div>
           <ul class="content">
             <li>
@@ -202,6 +204,9 @@ export default {
 };
 </script>
 <style lang='less'>
+[v-cloak] {
+  display: none;
+}
 li {
   list-style: none;
 }
