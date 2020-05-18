@@ -11,12 +11,24 @@
           :data="menuList"
           :tree-props="{children: 'child', hasChildren: 'hasChildren'}"
           :header-cell-style="{background:'#f5f5f5'}"
+          highlight-current-row
           row-key="code"
           ref="singleTable"
-          @row-contextmenu="handdle"
+          @row-click="handdle"
           style="width: 100%;margin-bottom: 20px;"
         >
           <el-table-column align="left" prop="name" label="名称" label-class-name="ccc"></el-table-column>
+          <el-table-column align="right" label-class-name="ccc" width="100">
+            <template slot-scope="scope">
+              <i style="display:inline-block" class="el-icon-edit" @click="iconEdit(scope.row)"></i>
+              <i
+                style="display:inline-block;margin: 0 15px;"
+                class="el-icon-circle-plus-outline"
+                @click="iconAdd(scope.row)"
+              ></i>
+              <i style="display:inline-block" class="el-icon-delete" @click="iconDelete(scope.row)"></i>
+            </template>
+          </el-table-column>
         </el-table>
       </el-card>
       <!-- 右侧卡片 -->
@@ -62,6 +74,26 @@
         ></el-pagination>
       </el-card>
     </div>
+    <!-- 修改密码弹框 -->
+    <el-dialog :title="infoTitle" :visible.sync="dialogVisible" v-dialogDrag>
+      <el-form
+        ref="loginFormRef"
+        :model="editAddForm"
+        label-width="80px"
+        @closed="editDialogClosed"
+      >
+        <el-form-item label="上一级" v-show="this.infoTitle == '新增'">
+          <el-input v-model="goback" disabled></el-input>
+        </el-form-item>
+        <el-form-item prop="name" label="名称">
+          <el-input v-model="editAddForm.name"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible==false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -82,8 +114,16 @@ export default {
       pageNum: 1,
       total: 0,
       input: "",
-
-      menuList: []
+      requestCode: 100,
+      menuList: [],
+      editAddForm: {
+        name: "",
+        parentCode: ""
+      },
+      infoTitle: "",
+      editId: "",
+      goback: "",
+      dialogVisible: false
     };
   },
   created() {
@@ -96,21 +136,85 @@ export default {
       const { data: res } = await this.$http.post("doc/getPatients", {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        name: this.input
+        name: this.input,
+        teamDept: this.requestCode
       });
-      //   console.log(res);
-
       this.userList = res.rows;
       this.total = res.total;
     },
     // 获取左侧列表
     async getTeamDeptList() {
       const { data: res } = await this.$http.post("teamList/dept ", {});
-      console.log(res);
+      // console.log(res);
       this.menuList = res.data;
     },
-    handdle(val) {
+    // 左侧修改
+    iconEdit(val) {
+      this.dialogVisible = true;
+      this.editId = val.id;
+      this.editAddForm = JSON.parse(JSON.stringify(val));
+      this.infoTitle = "修改";
+    },
+    // 左侧新增
+    iconAdd(val) {
       console.log(val);
+
+      this.editAddForm = {};
+      this.goback = val.name;
+      this.editAddForm.parentCode = val.code;
+      this.dialogVisible = true;
+      this.infoTitle = "新增";
+    },
+    // 左侧删除
+    async iconDelete(val) {
+      const confirmResult = await this.$confirm(
+        "你确定要执行此操作, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      ).catch(err => console.log(err));
+      if (confirmResult != "confirm") {
+        return this.$message.info("取消删除");
+      }
+      const { data: res } = await this.$http.post("teamList/dept/del", {
+        id: val.id
+      });
+      if (res.code != 200) return this.$message.error("删除失败");
+      this.$message.success("删除成功");
+      this.getTeamDeptList();
+    },
+    // 左侧增改弹框
+    async dialogVisibleEnter() {
+      let httpUrl = "";
+      let parm = {};
+      if (this.infoTitle == "修改") {
+        httpUrl = "teamList/dept/update";
+        parm = {
+          id: this.editId,
+          name: this.editAddForm.name
+        };
+      } else {
+        httpUrl = "teamList/dept/add";
+        parm = {
+          name: this.editAddForm.name,
+          parentCode: this.editAddForm.parentCode
+        };
+      }
+      const { data: res } = await this.$http.post(httpUrl, parm);
+      if (res.code != 200) return this.$message.error("操作失败");
+      this.$message.error("操作成功");
+      this.getTeamDeptList();
+      this.dialogVisible = false;
+    },
+    editDialogClosed() {
+      this.dialogVisible = false;
+    },
+    handdle(val) {
+      this.requestCode = val.code;
+      this.getCardList();
     },
     // 搜索
     searchin() {},
@@ -136,7 +240,7 @@ export default {
 }
 .cardLeft {
   float: left;
-  width: 29%;
+  width: 32%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   height: 100%;
@@ -153,8 +257,7 @@ export default {
   float: right;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  width: 70%;
+  width: 67%;
   height: 100%;
 }
-
 </style>
