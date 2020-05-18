@@ -161,7 +161,7 @@ export default {
       this.reportList.forEach(item => {
         item.factor = eval(item.factor);
       });
-      // console.log(this.reportList);
+      console.log(this.reportList);
 
       // 图表数据
       // var Array = this.Arr[0].factor;

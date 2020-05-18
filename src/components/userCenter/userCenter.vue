@@ -12,7 +12,7 @@
           <el-input
             placeholder="请输入手机号/姓名"
             prefix-icon="el-icon-search"
-            size="medium"
+            size="small"
             v-model="input"
             class="searchInput"
             @input="searchin"

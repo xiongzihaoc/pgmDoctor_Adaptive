@@ -80,7 +80,7 @@ export default {
   data() {
     return {
       tableHeaderBig: [
-        { prop: "orderNo", label: "检测卡号"},
+        { prop: "orderNo", label: "检测卡号" },
         { prop: "name", label: "姓名" },
         { prop: "phone", label: "手机号" }
       ],
@@ -137,7 +137,10 @@ export default {
     handleSizeChange(newSize) {
       this.pageSize = newSize;
     },
-    handleCurrentChangev(newPage) {}
+    handleCurrentChangev(newPage) {
+      this.pageNum = newPage;
+      this.getCardList();
+    }
   }
 };
 </script>
