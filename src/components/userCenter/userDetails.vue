@@ -6,63 +6,59 @@
       <el-breadcrumb-item :to="{ path: '/home/userCenter' }">个人列表</el-breadcrumb-item>
       <el-breadcrumb-item>检测报告</el-breadcrumb-item>
     </el-breadcrumb>
-    <div class="CardBox">
-      <el-card>
-        <div class="searchBox">
-          <el-input
-            size="medium"
-            class="searchInput"
-            placeholder="请输入手机号/姓名"
-            prefix-icon="el-icon-search"
-            v-model="input"
-            @input="serchIn"
-          ></el-input>
-        </div>
-        <!-- 调用公用表格组件 -->
-        <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
-          <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
-            <template slot-scope="scope">
-              <div>{{timesChangeDate(scope.row.createTime)}}</div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            slot="fixed"
-            fixed="right"
-            label="测试情况"
-            prop="state"
-            :formatter="ifendcaseJck"
-          ></el-table-column>
-          <el-table-column align="center" slot="fixed" fixed="right" label="操作">
-            <template slot-scope="scope">
-              <el-button
-                type="danger"
-                size="mini"
-                @click.prevent.stop="JumpUserCenter(scope.row)"
-                v-if="scope.row.state!=3"
-                disabled
-              >查看</el-button>
-              <el-button
-                type="primary"
-                size="mini"
-                @click.prevent.stop="JumpUserCenter(scope.row)"
-                v-else
-              >查看</el-button>
-            </template>
-          </el-table-column>
-        </ElTable>
-        <!-- 分页 -->
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChangev"
-          :current-page="pageNum"
-          :page-sizes="[10, 20,50]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        ></el-pagination>
-      </el-card>
-    </div>
+    <el-card class="cardBox">
+      <div class="searchBox">
+        <el-input
+          size="medium"
+          class="searchInput"
+          placeholder="请输入手机号/姓名"
+          prefix-icon="el-icon-search"
+          v-model="input"
+          @input="serchIn"
+        ></el-input>
+      </div>
+      <!-- 调用公用表格组件 -->
+      <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
+        <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
+          <template slot-scope="scope">
+            <div>{{timesChangeDate(scope.row.createTime)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" slot="fixed" fixed="right" label="测试情况" prop="state">
+          <template slot-scope="scope">
+            <span v-if="scope.row.state == 3" style="color:#67C23A">已检测</span>
+            <span v-else style="color:#F56C6C">未检测</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" slot="fixed" fixed="right" label="操作">
+          <template slot-scope="scope">
+            <el-button
+              type="danger"
+              size="mini"
+              @click.prevent.stop="JumpUserCenter(scope.row)"
+              v-if="scope.row.state!=3"
+              disabled
+            >查看</el-button>
+            <el-button
+              type="primary"
+              size="mini"
+              @click.prevent.stop="JumpUserCenter(scope.row)"
+              v-else
+            >查看</el-button>
+          </template>
+        </el-table-column>
+      </ElTable>
+      <!-- 分页 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChangev"
+        :current-page="pageNum"
+        :page-sizes="[10, 20,50]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
+    </el-card>
   </div>
 </template>
 <script>
@@ -131,15 +127,6 @@ export default {
         d = "0" + d;
       }
       return `${y}-${mon}-${d}`;
-    },
-    // 检测卡类型状态码数字转中文
-    // 检测卡类型状态码数字转中文
-    ifendcaseJck(val) {
-      if (val.state == "3") {
-        return "已检测";
-      } else {
-        return "未检测";
-      }
     }
   }
 };
@@ -155,5 +142,10 @@ export default {
 .searchInput {
   width: 25%;
   max-width: 300px;
+}
+.cardBox {
+  height: 85%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 </style>

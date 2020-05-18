@@ -5,7 +5,9 @@
       <el-breadcrumb-item :to="{ path: '/home/examiningReport' }">列表</el-breadcrumb-item>
       <el-breadcrumb-item>报告详情</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card style="height:85%;overflow:auto;position: relative;">
+    <el-card
+      style="height:85%;overflow: auto;-webkit-overflow-scrolling: touch;position: relative;"
+    >
       <el-button
         type="danger"
         size="mini"
@@ -186,7 +188,6 @@ export default {
         checkState: "1"
       });
       console.log(res);
-      
     },
     jumpAnsDet(info) {
       this.$router.push({

@@ -32,20 +32,19 @@
               <div>{{scope.row.createTime}}</div>
             </template>
           </el-table-column>
-          <el-table-column
-            align="center"
-            slot="fixed"
-            fixed="right"
-            label="测试情况"
-            prop="state"
-            :formatter="ifendcaseJck"
-          ></el-table-column>
+          <el-table-column align="center" slot="fixed" fixed="right" label="测试情况" prop="state">
+            <template slot-scope="scope">
+              <span v-if="scope.row.state == 3" style="color:#67C23A">已检测</span>
+              <span v-else style="color:#F56C6C">未检测</span>
+            </template>
+          </el-table-column>
           <el-table-column align="center" slot="fixed" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
                 v-if="scope.row.state!=3"
-                type="danger"
+                type="primary"
                 size="mini"
+                plain
                 @click.prevent.stop="JumpEdit(scope.row)"
               >修改</el-button>
               <el-button
@@ -81,7 +80,7 @@ export default {
   data() {
     return {
       tableHeaderBig: [
-        { prop: "orderNo", label: "检测卡号" },
+        { prop: "orderNo", label: "检测卡号"},
         { prop: "name", label: "姓名" },
         { prop: "phone", label: "手机号" }
       ],
@@ -127,9 +126,9 @@ export default {
     // 跳转修改
     JumpEdit(info) {
       console.log(info);
-      
+
       window.sessionStorage.setItem("editInfo", JSON.stringify(info));
-      this.$router.push({ path: "/home/userCenter/addNewPer"});
+      this.$router.push({ path: "/home/userCenter/addNewPer" });
     },
     TeamPro() {
       this.$emit("jumpTeam", "jumpTeam");
@@ -138,16 +137,7 @@ export default {
     handleSizeChange(newSize) {
       this.pageSize = newSize;
     },
-    handleCurrentChangev(newPage) { 
-    },
-    // 检测卡类型状态码数字转中文
-    ifendcaseJck(val) {
-      if (val.state == "3") {
-        return "已检测";
-      } else {
-        return "未检测";
-      }
-    }
+    handleCurrentChangev(newPage) {}
   }
 };
 </script>

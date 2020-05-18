@@ -90,6 +90,12 @@ export default {
           id: "2"
         },
         {
+          icon: "iconfont icon-hexintuandui",
+          name: "团体中心",
+          path: "home/teamCenter",
+          id: "8"
+        },
+        {
           icon: "iconfont icon-liangbiao",
           name: "他评量表",
           path: "home/HisScale",

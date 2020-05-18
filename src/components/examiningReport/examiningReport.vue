@@ -18,17 +18,16 @@
         </div>
         <!-- 调用公用表格组件 -->
         <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
-          <el-table-column
-            align="center"
-            slot="fixed"
-            fixed="right"
-            label="审核状态"
-            prop="checkState"
-            :formatter="ifendcaseJck"
-          ></el-table-column>
           <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
             <template slot-scope="scope">
               <div>{{timesChangeDate(scope.row.createTime)}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" slot="fixed" fixed="right" label="审核状态" prop="checkState">
+            <template slot-scope="scope">
+              <span v-if="scope.row.checkState== 0" style="color:#F56C6C">未审核</span>
+              <span v-else-if="scope.row.checkState== 1" style="color:#67C23A">已审核</span>
+              <span v-else style="color:#E6A23C">已打印</span>
             </template>
           </el-table-column>
           <el-table-column align="center" slot="fixed" fixed="right" label="操作">
