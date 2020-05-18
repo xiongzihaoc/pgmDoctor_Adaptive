@@ -6,7 +6,8 @@
       <el-breadcrumb-item>报告详情</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card
-      style="height:85%;overflow: auto;-webkit-overflow-scrolling: touch;position: relative;"
+      v-loading.fullscreen.lock="fullscreenLoading"
+      style="height:85%;overflow: auto;-webkit-overflow-scrolling: touch;position: relative;"
     >
       <el-button
         type="danger"
@@ -61,8 +62,9 @@
         <!-- 单个检测报告图表等 -->
         <div class="singleSheet" v-for="(item,index) in reportList" :key="index">
           <p class="sheetName">{{item.sheetName}}</p>
-          <div v-if="item.isZh == 'Y'" v-show="false" style="width:60%;margin:0 auto;">
+          <div v-show="item.isZh !== 'Y'" style="width:60%;margin:0 auto;">
             <p class="title">检测结果统计图</p>
+
             <ve-histogram
               :data="chartData"
               :extend="extend"
@@ -129,6 +131,7 @@ export default {
       }
     };
     return {
+      fullscreenLoading: true,
       Number: "",
       advice: "",
       infoObj: {},
@@ -137,7 +140,11 @@ export default {
       Arr: [],
       chartData: {
         columns: ["type", "def"],
-        rows: []
+        rows: [
+          { type: 11, def: 22 },
+          { type: 12, def: 23 },
+          { type: 13, def: 24 }
+        ]
       }
     };
   },
@@ -145,12 +152,19 @@ export default {
     this.Number = this.$route.query.orderNo;
     this.getDetaiList();
   },
+  mounted() {
+    this.getDetaiList();
+  },
   methods: {
     async getDetaiList() {
       const { data: res } = await this.$http.post("checkList/getReport", {
         orderNo: this.Number
       });
-      console.log(res);
+      if (res.code !== 200) {
+        return this.$message("获取数据失败");
+      } else {
+        this.fullscreenLoading = false;
+      }
 
       // 个人资料数据
       this.advice = res.data.advice;
@@ -161,21 +175,10 @@ export default {
       this.reportList.forEach(item => {
         item.factor = eval(item.factor);
       });
-      console.log(this.reportList);
 
       // 图表数据
-      // var Array = this.Arr[0].factor;
-      // 循环添加rows
-      // var RowsArr = [];
-      // var RowObj = {};
-      // Array.forEach(item => {
-      //   RowObj = {
-      //     type: item.name,
-      //     def: item.score
-      //   };
-      //   RowsArr.push(RowObj);
-      // });
-      // this.chartData.rows = RowsArr;
+      console.log(this.reportList);
+
       // 循环添加量表名称
       var arr = res.data.report;
       for (var i = 0; i < arr.length; i++) {

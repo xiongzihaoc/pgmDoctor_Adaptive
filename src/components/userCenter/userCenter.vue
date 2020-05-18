@@ -86,18 +86,18 @@ export default {
       const { data: res } = await this.$http.post("doc/getPatients", {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        name: this.input,
+        name: this.input
       });
       console.log(res);
-      
+
       this.userList = res.rows;
       this.total = res.total;
     },
     // 查看跳转
     showEditdialog(info) {
+      window.sessionStorage.setItem("peoDetail", JSON.stringify(info));
       this.$router.push({
-        path: "/home/userCenter/userDetails",
-        query: { phone: info.phone }
+        path: "/home/userCenter/userDetails"
       });
     },
     newAddPerson() {
