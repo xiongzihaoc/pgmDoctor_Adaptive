@@ -125,10 +125,11 @@ export default {
     },
     // 跳转修改
     JumpEdit(info) {
-      console.log(info);
-
       window.sessionStorage.setItem("editInfo", JSON.stringify(info));
-      this.$router.push({ path: "/home/userCenter/addNewPer" });
+      this.$router.push({
+        path: "/home/userCenter/addNewPer",
+        query: { mess: "修改" }
+      });
     },
     TeamPro() {
       this.$emit("jumpTeam", "jumpTeam");

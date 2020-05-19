@@ -128,10 +128,6 @@ export default {
       ],
       passwordType: "password",
       loginRules: {
-        // userName: [
-        //   { required: true, message: "请输入登录名", trigger: "blur" },
-        //   { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
-        // ],
         password: [
           { required: true, message: "请输入新密码", trigger: "blur" },
           { min: 5, max: 16, message: "长度在 5 到 16 个字符", trigger: "blur" }

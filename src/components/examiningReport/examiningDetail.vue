@@ -268,4 +268,7 @@ h4 {
 .TitleContent {
   padding: 10px 0;
 }
+.buttonBox {
+  display: flex;
+}
 </style>

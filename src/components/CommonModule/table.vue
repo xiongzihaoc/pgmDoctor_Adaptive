@@ -26,7 +26,7 @@
         :type="col.type"
         :header-align="col.headerAlign"
         :column-key="index.toString()"
-        :render-header="renderHeader"
+
         show-overflow-tooltip
       ></el-table-column>
     </el-table>

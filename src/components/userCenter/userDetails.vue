@@ -25,6 +25,12 @@
       </li>
     </el-card>
     <el-card class="cardBox">
+      <div class="buttonBox">
+        <el-button type="primary" plain size="small">会诊</el-button>
+        <el-button type="primary" plain size="small">追加检测</el-button>
+        <el-button type="primary" plain size="small">历次检测对比</el-button>
+        <el-button type="primary" plain size="small">其他检测</el-button>
+      </div>
       <!-- 调用公用表格组件 -->
       <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
         <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">

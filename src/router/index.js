@@ -37,10 +37,10 @@ const routes = [{
       },
       {
         path: '/home/teamCenter',
-        name: "用户中心",
+        name: "团队中心",
         component: () => import('@/components/TeamCenter/TeamCenter.vue'),
         meta: {
-          title: '用户中心',
+          title: '团队中心',
         },
       },
       {

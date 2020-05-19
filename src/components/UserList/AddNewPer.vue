@@ -190,7 +190,9 @@ export default {
     };
   },
   created() {
-    this.editAddForm = JSON.parse(window.sessionStorage.getItem('editInfo'))
+    if (this.$route.query.mess == "修改") {
+      this.editAddForm = JSON.parse(window.sessionStorage.getItem("editInfo"));
+    }
     this.getInfoList();
   },
   methods: {
