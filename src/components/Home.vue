@@ -46,14 +46,8 @@
       </div>
     </div>
     <!-- 修改密码弹框 -->
-    <el-dialog title="选择套餐" :visible.sync="dialogVisible" :rules="loginRules" v-dialogDrag>
-      <el-form
-        ref="loginFormRef"
-        :model="editAddForm"
-        label-width="80px"
-        :rules="loginRules"
-        @closed="editDialogClosed"
-      >
+    <el-dialog title="选择套餐" :visible.sync="dialogVisible" @closed="editDialogClosed" v-dialogDrag>
+      <el-form ref="loginFormRef" :model="editAddForm" label-width="80px" :rules="loginRules">
         <el-form-item label="登录名" prop="userName">
           <el-input v-model="this.hosMess.userName" disabled></el-input>
         </el-form-item>
@@ -65,7 +59,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible==false">取 消</el-button>
+        <el-button @click="dialogVisible=false">取 消</el-button>
         <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
       </span>
     </el-dialog>

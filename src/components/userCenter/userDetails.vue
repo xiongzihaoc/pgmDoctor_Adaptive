@@ -26,7 +26,7 @@
     </el-card>
     <el-card class="cardBox">
       <div class="buttonBox">
-        <el-button type="primary" plain size="small">会诊</el-button>
+        <el-button type="primary" plain size="small" @click.prevent.stop="consultation">会诊</el-button>
         <el-button type="primary" plain size="small">追加检测</el-button>
         <el-button type="primary" plain size="small">历次检测对比</el-button>
         <el-button type="primary" plain size="small">其他检测</el-button>
@@ -73,6 +73,47 @@
         :total="total"
       ></el-pagination>
     </el-card>
+    <!-- 会诊弹框 -->
+    <el-dialog
+      title="会诊记录"
+      :visible.sync="dialogVisible"
+      v-dialogDrag
+      class="consultationDia"
+      @closed="dialogVisibleCancel"
+    >
+      <el-form :modal="consultationForm" label-width="80px" ref="addInfoRef">
+        <el-form-item label="会诊类型" prop="type">
+          <el-select v-model="consultationForm.type" style="width:80%">
+            <el-option value="consult-in" label="院内会诊"></el-option>
+            <el-option value="consult-out" label="院外会诊"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="会诊医生" prop="conDoctor">
+          <el-select
+            filterable
+            multiple
+            v-model="consultationForm.conDoctor"
+            placeholder="请选择医生"
+            style="width:80%"
+          >
+            <el-option v-for="item in docList" :key="item.id" :label="item.name" :value="item.uuid">
+              <div style="display:flex;">
+                <span style="flex: 1;font-weight:700;">{{ item.name }}</span>
+                <span style="flex: 1;text-align:center">{{ item.hospital }}</span>
+                <span style="flex: 1;text-align:center">{{ item.office }}</span>
+              </div>
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="会诊内容" prop="content">
+          <el-input type="textarea" v-model="consultationForm.content"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -90,22 +131,27 @@ export default {
       pageSize: 10,
       pageNum: 1,
       total: 0,
-      phoneNum: "",
-      infomation: {}
+      infomation: {},
+      docList: [],
+      consultationForm: {
+        type: "",
+        conDoctor: [],
+        content: ""
+      },
+
+      dialogVisible: false
     };
   },
   created() {
     this.infomation = JSON.parse(window.sessionStorage.getItem("peoDetail"));
-    console.log(this.infomation);
-
-    this.phoneNum = this.infomation.phone;
     this.getCardList();
+    this.getDocList();
   },
   methods: {
     // 获取检查单列表
     async getCardList() {
       const { data: res } = await this.$http.post("checkList/list", {
-        phone: this.phoneNum,
+        phone: this.infomation.phone,
         pageSize: this.pageSize,
         pageNum: this.pageNum,
         name: this.input
@@ -113,11 +159,47 @@ export default {
       this.userList = res.rows;
       this.total = res.total;
     },
+    // 获取医生列表
+    async getDocList() {
+      const { data: res } = await this.$http.post("doc/getDoctor", {});
+      console.log(res);
+
+      this.docList = res.rows;
+    },
     JumpUserCenter(info) {
       this.$router.push({
         path: "/home/examiningReport/examiningDetail",
         query: { orderNo: info.orderNo }
       });
+    },
+    // 会诊
+    consultation() {
+      this.dialogVisible = true;
+    },
+    async dialogVisibleEnter() {
+      if (
+        this.consultationForm.content == "" ||
+        this.consultationForm.conDoctor == [] ||
+        this.type == ""
+      ) {
+        return this.$message.error("内容不能为空");
+      } else {
+        const { data: res } = await this.$http.post("consult/add", {
+          patientUuid: this.infomation.uuid,
+          content: this.consultationForm.content,
+          conDoctor: this.consultationForm.conDoctor.toString(),
+          type: this.consultationForm.type
+        });
+        if (res.code != 200) return this.$message.error("操作失败");
+        this.$message.success("操作成功");
+        this.dialogVisible = false;
+      }
+    },
+    dialogVisibleCancel() {
+      console.log(111);
+      
+      this.consultationForm = []
+      
     },
     // 分页
     handleSizeChange(newSize) {
@@ -144,7 +226,7 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style scoped>
 .connectCenL {
   height: 100%;
 }
