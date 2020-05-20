@@ -181,7 +181,12 @@ export default {
     },
     // 历次会诊
     Hisconsultation() {
-      this.$router.push({ path: "/home/consultationList" });
+      console.log(this.infomation.uuid);
+
+      this.$router.push({
+        path: "/home/consultationList",
+        query: { mesType: "consult-out", id: this.infomation.uuid }
+      });
     },
     async dialogVisibleEnter() {
       if (

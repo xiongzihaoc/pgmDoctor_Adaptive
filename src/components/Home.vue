@@ -153,8 +153,7 @@ export default {
       this.$router.push("/");
     },
     jumpconsulation() {
-      this.$router.push("/home/consultation");
-      this.activePath = "/home/consultation";
+      this.$router.push("/home/consultationMessage");
     },
     // 保持连接的激活状态
     saveNavState(activePath) {

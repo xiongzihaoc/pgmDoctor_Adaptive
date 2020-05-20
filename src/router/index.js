@@ -21,7 +21,7 @@ const routes = [{
     redirect: '/home/index',
     children: [{
         path: '/home/index',
-        name: "首页",
+        name: "index",
         component: () => import('@/components/Index.vue'),
         meta: {
           title: '首页',
@@ -29,7 +29,7 @@ const routes = [{
       },
       {
         path: '/home/userCenter',
-        name: "用户中心",
+        name: "userCenter",
         component: () => import('@/components/userCenter/userCenter.vue'),
         meta: {
           title: '用户中心',
@@ -37,7 +37,7 @@ const routes = [{
       },
       {
         path: '/home/teamCenter',
-        name: "团队中心",
+        name: "teamCenter",
         component: () => import('@/components/TeamCenter/TeamCenter.vue'),
         meta: {
           title: '团队中心',
@@ -45,7 +45,7 @@ const routes = [{
       },
       {
         path: '/home/userCenter/addNewPer',
-        name: "个人新增",
+        name: "addNewPer",
         component: () => import('@/components/UserList/AddNewPer.vue'),
         meta: {
           title: '个人新增',
@@ -53,7 +53,7 @@ const routes = [{
       },
       {
         path: '/home/userCenter/addNewTeam',
-        name: "团队新增",
+        name: "addNewTeam",
         component: () => import('@/components/UserList/AddNewTeam.vue'),
         meta: {
           title: '团队新增',
@@ -61,7 +61,7 @@ const routes = [{
       },
       {
         path: '/home/userCenter/userDetails',
-        name: "用户详情",
+        name: "userDetails",
         component: () => import('@/components/userCenter/userDetails.vue'),
         meta: {
           title: '用户详情',
@@ -69,7 +69,7 @@ const routes = [{
       },
       {
         path: '/home/HisScale',
-        name: "他评量表",
+        name: "HisScale",
         component: () => import('@/components/HisScale/HisScale.vue'),
         meta: {
           title: '他评量表',
@@ -77,7 +77,7 @@ const routes = [{
       },
       {
         path: '/home/examiningReport',
-        name: "检测报告",
+        name: "examiningReport",
         component: () => import('@/components/examiningReport/examiningReport.vue'),
         meta: {
           title: '检测报告',
@@ -85,7 +85,7 @@ const routes = [{
       },
       {
         path: '/home/examiningReport/AnsDetail',
-        name: "答题详情",
+        name: "AnsDetail",
         component: () => import('@/components/examiningReport/AnswerDetail.vue'),
         meta: {
           title: '答题详情',
@@ -93,7 +93,7 @@ const routes = [{
       },
       {
         path: '/home/examiningReport/examiningDetail',
-        name: "报告详情",
+        name: "examiningDetail",
         component: () => import('@/components/examiningReport/examiningDetail.vue'),
         meta: {
           title: '报告详情',
@@ -101,7 +101,7 @@ const routes = [{
       },
       {
         path: '/home/warning',
-        name: "预警提醒",
+        name: "warning",
         component: () => import('@/components/warning/warning.vue'),
         meta: {
           title: '预警提醒',
@@ -109,7 +109,7 @@ const routes = [{
       },
       {
         path: '/home/consultation',
-        name: "会诊操作",
+        name: "consultation",
         component: () => import('@/components/consultation/consultation.vue'),
         meta: {
           title: '会诊操作',
@@ -117,15 +117,23 @@ const routes = [{
       },
       {
         path: '/home/consultationList',
-        name: "会诊意见",
+        name: "consultationList",
         component: () => import('@/components/consultation/consultationList.vue'),
         meta: {
           title: '会诊意见',
         }
       },
       {
+        path: '/home/consultationMessage',
+        name: "consultationMessage",
+        component: () => import('@/components/consultation/consultationMessage.vue'),
+        meta: {
+          title: '会诊消息',
+        }
+      },
+      {
         path: '/home/dataStatistics',
-        name: "数据操作",
+        name: "dataStatistics",
         component: () => import('@/components/dataStatistics/dataStatistics.vue'),
         meta: {
           title: '数据操作',

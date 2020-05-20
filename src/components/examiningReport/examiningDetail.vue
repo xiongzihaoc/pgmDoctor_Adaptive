@@ -105,12 +105,12 @@
 import { timesChangeDate } from "../../assets/js/util";
 export default {
   data() {
-      (this.chartSettings = {
-        labelMap: {
-          type: "因子类型",
-          def: "得分"
-        }
-      });
+    this.chartSettings = {
+      labelMap: {
+        type: "因子类型",
+        def: "得分"
+      }
+    };
     this.extend = {
       series: {
         label: {
@@ -132,7 +132,7 @@ export default {
       }
     };
     return {
-          timesChangeDate,
+      timesChangeDate,
       fullscreenLoading: true,
       Number: "",
       advice: "",
