@@ -27,6 +27,7 @@
     <el-card class="cardBox">
       <div class="buttonBox">
         <el-button type="primary" plain size="small" @click.prevent.stop="consultation">会诊</el-button>
+        <el-button type="primary" plain size="small" @click.prevent.stop="Hisconsultation">历次会诊</el-button>
         <el-button type="primary" plain size="small">追加检测</el-button>
         <el-button type="primary" plain size="small">历次检测对比</el-button>
         <el-button type="primary" plain size="small">其他检测</el-button>
@@ -118,10 +119,12 @@
 </template>
 <script>
 import ElTable from "../CommonModule/table";
+import { timesChangeDate } from "../../assets/js/util";
 export default {
   components: { ElTable },
   data() {
     return {
+      timesChangeDate,
       tableHeaderBig: [
         { prop: "orderNo", label: "检测卡号" },
         { prop: "name", label: "姓名" },
@@ -176,6 +179,10 @@ export default {
     consultation() {
       this.dialogVisible = true;
     },
+    // 历次会诊
+    Hisconsultation() {
+      this.$router.push({ path: "/home/consultationList" });
+    },
     async dialogVisibleEnter() {
       if (
         this.consultationForm.content == "" ||
@@ -196,10 +203,7 @@ export default {
       }
     },
     dialogVisibleCancel() {
-      console.log(111);
-      
-      this.consultationForm = []
-      
+      this.consultationForm = {};
     },
     // 分页
     handleSizeChange(newSize) {
@@ -208,20 +212,6 @@ export default {
     handleCurrentChangev(newPage) {
       this.pageNum = newPage;
       this.getCardList();
-    },
-    // 转换时间格式
-    timesChangeDate(times) {
-      var date = new Date(times);
-      var y = date.getFullYear();
-      var mon = date.getMonth() + 1;
-      var d = date.getDate();
-      if (mon < 10) {
-        mon = "0" + mon;
-      }
-      if (d < 10) {
-        d = "0" + d;
-      }
-      return `${y}-${mon}-${d}`;
     }
   }
 };

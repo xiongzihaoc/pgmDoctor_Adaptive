@@ -71,13 +71,7 @@ export default {
   width: 39%;
   height: 100%;
 }
-.orangeYuan {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #ff9a00;
-}
+
 .title {
   box-sizing: border-box;
   display: -webkit-flex;

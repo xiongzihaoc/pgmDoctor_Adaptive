@@ -27,15 +27,25 @@
           ></el-input>
         </div>
         <!-- 调用公用表格组件 -->
-        <EleTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;" cell-click="ccc">
-          <!-- 操作 -->
-          <el-table-column align="center" slot="fixed" fixed="right" label="操作">
+        <EleTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
+          <el-table-column align="center" slot="fixed" fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button
                 type="primary"
                 size="mini"
                 @click.prevent.stop="showEditdialog(scope.row)"
               >查看</el-button>
+              <el-dropdown style="margin-left:10px;">
+                <el-button type="primary" size="mini">
+                  <span v-if="scope.row.isDisagree == 'Y'">同意</span>
+                  <span v-if="scope.row.isDisagree == 'N'">拒绝</span>
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item @click.native="consent(scope.row)">同意</el-dropdown-item>
+                  <el-dropdown-item @click.native="reject(scope.row)">拒绝</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </template>
           </el-table-column>
         </EleTable>
@@ -64,8 +74,7 @@ export default {
         { prop: "srcDept", label: "来源科室" },
         { prop: "srcDoctor", label: "来源医生" },
         { prop: "createTime", label: "创建时间" },
-        { prop: "state", label: "状态" },
-        { prop: "createTime", label: "是否同意" }
+        { prop: "state", label: "状态" }
       ],
       pageSize: 10,
       pageNum: 1,
@@ -88,6 +97,26 @@ export default {
       this.userList = res.rows;
       this.total = res.total;
     },
+    // 同意
+    async consent(info) {
+      const { data: res } = await this.$http.post("consult/push/update", {
+        id: info.id,
+        isDisagree: "Y"
+      });
+      if (res.code != 200) return this.$message.error("操作失败");
+      this.$message.success("操作成功");
+      this.getCardList();
+    },
+    // 拒绝
+    async reject(info) {
+      const { data: res } = await this.$http.post("consult/push/update", {
+        id: info.id,
+        isDisagree: "N"
+      });
+      if (res.code != 200) return this.$message.error("操作失败");
+      this.$message.success("操作成功");
+      this.getCardList();
+    },
     // 查看跳转
     showEditdialog(info) {
       window.sessionStorage.setItem("peoDetail", JSON.stringify(info));
@@ -95,6 +124,7 @@ export default {
         path: "/home/userCenter/userDetails"
       });
     },
+
     newAddPerson() {
       this.$emit("jumpOutOrIn", "jumpOut");
     },
@@ -114,20 +144,6 @@ export default {
     handleCurrentChangev(newPage) {
       this.pageNum = newPage;
       this.getCardList();
-    },
-    // 转换时间格式
-    timesChangeDate(times) {
-      var date = new Date(times);
-      var y = date.getFullYear();
-      var mon = date.getMonth() + 1;
-      var d = date.getDate();
-      if (mon < 10) {
-        mon = "0" + mon;
-      }
-      if (d < 10) {
-        d = "0" + d;
-      }
-      return `${y}-${mon}-${d}`;
     },
     // 检测卡类型状态码数字转中文
     ifendcaseJck(val) {
@@ -151,12 +167,12 @@ export default {
   height: 85%;
   overflow: hidden;
 }
-.el-card {
+/* .el-card {
   width: 100%;
   height: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-}
+} */
 .searchBox {
   display: -webkit-flex;
   display: flex;

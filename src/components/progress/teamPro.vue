@@ -8,12 +8,7 @@
     <div class="CardBox">
       <el-card class="cardLeft">
         <div class="searchBox">
-          <el-button
-            type="primary"
-            plain
-            size="small"
-            @click.prevent.stop="perPro"
-          >个人进度</el-button>
+          <el-button type="primary" plain size="small" @click.prevent.stop="perPro">个人进度</el-button>
           <el-button type="primary" size="small">团队进度</el-button>
           <el-input
             size="small"
@@ -86,10 +81,12 @@
 </template>
 <script>
 import ElTable from "../CommonModule/table";
+import { timesChangeDate } from "../../assets/js/util";
 export default {
   components: { ElTable },
   data() {
     return {
+      timesChangeDate,
       tableHeaderBig: [
         { prop: "orderNo", label: "检测卡号" },
         { prop: "name", label: "姓名" },
@@ -143,20 +140,6 @@ export default {
       this.pageNum = newPage;
       this.getCardList();
     },
-    // 转换时间格式
-    timesChangeDate(times) {
-      var date = new Date(times);
-      var y = date.getFullYear();
-      var mon = date.getMonth() + 1;
-      var d = date.getDate();
-      if (mon < 10) {
-        mon = "0" + mon;
-      }
-      if (d < 10) {
-        d = "0" + d;
-      }
-      return `${y}-${mon}-${d}`;
-    },
     // 检测卡类型状态码数字转中文
     ifendcaseJck(val) {
       if (val.state == "1") {
@@ -203,13 +186,6 @@ export default {
   display: -webkit-flex;
   display: flex;
   align-items: center;
-}
-.orangeYuan {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #ff9a00;
 }
 .el-select {
   width: 26%;

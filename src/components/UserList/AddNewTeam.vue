@@ -26,6 +26,7 @@
   </div>
 </template>
 <script>
+import { timesChangeDate } from "../../assets/js/util";
 export default {
   data() {
     var checkMobile = (rule, value, cb) => {
@@ -36,6 +37,7 @@ export default {
       return cb(new Error("请输入合法的手机号"));
     };
     return {
+      timesChangeDate,
       Addrules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         docName: [
@@ -163,20 +165,6 @@ export default {
     },
     getItemInfo(info) {
       console.log(info);
-    },
-    // 转换时间格式
-    timesChangeDate(times) {
-      var date = new Date(times);
-      var y = date.getFullYear();
-      var mon = date.getMonth() + 1;
-      var d = date.getDate();
-      if (mon < 10) {
-        mon = "0" + mon;
-      }
-      if (d < 10) {
-        d = "0" + d;
-      }
-      return `${y}-${mon}-${d}`;
     }
   }
 };

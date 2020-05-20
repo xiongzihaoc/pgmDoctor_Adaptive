@@ -59,10 +59,12 @@
 </template>
 <script>
 import EleTable from "../CommonModule/table";
+import { timesChangeDate } from "../../assets/js/util";
 export default {
   components: { EleTable },
   data() {
     return {
+      timesChangeDate,
       userList: [],
       tableHeaderBig: [
         { prop: "name", label: "姓名" },
@@ -119,20 +121,6 @@ export default {
     handleCurrentChangev(newPage) {
       this.pageNum = newPage;
       this.getCardList();
-    },
-    // 转换时间格式
-    timesChangeDate(times) {
-      var date = new Date(times);
-      var y = date.getFullYear();
-      var mon = date.getMonth() + 1;
-      var d = date.getDate();
-      if (mon < 10) {
-        mon = "0" + mon;
-      }
-      if (d < 10) {
-        d = "0" + d;
-      }
-      return `${y}-${mon}-${d}`;
     },
     // 检测卡类型状态码数字转中文
     ifendcaseJck(val) {

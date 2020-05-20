@@ -116,6 +116,14 @@ const routes = [{
         }
       },
       {
+        path: '/home/consultationList',
+        name: "会诊意见",
+        component: () => import('@/components/consultation/consultationList.vue'),
+        meta: {
+          title: '会诊意见',
+        }
+      },
+      {
         path: '/home/dataStatistics',
         name: "数据操作",
         component: () => import('@/components/dataStatistics/dataStatistics.vue'),

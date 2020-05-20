@@ -17,7 +17,7 @@ Vue.use(Vant);
 import md5 from 'js-md5'
 Vue.prototype.$md5 = md5;
 import Print from 'vue-print-nb'
-Vue.use(Print);  //注册
+Vue.use(Print); //注册
 // 导入axios
 import axios from 'axios'
 import animated from 'animate.css' // npm install animate.css --save安装，在引入
@@ -42,6 +42,7 @@ axios.interceptors.response.use(function (config) {
 }, function (error) {
   console.log(error)
 })
+
 // 全局挂载axios this.$http调用即可
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
