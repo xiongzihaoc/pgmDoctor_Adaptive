@@ -136,16 +136,6 @@ export default {
       this.pageNum = newPage;
       this.getCardList();
     },
-    // 检测卡类型状态码数字转中文
-    ifendcaseJck(val) {
-      if (val.state == "1") {
-        return "正在作答";
-      } else if (val.state == "2") {
-        return "作答完成";
-      } else if (val.state == "0") {
-        return "未作答";
-      }
-    }
   }
 };
 </script>

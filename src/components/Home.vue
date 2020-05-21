@@ -183,7 +183,6 @@ export default {
       this.editAddForm = {};
     }
   },
-
   mounted() {
     this.activePath = this.$route.path;
   }

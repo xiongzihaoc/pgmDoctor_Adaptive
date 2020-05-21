@@ -104,7 +104,6 @@ export default {
         name: this.input
       });
       console.log(res);
-
       this.userList = res.rows;
       this.total = res.total;
     },

@@ -148,7 +148,6 @@ export default {
   created() {
     this.infomation = JSON.parse(window.sessionStorage.getItem("peoDetail"));
     this.getCardList();
-    this.getDocList();
   },
   methods: {
     // 获取检查单列表
@@ -178,6 +177,7 @@ export default {
     // 会诊
     consultation() {
       this.dialogVisible = true;
+      this.getDocList();
     },
     // 历次会诊
     Hisconsultation() {
