@@ -39,6 +39,7 @@
           </el-table-column>
           <el-table-column align="center" slot="fixed" fixed="right" label="操作" width="220">
             <template slot-scope="scope">
+              <!-- 开始会诊 -->
               <el-button
                 v-if="scope.row.state == 1"
                 type="primary"
@@ -46,6 +47,7 @@
                 @click.prevent.stop="showEditdialog(scope.row)"
                 style="width:80px"
               >开始会诊</el-button>
+              <!-- 禁止查看 -->
               <el-button
                 v-else-if="scope.row.state == 2 || scope.row.state == 4"
                 type="info"
@@ -55,6 +57,7 @@
                 @click.prevent.stop="showEditdialog(scope.row)"
                 style="width:80px"
               >查看</el-button>
+              <!-- 查看 -->
               <el-button
                 v-else
                 type="primary"
@@ -62,12 +65,14 @@
                 @click.prevent.stop="showEditdialog(scope.row)"
                 style="width:80px"
               >查看</el-button>
+              <!-- 是否同意 -->
               <el-dropdown style="margin-left:10px;">
                 <el-button type="info" size="mini" v-if="scope.row.state !=='0'" disabled plain>
                   <span>是否同意</span>
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
-                <el-button type="primary" size="mini" v-else >
+                <!-- 禁止选择是否同意 -->
+                <el-button type="primary" size="mini" v-else>
                   <span>是否同意</span>
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
@@ -153,6 +158,8 @@ export default {
     },
     // 查看跳转
     showEditdialog(info) {
+      console.log(info);
+
       window.sessionStorage.setItem("peoDetail", JSON.stringify(info));
       this.$router.push({
         path: "/home/userCenter/userDetails"

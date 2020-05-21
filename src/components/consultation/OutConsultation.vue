@@ -22,18 +22,54 @@
         </div>
         <!-- 调用公用表格组件 -->
         <EleTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
-          <!-- 操作 -->
-          <el-table-column align="center" slot="fixed" fixed="right" label="操作" width="180">
+          <!-- 状态 -->
+          <el-table-column align="center" slot="fixed" fixed="right" prop="state" label="状态">
             <template slot-scope="scope">
+              <span v-if="scope.row.state == 0">未确认</span>
+              <span v-else-if="scope.row.state == 1" style="color:#67C23A;">已同意</span>
+              <span v-else-if="scope.row.state == 2" style="color:#F56C6C;">已拒绝</span>
+              <span v-else-if="scope.row.state == 3" style="color:orange;">进行中</span>
+              <span v-else style="color:#ccc;">已结束</span>
+            </template>
+          </el-table-column>
+          <!-- 操作 -->
+          <el-table-column align="center" slot="fixed" fixed="right" label="操作" width="220">
+            <template slot-scope="scope">
+              <!-- 开始会诊 -->
               <el-button
+                v-if="scope.row.state == 1"
                 type="primary"
                 size="mini"
                 @click.prevent.stop="showEditdialog(scope.row)"
+                style="width:80px"
+              >开始会诊</el-button>
+              <!-- 禁止查看 -->
+              <el-button
+                v-else-if="scope.row.state == 2 || scope.row.state == 4"
+                type="info"
+                size="mini"
+                plain
+                disabled
+                @click.prevent.stop="showEditdialog(scope.row)"
+                style="width:80px"
               >查看</el-button>
+              <!-- 查看 -->
+              <el-button
+                v-else
+                type="primary"
+                size="mini"
+                @click.prevent.stop="showEditdialog(scope.row)"
+                style="width:80px"
+              >查看</el-button>
+              <!-- 是否同意 -->
               <el-dropdown style="margin-left:10px;">
-                <el-button type="primary" size="mini">
-                  <span v-if="scope.row.isDisagree == 'Y'">同意</span>
-                  <span v-if="scope.row.isDisagree == 'N'">拒绝</span>
+                <el-button type="info" size="mini" v-if="scope.row.state !=='0'" disabled plain>
+                  <span>是否同意</span>
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+                <!-- 禁止选择是否同意 -->
+                <el-button type="primary" size="mini" v-else>
+                  <span>是否同意</span>
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
@@ -69,8 +105,7 @@ export default {
         { prop: "srcHospital", label: "来源医院" },
         { prop: "srcDept", label: "来源科室" },
         { prop: "srcDoctor", label: "来源医生" },
-        { prop: "createTime", label: "创建时间" },
-        { prop: "state", label: "状态" }
+        { prop: "createTime", label: "创建时间" }
       ],
       pageSize: 10,
       pageNum: 1,
@@ -97,7 +132,8 @@ export default {
     async consent(info) {
       const { data: res } = await this.$http.post("consult/push/update", {
         id: info.id,
-        isDisagree: "Y"
+        isDisagree: "Y",
+        state: 2
       });
       if (res.code != 200) return this.$message.error("操作失败");
       this.$message.success("操作成功");
@@ -107,7 +143,8 @@ export default {
     async reject(info) {
       const { data: res } = await this.$http.post("consult/push/update", {
         id: info.id,
-        isDisagree: "N"
+        isDisagree: "N",
+        state: 2
       });
       if (res.code != 200) return this.$message.error("操作失败");
       this.$message.success("操作成功");
@@ -135,7 +172,7 @@ export default {
     handleCurrentChangev(newPage) {
       this.pageNum = newPage;
       this.getCardList();
-    },
+    }
   }
 };
 </script>

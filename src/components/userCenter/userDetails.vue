@@ -24,6 +24,7 @@
         <span class="titleCen" style="visibility: hidden;"></span>
       </li>
     </el-card>
+    
     <el-card class="cardBox">
       <div class="buttonBox">
         <el-button type="primary" plain size="small" @click.prevent.stop="consultation">会诊</el-button>
@@ -48,7 +49,8 @@
         <el-table-column align="center" slot="fixed" fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button
-              type="danger"
+              type="info"
+              plain
               size="mini"
               @click.prevent.stop="JumpUserCenter(scope.row)"
               v-if="scope.row.state!=3"

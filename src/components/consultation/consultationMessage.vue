@@ -26,7 +26,7 @@
           class="conslolutionMess"
           style="padding: 10px 0;box-sizing:border-box;border-bottom:1px dashed #ccc;"
         >
-          <div style="margin-bottom:10px">
+          <div style="margin-bottom:5px">
             <span class="orangeYuanMess" v-if="item.state == 1" style="background:#ccc;"></span>
             <span class="orangeYuanMess" v-else-if="item.state == 0" style="background:#ff9a00;"></span>
             <span class="dataStat">会诊消息</span>
@@ -34,8 +34,10 @@
 
           <div style="padding-left:20px;box-sizing:border-box;margin-left:3px">
             {{item.mesContent}}
-            点击
+            <!-- 鼠标小手 -->
+            <img class="mouseHand" src="../../assets/images/mouseHand.png" />
             <router-link
+              style="vertical-align: middle;;"
               :to="{ name: 'consultationList',query:{mesType:item.params.mesType,id:item.params.patientUuid}}"
             >
               <span @click="viewDetails(item)">查看详情</span>
@@ -118,5 +120,11 @@ a {
 }
 .conslolutionMess:nth-child(1) {
   border-top: 1px dashed #ccc;
+}
+.mouseHand {
+  vertical-align: bottom;
+  margin: 0 5px;
+  box-sizing: border-box;
+  transform: rotate(90deg);
 }
 </style>
