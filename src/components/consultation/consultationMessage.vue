@@ -66,11 +66,14 @@ export default {
       const { data: res } = await this.$http.post("consult/message", {
         type: this.type
       });
+
       if (res.code != 200) return this.$message.error("获取会诊消息失败");
       this.userList = res.data;
+
       this.userList.forEach(item => {
         item.params = JSON.parse(item.params);
       });
+      console.log(this.userList);
     },
     // 点击查看详情跳转改变状态
     async viewDetails(item) {

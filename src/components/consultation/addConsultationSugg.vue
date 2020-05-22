@@ -2,9 +2,9 @@
   <div class="connectCenL">
     <!-- 面包屑 -->
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/home/userCenter' }">用户中心</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/home/userCenter' }">个人列表</el-breadcrumb-item>
-      <el-breadcrumb-item>检测报告</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home/consultation' }">会诊操作</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home/consultation' }">院内会诊</el-breadcrumb-item>
+      <el-breadcrumb-item>添加会诊意见</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card class="topCard">
       <div>
@@ -27,7 +27,7 @@
 
     <el-card class="cardBox">
       <div class="buttonBox">
-        <el-button type="primary" plain size="small" @click.prevent.stop="consultation">会诊</el-button>
+        <el-button type="primary" plain size="small" @click.prevent.stop="consultation">添加会诊意见</el-button>
         <el-button type="primary" plain size="small" @click.prevent.stop="Hisconsultation">历次会诊</el-button>
         <el-button type="primary" plain size="small">追加检测</el-button>
         <el-button type="primary" plain size="small">历次检测对比</el-button>
@@ -85,30 +85,7 @@
       @closed="dialogVisibleCancel"
     >
       <el-form :modal="consultationForm" label-width="80px" ref="addInfoRef">
-        <el-form-item label="会诊类型" prop="type">
-          <el-select v-model="consultationForm.type" style="width:80%">
-            <el-option value="consult-in" label="院内会诊"></el-option>
-            <el-option value="consult-out" label="院外会诊"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="会诊医生" prop="conDoctor">
-          <el-select
-            filterable
-            multiple
-            v-model="consultationForm.conDoctor"
-            placeholder="请选择医生"
-            style="width:80%"
-          >
-            <el-option v-for="item in docList" :key="item.id" :label="item.name" :value="item.uuid">
-              <div style="display:flex;">
-                <span style="flex: 1;font-weight:700;">{{ item.name }}</span>
-                <span style="flex: 1;text-align:center">{{ item.hospital }}</span>
-                <span style="flex: 1;text-align:center">{{ item.office }}</span>
-              </div>
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="会诊内容" prop="content">
+        <el-form-item label="会诊意见" prop="content">
           <el-input type="textarea" v-model="consultationForm.content"></el-input>
         </el-form-item>
       </el-form>
@@ -139,28 +116,29 @@ export default {
       infomation: {},
       docList: [],
       consultationForm: {
-        type: "",
-        conDoctor: [],
         content: ""
       },
       infoForm: {
         uuid: "",
-        phone: ""
+        phone: "",
+        conNo: ""
       },
+      phoneKey: "",
       dialogVisible: false
     };
   },
   created() {
     this.infoForm.uuid = this.$route.query.id;
     this.infoForm.phone = this.$route.query.phone;
-    this.getCardList();
+    this.infoForm.conNo = this.$route.query.conNo;
     this.getpatientInfo();
+    this.getCardList();
   },
   methods: {
     // 获取检查单列表
     async getCardList() {
       const { data: res } = await this.$http.post("checkList/list", {
-        phone: this.infoForm.phone,
+        phone: this.phoneKey,
         pageSize: this.pageSize,
         pageNum: this.pageNum,
         name: this.input
@@ -175,6 +153,7 @@ export default {
       });
       if (res.code !== 200) return this.$message.error("获取患者个人信息失败");
       this.infomation = res.data;
+      this.phoneKey = res.data.phone;
     },
     // 获取医生列表
     async getDocList() {
@@ -201,18 +180,12 @@ export default {
       });
     },
     async dialogVisibleEnter() {
-      if (
-        this.consultationForm.content == "" ||
-        this.consultationForm.conDoctor == [] ||
-        this.type == ""
-      ) {
+      if (this.consultationForm.content == "") {
         return this.$message.error("内容不能为空");
       } else {
-        const { data: res } = await this.$http.post("consult/add", {
-          patientUuid: this.infomation.uuid,
-          content: this.consultationForm.content,
-          conDoctor: this.consultationForm.conDoctor.toString(),
-          type: this.consultationForm.type
+        const { data: res } = await this.$http.post("consult/record/add", {
+          conResult: this.consultationForm.content,
+          conNo: this.infoForm.conNo
         });
         if (res.code != 200) return this.$message.error("操作失败");
         this.$message.success("操作成功");

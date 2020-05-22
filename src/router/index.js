@@ -132,6 +132,22 @@ const routes = [{
         }
       },
       {
+        path: '/home/consultationExamine',
+        name: "consultationExamine",
+        component: () => import('@/components/consultation/consulationExamine.vue'),
+        meta: {
+          title: '患者信息',
+        }
+      },
+      {
+        path: '/home/addConsultationSugg',
+        name: "addConsultationSugg",
+        component: () => import('@/components/consultation/addConsultationSugg.vue'),
+        meta: {
+          title: '开始会诊',
+        }
+      },
+      {
         path: '/home/dataStatistics',
         name: "dataStatistics",
         component: () => import('@/components/dataStatistics/dataStatistics.vue'),

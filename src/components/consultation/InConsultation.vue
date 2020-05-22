@@ -44,7 +44,7 @@
                 v-if="scope.row.state == 1"
                 type="primary"
                 size="mini"
-                @click.prevent.stop="showEditdialog(scope.row)"
+                @click.prevent.stop="startConsultation(scope.row)"
                 style="width:80px"
               >开始会诊</el-button>
               <!-- 禁止查看 -->
@@ -157,15 +157,20 @@ export default {
       this.getCardList();
     },
     // 查看跳转
-    showEditdialog(info) {
-      console.log(info);
-
-      window.sessionStorage.setItem("peoDetail", JSON.stringify(info));
+    showEditdialog(info) {   
+      window.sessionStorage.setItem("ConMess", JSON.stringify(info));
       this.$router.push({
-        path: "/home/userCenter/userDetails"
+        path: "/home/consultationExamine",
+        query: { id: info.patientUuid, phone: info.phone }
       });
     },
-
+    // 开始会诊按钮
+    async startConsultation(info) {
+      this.$router.push({
+        path: "/home/addConsultationSugg",
+        query: { id: info.patientUuid, phone: info.phone,conNo:info.conNo}
+      });
+    },
     newAddPerson() {
       this.$emit("jumpOutOrIn", "jumpOut");
     },

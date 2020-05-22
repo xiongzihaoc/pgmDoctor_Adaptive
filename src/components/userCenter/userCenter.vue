@@ -97,9 +97,10 @@ export default {
     },
     // 查看跳转
     showEditdialog(info) {
-      window.sessionStorage.setItem("peoDetail", JSON.stringify(info));
+      console.log(info);
       this.$router.push({
-        path: "/home/userCenter/userDetails"
+        path: "/home/userCenter/userDetails",
+        query: { id: info.uuid, phone: info.phone }
       });
     },
     newAddPerson() {

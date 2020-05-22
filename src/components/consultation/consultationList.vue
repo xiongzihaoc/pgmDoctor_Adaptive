@@ -54,6 +54,7 @@ export default {
       Inside: false,
       Outside: true,
       type: "consult-in",
+      ccc: "",
       uuid: ""
     };
   },
