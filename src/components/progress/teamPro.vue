@@ -61,29 +61,17 @@
           :total="total"
         ></el-pagination>
       </el-card>
-      <el-card class="cardRight">
-        <div class="title">
-          <span class="orangeYuan"></span>
-          <span class="dataStat">数据统计</span>
-          <el-select v-model="screen" placeholder="筛选" size="small">
-            <el-option
-              v-for="item in options"
-              :key="item.id"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-          <el-button type="primary" plain size="small" class="payNum">充值次数</el-button>
-        </div>
-      </el-card>
+      <!-- 右侧卡片 -->
+      <CardR></CardR>
     </div>
   </div>
 </template>
 <script>
 import ElTable from "../CommonModule/table";
+import CardR from "./cardR";
 import { timesChangeDate } from "../../assets/js/util";
 export default {
-  components: { ElTable },
+  components: { ElTable, CardR },
   data() {
     return {
       timesChangeDate,
