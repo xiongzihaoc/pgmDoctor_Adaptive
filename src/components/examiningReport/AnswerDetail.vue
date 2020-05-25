@@ -16,8 +16,8 @@
         :header-cell-style="{background:'#5BAEFF',}"
         style="width: 100%"
       >
-        <el-table-column align="left" prop="quesOrder" label="序号" ></el-table-column>
-        <el-table-column align="left" prop="quesContent" label="题目" show-overflow-tooltip>
+        <el-table-column align="left" prop="quesOrder" label="序号"></el-table-column>
+        <el-table-column align="left" prop="quesContent" label="题目">
           <template slot-scope="scope">
             <div v-html="scope.row.quesContent"></div>
           </template>

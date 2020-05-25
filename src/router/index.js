@@ -30,6 +30,7 @@ const routes = [{
       {
         path: '/home/userCenter',
         name: "userCenter",
+        hidden:true,
         component: () => import('@/components/userCenter/userCenter.vue'),
         meta: {
           title: '用户中心',

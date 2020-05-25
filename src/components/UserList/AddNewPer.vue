@@ -268,9 +268,6 @@ export default {
       this.str = "";
       this.dialogVisible = false;
     },
-    getItemInfo(info) {
-      console.log(info);
-    }
   }
 };
 </script>
