@@ -12,7 +12,12 @@
               <el-input v-model="editAddForm.docName"></el-input>
             </el-form-item>
             <el-form-item label="出生日期" prop="birth" class="birth">
-              <el-date-picker v-model="editAddForm.birth" type="date" placeholder="选择日期"></el-date-picker>
+              <el-date-picker
+                v-model="editAddForm.birth"
+                :editable="false"
+                type="date"
+                placeholder="选择日期"
+              ></el-date-picker>
             </el-form-item>
           </li>
           <li style="display:flex;justify-content: center;">

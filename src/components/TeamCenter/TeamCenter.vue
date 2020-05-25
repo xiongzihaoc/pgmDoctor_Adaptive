@@ -101,7 +101,6 @@
         ></el-pagination>
       </el-card>
     </div>
-    <!-- 修改密码弹框 -->
     <el-dialog :title="infoTitle" :visible.sync="dialogVisible" v-dialogDrag>
       <el-form
         ref="loginFormRef"
@@ -240,9 +239,6 @@ export default {
     handdle(val) {
       this.requestCode = val.code;
       this.getCardList();
-    },
-    zzz(val) {
-      console.log(111);
     },
     addInside(info) {
       if (info.label == "名称") {

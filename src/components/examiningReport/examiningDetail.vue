@@ -12,8 +12,7 @@
       <el-button
         type="danger"
         size="mini"
-        v-cloak
-        v-show="this.infoObj.checkState != 0"
+        v-if="this.infoObj.checkState != 0"
         v-print="'#printDiv'"
         style="position: absolute;top:58px;right:22px"
       >打印</el-button>
@@ -25,7 +24,7 @@
             <el-button
               type="primary"
               size="mini"
-              v-show="this.infoObj.checkState == 0"
+              v-if="this.infoObj.checkState == 0"
               v-cloak
               @click.prevent.stop="hasConfirm"
             >确认审核</el-button>
@@ -87,13 +86,13 @@
           </div>
           <p class="title" style="padding-top:60px">检测评语</p>
           <p class="TitleContent" v-html="item.comment"></p>
-          <div v-if="item.isZh == 'Y'" v-show="false">
+          <div v-if="item.isZh == 'Y'" v-show="false" class="adviceCard">
             <p class="title">检测建议</p>
             <p class="TitleContent" v-html="item.suggestion"></p>
           </div>
         </div>
         <!-- 总建议 -->
-        <div v-show="this.infoObj.isZh == 'Y'">
+        <div v-show="this.infoObj.isZh == 'Y'" class="adviceCard">
           <p class="title">检测建议</p>
           <p class="title" v-html="this.advice"></p>
         </div>
@@ -258,5 +257,11 @@ h4 {
 }
 .buttonBox {
   display: flex;
+}
+.adviceCard .content {
+  box-sizing: border-box;
+  border: 1px dashed #409EFF;
+  padding: 10px;
+  border-radius: 7px;
 }
 </style>

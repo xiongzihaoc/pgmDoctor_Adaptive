@@ -16,13 +16,13 @@
         :header-cell-style="{background:'#5BAEFF',}"
         style="width: 100%"
       >
-        <el-table-column align="left" prop="quesOrder" label="序号"></el-table-column>
-        <el-table-column align="left" prop="quesContent" label="题目">
+        <el-table-column align="left" prop="quesOrder" label="序号" ></el-table-column>
+        <el-table-column align="left" prop="quesContent" label="题目" show-overflow-tooltip>
           <template slot-scope="scope">
             <div v-html="scope.row.quesContent"></div>
           </template>
         </el-table-column>
-        <el-table-column align="left" prop="optContent" label="您的答案"></el-table-column>
+        <el-table-column align="center" prop="optContent" label="您的答案"></el-table-column>
       </el-table>
       <!-- 分页区域 -->
       <el-pagination
