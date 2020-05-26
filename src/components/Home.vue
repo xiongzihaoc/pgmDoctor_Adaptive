@@ -10,13 +10,14 @@
         :unique-opened="true"
         router
         :default-active="activePath"
+        ref="menuRef"
       >
         <!-- 一级菜单 -->
         <el-menu-item
           :index="'/' + item.path"
           v-for="item in menuList"
           :key="item.id"
-          @click="saveNavState('/' + item.path)"
+          @click="saveNavState('/' + item.path,item)"
         >
           <template slot="title">
             <i :class="item.icon" height="24px"></i>
@@ -156,8 +157,10 @@ export default {
       this.$router.push("/home/consultationMessage");
     },
     // 保持连接的激活状态
-    saveNavState(activePath) {
+    saveNavState(activePath, item) {
       this.activePath = activePath;
+      console.log(item);
+
       // window.sessionStorage.setItem("activePath", activePath);
     },
     // 修改密码
@@ -186,6 +189,9 @@ export default {
   mounted() {
     this.activePath = this.$route.path;
   }
+  // watch: {
+  //   activePath
+  // }
 };
 </script>
 <style>
