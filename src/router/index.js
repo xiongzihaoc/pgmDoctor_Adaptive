@@ -44,6 +44,14 @@ const routes = [{
           title: '团队中心',
         },
       },
+	   {
+        path: '/home/teamCenter/addTeamCheck',
+        name:'addTeamCheck',
+        component:()=>import('@/components/TeamCenter/TeamAddCheck.vue'),
+        meta: {
+          title: '新增检测',
+        },
+      },
       {
         path: '/home/userCenter/addNewPer',
         name: "addNewPer",

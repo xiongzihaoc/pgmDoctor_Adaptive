@@ -24,6 +24,7 @@ import animated from 'animate.css' // npm install animate.css --save安装，在
 Vue.use(animated)
 // // 配置axios
 axios.defaults.baseURL = 'http://192.168.0.130:8086/zhuoya-sheet/'
+Vue.prototype.$ajax = 'http://192.168.0.130:8080/zhuoya-web/'
 // 设置请求超时时间
 axios.defaults.timeout = 30000;
 // axios请求拦截器

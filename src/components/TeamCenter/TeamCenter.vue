@@ -9,9 +9,11 @@
       <el-card class="cardLeft">
         <el-table
           :data="menuList"
+          :expand-row-keys="[currentTeamCode]"
           :tree-props="{children: 'child', hasChildren: 'hasChildren'}"
           :header-cell-style="{background:'#f5f5f5'}"
           highlight-current-row
+          current-row-key="[currentTeamCode]"
           row-key="code"
           ref="singleTable"
           @row-click="handdle"
@@ -19,7 +21,7 @@
           @header-click="addInside($event)"
           style="width: 100%;margin-bottom: 20px;"
         >
-          <el-table-column align="left" prop="name" label="名称" label-class-name="ccc"></el-table-column>
+          <el-table-column align="left" prop="name" label="团队列表" label-class-name="ccc"></el-table-column>
           <el-table-column
             align="center"
             width="100"
@@ -34,6 +36,7 @@
                 @click.prevent.stop="iconEdit(scope.row)"
               ></i>
               <i
+                v-if = 'scope.row.code.length !=9'
                 style="display:inline-block;margin: 0 15px;"
                 class="el-icon-circle-plus-outline"
                 @click.prevent.stop="iconAdd(scope.row)"
@@ -61,19 +64,19 @@
           <el-button
             type="primary"
             size="small"
-            @click.prevent.stop="newAddPerson"
-            style="margin-left:2%"
-          >新增用户</el-button>
-          <el-button
+            @click.prevent.stop="addCheckPackages"
+            style="margin-left:60%;"
+          >新增检测</el-button>
+          <!-- <el-button
             type="primary"
             size="small"
             @click.prevent.stop="newAddPerson"
             style="margin-left:2%"
-          >Excel导入</el-button>
+          >Excel导入</el-button> -->
         </div>
         <!-- 调用公用表格组件 -->
         <EleTable
-          :data="userList"
+          :data="teamTypeList"
           :header="tableHeaderBig"
           style="margin-top:1%;"
           show-header="false"
@@ -86,6 +89,7 @@
                 size="mini"
                 @click.prevent.stop="showEditdialog(scope.row)"
               >查看</el-button>
+              
             </template>
           </el-table-column>
         </EleTable>
@@ -101,18 +105,39 @@
         ></el-pagination>
       </el-card>
     </div>
-    <el-dialog :title="infoTitle" :visible.sync="dialogVisible" v-dialogDrag>
+    <!-- 新增修改团队弹框-->
+    <el-dialog :title="addTeamTile" :visible.sync="dialogVisible" v-dialogDrag>
       <el-form
         ref="loginFormRef"
-        :model="editAddForm"
+        :model="teamFram"
         label-width="80px"
         @closed="editDialogClosed"
       >
-        <el-form-item label="上一级" v-show="this.infoTitle == '新增'">
-          <el-input v-model="goback" disabled></el-input>
+        <el-form-item prop="name" :label="teamTypeTitle">
+          <el-input v-model="teamFram.name"></el-input>
         </el-form-item>
-        <el-form-item prop="name" label="名称">
-          <el-input v-model="editAddForm.name"></el-input>
+        <el-form-item prop="account" :label="teamTypeAccount">
+          <el-input v-model="teamFram.account"></el-input>
+        </el-form-item>
+
+        <el-form-item prop="contact" label="联系人">
+          <el-input v-model="teamFram.leader"></el-input>
+        </el-form-item>
+
+        <el-form-item prop="mobile" label="联系电话">
+          <el-input v-model="teamFram.phone"></el-input>
+        </el-form-item>
+        <el-form-item prop="city" label="团队地址" v-if='addressShow'>
+          <el-cascader
+          v-model="teamFram.city"
+          :props='cityprops'
+          :label='name'
+          :value='name'
+          :options="cityList"></el-cascader>
+        </el-form-item>
+
+        <el-form-item prop="address" label="详细地址" v-if='addressShow'>
+          <el-input v-model="teamFram.address"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -128,13 +153,24 @@ export default {
   components: { EleTable },
   data() {
     return {
-      userList: [],
+      name:'www',
+      currentTeamCode:'',
+      cityprops:{
+        children:'child',
+        label:'name',
+        value:'name',
+        checkStrictly:true
+      },
+      cityList:[],
+      options:[],
+      teamTypeList: [],
+      addressShow:true,
       tableHeaderBig: [
-        { prop: "name", label: "姓名" },
-        { prop: "phone", label: "手机号" },
-        { prop: "gender", label: "性别" },
-        { prop: "job", label: "职业" },
-        { prop: "marriage", label: "婚姻" }
+        { prop: "teamNo", label: "检测编号" },
+        { prop: "teamNumber", label: "限定人数" },
+        { prop: "recordNumber", label: "已录人数" },
+        { prop: "checkNumber", label: "已检测人数" },
+        { prop: "packageName", label: "套餐名称" }
       ],
       pageSize: 10,
       pageNum: 1,
@@ -142,52 +178,100 @@ export default {
       input: "",
       requestCode: 100,
       menuList: [],
-      editAddForm: {
+      teamFram: {
         name: "",
+        account:'',
+        leader:'',
+        phone:'',
+        pcd:'',
+        city:[],
+        address:'',
         parentCode: ""
       },
-      infoTitle: "",
+      addTeamTile: "新增团队",
+      teamTypeTitle:'团队名称',
+      teamTypeAccount:'团队账号',
       editId: "",
       goback: "",
-      dialogVisible: false
+      dialogVisible: false,
+      addTeamDialogType:1,
     };
   },
   created() {
-    this.getCardList();
+    // this.getCardList();
     this.getTeamDeptList();
+    this.getCity();
   },
   methods: {
-    // 获取列表
-    async getCardList() {
-      const { data: res } = await this.$http.post("doc/getPatients", {
-        pageSize: this.pageSize,
-        pageNum: this.pageNum,
-        name: this.input,
-        teamDept: this.requestCode
+    // 获取检测列表
+    async getTeamCheckTypeList(teamDeptCode) {
+      const { data: res } = await this.$http.post("teamList/list", {
+        teamDept: teamDeptCode
       });
-      this.userList = res.rows;
+      this.teamTypeList = res.rows;
       this.total = res.total;
-    },
-    // 获取左侧列表
-    async getTeamDeptList() {
+    },async getCity(){//获取省市区地址
+      const { data: res } = await this.$http.get(this.$ajax+"dict/getRegionTree", {});
+      console.log(res);
+      this.cityList = res.data;
+      console.log(this.cityList);
+      // this.menuList = res.data;
+    },async getTeamDeptList() {// 获取左侧列表
       const { data: res } = await this.$http.post("teamList/dept ", {});
-      // console.log(res);
+
       this.menuList = res.data;
+      if(this.menuList != null && this.menuList.length > 0) {
+          this.currentTeamCode =this.menuList[0].code
+          this.getTeamCheckTypeList(this.currentTeamCode);
+      }
     },
     // 左侧修改
     iconEdit(val) {
+      this.addTeamDialogType = 2;
+      this.addTeamTile = "团体部门";
+      this.teamTypeTitle = '团体名称';
+      this.teamTypeAccount = '团体账号';
+      if(val.code.length == 3){
+        this.addTeamTile = "修改团体";
+        this.addressShow = true;
+      } else if(val.code.length == 6){
+        this.addTeamTile = "修改部门";
+        this.addressShow = false;
+      }else if(val.code.length == 9){
+        this.addTeamTile = "修改小组";
+        this.addressShow = false;
+      }
       this.dialogVisible = true;
       this.editId = val.id;
-      this.editAddForm = JSON.parse(JSON.stringify(val));
+      this.teamFram = JSON.parse(JSON.stringify(val));
+      if(this.teamFram.pcd != null && this.teamFram.pcd != ''){
+        this.teamFram.city = this.teamFram.pcd.split('-');
+      }
+      console.log(this.teamFram);
       this.infoTitle = "修改";
     },
     // 左侧新增
     iconAdd(val) {
-      this.editAddForm = {};
-      this.goback = val.name;
-      this.editAddForm.parentCode = val.code;
+      this.addTeamTile = "团体部门";
+      this.teamTypeTitle = '团体名称';
+      this.teamTypeAccount = '团体账号';
+      this.addressShow = true;
+      console.log(val);
+      if(val.code.length == 3){
+        this.addTeamTile = "新增部门";
+        this.teamTypeTitle = '部门名称';
+        this.teamTypeAccount = '部门账号';
+        this.addressShow = false;
+      } else if(val.code.length == 6){
+        this.addTeamTile = "新增小组";
+        this.teamTypeTitle = '小组名称';
+        this.teamTypeAccount = '小组账号';
+        this.addressShow = false;
+      }
+      this.addTeamDialogType = 1;
+      this.teamFram = {};
+      this.teamFram.parentCode = val.code;
       this.dialogVisible = true;
-      this.infoTitle = "新增";
     },
     // 左侧删除
     async iconDelete(val) {
@@ -212,20 +296,53 @@ export default {
     },
     // 左侧增改弹框
     async dialogVisibleEnter() {
+      console.log(this.teamFram);
       let httpUrl = "";
       let parm = {};
-      if (this.infoTitle == "修改") {
+      if (this.addTeamDialogType == 2) {
         httpUrl = "teamList/dept/update";
-        parm = {
-          id: this.editId,
-          name: this.editAddForm.name
-        };
+        if(this.addressShow) {
+          parm = {
+            id: this.editId,
+            account:this.teamFram.account,
+            name: this.teamFram.name,
+            leader:this.teamFram.leader,
+            phone:this.teamFram.phone,
+            address:this.teamFram.address,
+            pcd:this.teamFram.city.join('-'),
+          };
+        } else {
+          parm = {
+            id: this.editId,
+            account:this.teamFram.account,
+            name: this.teamFram.name,
+            leader:this.teamFram.leader,
+            phone:this.teamFram.phone,
+          };
+        }
+        
       } else {
         httpUrl = "teamList/dept/add";
-        parm = {
-          name: this.editAddForm.name,
-          parentCode: this.editAddForm.parentCode
-        };
+        if(this.addressShow) {
+          parm = {
+            account:this.teamFram.account,
+            name: this.teamFram.name,
+            leader:this.teamFram.leader,
+            phone:this.teamFram.phone,
+            address:this.teamFram.address,
+            pcd:this.teamFram.city.join('-'),
+            parentCode: this.teamFram.parentCode
+          };
+        } else {
+          parm = {
+            account:this.teamFram.account,
+            name: this.teamFram.name,
+            leader:this.teamFram.leader,
+            phone:this.teamFram.phone,
+            parentCode: this.teamFram.parentCode
+          };
+        }
+        
       }
       const { data: res } = await this.$http.post(httpUrl, parm);
       if (res.code != 200) return this.$message.error("操作失败");
@@ -238,17 +355,25 @@ export default {
     },
     handdle(val) {
       this.requestCode = val.code;
+      this.getTeamCheckTypeList(val.code);
+      if(val.code.length == 3) {
+        this.currentTeamCode = val.code;
+      }
       this.getCardList();
     },
     addInside(info) {
       if (info.label == "名称") {
         return;
       } else {
-        this.editAddForm = {};
+        this.teamFram = {};
         this.dialogVisible = true;
-        this.infoTitle = "新增";
+        this.addTeamDialogType = 1;
+        this.addTeamTile = "团体部门";
+        this.teamTypeTitle = '团体名称';
+        this.teamTypeAccount = '团体账号';
+        this.addressShow = true;
         this.goback = "最上级";
-        this.editAddForm.parentCode = "0";
+        this.teamFram.parentCode = "0";
       }
     },
     // 搜索
@@ -260,8 +385,18 @@ export default {
     handleCurrentChangev(newPage) {
       this.pageNum = newPage;
       this.getCardList();
+    },
+    //新增团队检测
+    addCheckPackages(){
+      this.$router.push({path:'/home/teamCenter/addTeamCheck',query:{teamCode:this.currentTeamCode}});
     }
-  }
+  },watch: {
+    menuList: function() {
+      this.$nextTick(function() {
+        this.$refs.singleTable.setCurrentRow(this.menuList[0])
+      })
+    }
+  },
 };
 </script>
 <style>
