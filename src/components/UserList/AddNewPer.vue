@@ -79,6 +79,7 @@
                 placeholder="请选择套餐"
                 @focus="chooseCombo"
                 suffix-icon="el-icon-caret-bottom"
+                readonly
               ></el-input>
               <ul class="taoCanList" style="wdith:100%" v-show="openOrcls">
                 <li
@@ -208,7 +209,7 @@ export default {
       this.comboList = res.rows;
     },
     // 保存信息
-    async enterSave() {
+    enterSave() {
       this.$refs.addInfoRef.validate(async valid => {
         if (!valid) return;
         if (!this.strUserName) return this.$message.error("请选择套餐");
