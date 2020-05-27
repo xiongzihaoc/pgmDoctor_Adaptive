@@ -61,7 +61,7 @@
           </ul>
         </div>
         <!-- 单个检测报告图表等 -->
-        <div class="singleSheet" v-for="(item,index) in reportList" :key="index">
+        <div class="singleSheet" v-for="item in reportList" :key="item.id">
           <p class="sheetName">{{item.sheetName}}</p>
           <div v-if="item.isZh !== 'Y'" style="width:60%;margin:0 auto;">
             <p class="title">检测结果统计图</p>
@@ -181,6 +181,8 @@ export default {
       this.advice = res.data.advice;
       this.infoObj = res.data.info;
       this.reportList = res.data.report;
+      console.log(this.reportList);
+
       // 量表建议评语等数据
       var obj = {};
       this.reportList.forEach(item => {
