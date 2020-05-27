@@ -6,7 +6,7 @@
       <el-breadcrumb-item>报告详情</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card
-      v-loading.fullscreen.lock="fullscreenLoading"
+      v-loading="fullscreenLoading"
       style="height:85%;overflow: auto;-webkit-overflow-scrolling: touch;position: relative;"
     >
       <el-button
@@ -20,7 +20,9 @@
         <h4>{{infoObj.name}}的检测报告</h4>
         <div class="personalInformation">
           <div style="display:flex;flex-direction: row;justify-content: space-between;">
-            <p class="title">基本信息</p>
+            <p class="title">
+              <span style="border-bottom:2px solid #000;">基本信息</span>
+            </p>
             <el-button
               type="primary"
               size="mini"
@@ -61,7 +63,7 @@
         <!-- 单个检测报告图表等 -->
         <div class="singleSheet" v-for="(item,index) in reportList" :key="index">
           <p class="sheetName">{{item.sheetName}}</p>
-          <div v-show="item.isZh !== 'Y'" style="width:60%;margin:0 auto;">
+          <div v-if="item.isZh !== 'Y'" style="width:60%;margin:0 auto;">
             <p class="title">检测结果统计图</p>
 
             <ve-histogram
@@ -80,20 +82,28 @@
               :key="i"
             >{{subItem.name}}：{{subItem.score}}</span>
           </div>
-          <p class="title" style="padding-top:60px">答题记录</p>
+          <p class="title" style="padding-top:60px">
+            <span style="border-bottom:2px solid #000;">答题记录</span>
+          </p>
           <div class="answer">
             <el-button type="primary" @click.prevent.stop="jumpAnsDet(item)">答题详情</el-button>
           </div>
-          <p class="title" style="padding-top:60px">检测评语</p>
+          <p class="title" style="padding-top:60px">
+            <span style="border-bottom:2px solid #000;">检测评语</span>
+          </p>
           <p class="TitleContent" v-html="item.comment"></p>
-          <div v-if="item.isZh == 'Y'" v-show="false" class="adviceCard">
-            <p class="title">检测建议</p>
+          <div v-if="item.isZh !== 'Y'" class="adviceCard">
+            <p class="title">
+              <span style="border-bottom:2px solid #000;">检测建议</span>
+            </p>
             <p class="TitleContent" v-html="item.suggestion"></p>
           </div>
         </div>
         <!-- 总建议 -->
-        <div v-show="this.infoObj.isZh == 'Y'" class="adviceCard">
-          <p class="title">检测建议</p>
+        <div v-if="this.infoObj.isZh == 'Y'" class="adviceCard">
+          <p class="title">
+            <span style="border-bottom:2px solid #000;">检测建议</span>
+          </p>
           <p class="title" v-html="this.advice"></p>
         </div>
       </div>
@@ -260,7 +270,7 @@ h4 {
 }
 .adviceCard .content {
   box-sizing: border-box;
-  border: 1px dashed #409EFF;
+  border: 1px dashed #409eff;
   padding: 10px;
   border-radius: 7px;
 }
