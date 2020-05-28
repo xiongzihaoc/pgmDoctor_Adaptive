@@ -36,7 +36,7 @@
                 @click.prevent.stop="iconEdit(scope.row)"
               ></i>
               <i
-                v-if = 'scope.row.code.length !=9'
+                v-if="scope.row.code.length !=9"
                 style="display:inline-block;margin: 0 15px;"
                 class="el-icon-circle-plus-outline"
                 @click.prevent.stop="iconAdd(scope.row)"
@@ -199,13 +199,14 @@
         <el-form-item prop="phone" label="联系电话">
           <el-input v-model="teamFram.phone" placeholder="请输入联系电话"></el-input>
         </el-form-item>
-        <el-form-item prop="city" label="团队地址" v-if='addressShow'>
+        <el-form-item prop="city" label="团队地址" v-if="addressShow">
           <el-cascader
-          v-model="teamFram.city"
-          :props='cityprops'
-          :label='name'
-          :value='name'
-          :options="cityList"></el-cascader>
+            v-model="teamFram.city"
+            :props="cityprops"
+            :label="name"
+            :value="name"
+            :options="cityList"
+          ></el-cascader>
         </el-form-item>
 
         <el-form-item prop="address" label="详细地址" v-if='addressShow'>
@@ -224,6 +225,13 @@ import EleTable from "../CommonModule/table";
 export default {
   components: { EleTable },
   data() {
+    var checkMobile = (rule, value, cb) => {
+      const regMoblie = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+      if (regMoblie.test(value)) {
+        return cb();
+      }
+      return cb(new Error("请输入合法的手机号"));
+    };
     return {
       isTeamParent:true,
       currentTeamInfo:{},//当前点击的团队/部门/小组数据
@@ -236,8 +244,8 @@ export default {
         value:'name',
         checkStrictly:true
       },
-      cityList:[],
-      options:[],
+      cityList: [],
+      options: [],
       teamTypeList: [],
       addressShow:true,
       pageSize: 10,
@@ -278,6 +286,7 @@ export default {
           ],
         phone:[
               { required: true, message: '请输入联系人电话', trigger: 'blur' },
+              { validator: checkMobile, trigger: "blur" }
           ]
       }
     };
@@ -295,13 +304,20 @@ export default {
       });
       this.teamTypeList = res.rows;
       this.total = res.total;
-    },async getCity(){//获取省市区地址
-      const { data: res } = await this.$http.get(this.$ajax+"dict/getRegionTree", {});
+    },
+    async getCity() {
+      //获取省市区地址
+      const { data: res } = await this.$http.get(
+        this.$ajax + "dict/getRegionTree",
+        {}
+      );
       console.log(res);
       this.cityList = res.data;
       console.log(this.cityList);
       // this.menuList = res.data;
-    },async getTeamDeptList() {// 获取左侧列表
+    },
+    async getTeamDeptList() {
+      // 获取左侧列表
       const { data: res } = await this.$http.post("teamList/dept ", {});
 
       this.menuList = res.data;
@@ -326,13 +342,13 @@ export default {
         this.teamTypeAccount = '团体账号';
         this.teamTypePassword = '团体密码';
         this.addressShow = true;
-      } else if(val.code.length == 6){
+      } else if (val.code.length == 6) {
         this.addTeamTile = "修改部门";
         this.teamTypeTitle = '部门名称';
         this.teamTypeAccount = '部门账号';
         this.teamTypePassword = '部门密码';
         this.addressShow = false;
-      }else if(val.code.length == 9){
+      } else if (val.code.length == 9) {
         this.addTeamTile = "修改小组";
         this.teamTypeTitle = '小组名称';
         this.teamTypeAccount = '小组账号';
@@ -342,8 +358,8 @@ export default {
       this.dialogVisible = true;
       this.editId = val.id;
       this.teamFram = JSON.parse(JSON.stringify(val));
-      if(this.teamFram.pcd != null && this.teamFram.pcd != ''){
-        this.teamFram.city = this.teamFram.pcd.split('-');
+      if (this.teamFram.pcd != null && this.teamFram.pcd != "") {
+        this.teamFram.city = this.teamFram.pcd.split("-");
       }
       console.log(this.teamFram);
       this.infoTitle = "修改";
@@ -351,19 +367,19 @@ export default {
     // 左侧新增
     iconAdd(val) {
       this.addTeamTile = "团体部门";
-      this.teamTypeTitle = '团体名称';
-      this.teamTypeAccount = '团体账号';
+      this.teamTypeTitle = "团体名称";
+      this.teamTypeAccount = "团体账号";
       this.addressShow = true;
       console.log(val);
-      if(val.code.length == 3){
+      if (val.code.length == 3) {
         this.addTeamTile = "新增部门";
-        this.teamTypeTitle = '部门名称';
-        this.teamTypeAccount = '部门账号';
+        this.teamTypeTitle = "部门名称";
+        this.teamTypeAccount = "部门账号";
         this.addressShow = false;
-      } else if(val.code.length == 6){
+      } else if (val.code.length == 6) {
         this.addTeamTile = "新增小组";
-        this.teamTypeTitle = '小组名称';
-        this.teamTypeAccount = '小组账号';
+        this.teamTypeTitle = "小组名称";
+        this.teamTypeAccount = "小组账号";
         this.addressShow = false;
       }
       this.addTeamDialogType = 1;
@@ -523,13 +539,14 @@ export default {
     updateCheck(){//修改检测套餐
 
     }
-  },watch: {
+  },
+  watch: {
     menuList: function() {
       this.$nextTick(function() {
-        this.$refs.singleTable.setCurrentRow(this.menuList[0])
-      })
+        this.$refs.singleTable.setCurrentRow(this.menuList[0]);
+      });
     }
-  },
+  }
 };
 </script>
 <style>

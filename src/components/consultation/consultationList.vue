@@ -54,7 +54,6 @@ export default {
       Inside: false,
       Outside: true,
       type: "consult-in",
-      ccc: "",
       uuid: ""
     };
   },
@@ -68,6 +67,8 @@ export default {
       this.Inside = false;
       this.Outside = true;
     }
+    console.log(this.uuid);
+    
     this.getHisConList();
   },
   methods: {

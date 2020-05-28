@@ -37,6 +37,14 @@
             <!-- 鼠标小手 -->
             <img class="mouseHand" src="../../assets/images/mouseHand.png" />
             <router-link
+              v-if="item.params == null"
+              style="vertical-align: middle;;"
+              :to="{ name: 'consultationList',query:{mesType:item.params.mesType,id:item.params.patientUuid}}"
+            >
+              查看详情
+            </router-link>
+            <router-link
+              v-else
               style="vertical-align: middle;;"
               :to="{ name: 'consultationList',query:{mesType:item.params.mesType,id:item.params.patientUuid}}"
             >
