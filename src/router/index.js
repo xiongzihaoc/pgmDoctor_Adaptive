@@ -53,6 +53,22 @@ const routes = [{
         },
       },
       {
+        path: '/home/teamCenter/teamCheckPackagesDetail',
+        name:'addTeamCheck',
+        component:()=>import('@/components/TeamCenter/TeamCheckPackagesDetail.vue'),
+        meta: {
+          title: '团队套餐',
+        },
+      },
+      {
+        path:'/home/teamCenter/teamPackagesPrint',
+        name:'teamPackagesPrint',
+        component:()=>import('@/components/TeamCenter/TeamPackagesPrint.vue'),
+        meta:{
+          title:'打印团队套餐'
+        }
+      },
+      {
         path: '/home/userCenter/addNewPer',
         name: "addNewPer",
         component: () => import('@/components/UserList/AddNewPer.vue'),

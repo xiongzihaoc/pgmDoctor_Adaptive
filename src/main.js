@@ -22,6 +22,16 @@ Vue.use(Print); //注册
 import axios from 'axios'
 import animated from 'animate.css' // npm install animate.css --save安装，在引入
 Vue.use(animated)
+
+//导入vue-qr 二维码生成器
+import vueQr from 'vue-qr'
+Vue.use(vueQr)
+
+Vue.prototype.$userUrlInfo = 'http://192.168.0.131:8081/#/lookTeamInfo';
+
+// import Print from './plugins/print/Print'
+// Vue.use(Print)
+
 // // 配置axios
 axios.defaults.baseURL = 'http://192.168.0.130:8086/zhuoya-sheet/'
 Vue.prototype.$ajax = 'http://192.168.0.130:8080/zhuoya-web/'
