@@ -74,7 +74,7 @@
             ></ve-histogram>
           </div>
 
-          <div style="text-align:center;overflow:hidden">
+          <div style="text-align:center!important;overflow:hidden;width:70%;max-wdith:600px;margin:0 auto;">
             <span class="score">总分：{{item.score}}</span>
             <span
               class="score"
@@ -272,6 +272,7 @@ h4 {
 }
 .adviceCard .content {
   box-sizing: border-box;
+  margin-top: 10px;
   border: 1px dashed #409eff;
   padding: 10px;
   border-radius: 7px;
