@@ -339,7 +339,7 @@ h4 {
   flex: 1;
 }
 .personalInfo li i {
-  color: #555;
+  color: #2c3e50;
   font-weight: 700;
   font-style: normal;
 }
