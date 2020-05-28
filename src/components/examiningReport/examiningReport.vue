@@ -55,11 +55,13 @@
   </div>
 </template>
 <script>
+import { timesChangeDate } from "../../assets/js/util";
 import ElTable from "../CommonModule/table";
 export default {
   components: { ElTable },
   data() {
     return {
+      timesChangeDate,
       tableHeaderBig: [
         { prop: "orderNo", label: "检测卡号" },
         { prop: "name", label: "姓名" },
@@ -115,20 +117,6 @@ export default {
     handleCurrentChangev(newPage) {
       this.pageNum = newPage;
       this.getCardList();
-    },
-    // 转换时间格式
-    timesChangeDate(times) {
-      var date = new Date(times);
-      var y = date.getFullYear();
-      var mon = date.getMonth() + 1;
-      var d = date.getDate();
-      if (mon < 10) {
-        mon = "0" + mon;
-      }
-      if (d < 10) {
-        d = "0" + d;
-      }
-      return `${y}-${mon}-${d}`;
     }
   }
 };
