@@ -86,10 +86,10 @@ export default {
 .CONTENTLogin .login_box {
   overflow: hidden;
   width: 80%;
-  max-width: 600px;
+  max-width: 800px;
   box-sizing: border-box;
   padding: 5%;
-  border-radius: 7px;
+  border-radius: 8px;
   /* background-image: linear-gradient(#3399F0, #000); */
   background-color: rgba(255, 255, 255, 0.6);
 }
@@ -97,7 +97,7 @@ export default {
 .CONTENTLogin form {
   width: 80%;
   margin: 0 auto;
-  max-width: 300px;
+  max-width: 400px;
 }
 .CONTENTLogin h3 {
   font-size: 20px;
