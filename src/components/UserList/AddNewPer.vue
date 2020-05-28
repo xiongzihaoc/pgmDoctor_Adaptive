@@ -6,7 +6,7 @@
     </el-breadcrumb>
     <div style="height:100%;overflow:hidden">
       <el-card style="height:85%;padding-top:8%;box-sizing:border-box;">
-        <el-form :model="editAddForm" label-width="80px" :rules="Addrules" ref="addInfoRef">
+        <el-form :model="editAddForm" label-width="80px" :rules="Addrules" ref="addInfoRef" label-position="right">
           <li style="width:100%;display:flex;justify-content: center;">
             <el-form-item label="医生姓名" prop="docName" style="margin-right:5%">
               <el-input v-model="editAddForm.docName"></el-input>
@@ -21,7 +21,7 @@
             </el-form-item>
           </li>
           <li style="display:flex;justify-content: center;">
-            <el-form-item label="姓名" prop="name" style="margin-right:5%">
+            <el-form-item label="姓  名" prop="name" style="margin-right:5%">
               <el-input v-model="editAddForm.name"></el-input>
             </el-form-item>
             <el-form-item label="性  别" prop="sex">
