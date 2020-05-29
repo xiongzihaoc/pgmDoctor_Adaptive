@@ -366,6 +366,8 @@ h4 {
   padding: 5px 0;
 }
 .lookAns {
-  margin-top: 30px;
+  display: inline-block;
+  margin: 30px 0 0 50%;
+  transform: translate(-50%);
 }
 </style>
