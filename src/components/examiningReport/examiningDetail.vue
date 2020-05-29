@@ -118,11 +118,21 @@
                 :key="i"
               >{{subItem.name}}：{{subItem.score}}</span>
             </div>
+            <!-- 检测评语 -->
             <div class="titleFlex">
               <span class="orangeYuan"></span>
               <span class="dataStat">检测评语</span>
             </div>
             <p v-html="item.comment" style="padding: 5px 0  0 30px;font-size:14px;"></p>
+            <!-- 检测建议 -->
+            <div class="adviceCard">
+              <div class="titleFlex" style="margin:10px 0;">
+                <span class="orangeYuan"></span>
+                <span class="dataStat">检测建议</span>
+              </div>
+              <p v-html="item.suggestion" style="padding: 5px 0  0 30px;font-size:14px;"></p>
+              <p></p>
+            </div>
           </div>
           <div class="liRight">
             <el-button
@@ -356,6 +366,8 @@ h4 {
   padding: 5px 0;
 }
 .lookAns {
-  margin-top: 30px;
+  display: inline-block;
+  margin: 30px 0 0 50%;
+  transform: translate(-50%);
 }
 </style>
