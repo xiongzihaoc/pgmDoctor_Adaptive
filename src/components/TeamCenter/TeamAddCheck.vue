@@ -7,11 +7,11 @@
         <div style="height:100%;overflow:hidden">
             <el-card style="height:100%;padding-top:8%;box-sizing:border-box;">
                 <el-form :model="addTeamCheckFrom" label-width="80px" ref="addTeamCheckFromRef" :rules="addTeamCheckFromRules">
-                    <el-form-item label="检测编号" prop="checkCode" style="width: 50%;margin-left: 25%;">
-                        <el-input v-model="addTeamCheckFrom.checkCode" :disabled="true"></el-input>
+                    <el-form-item label="检测编号" prop="teamNo" style="width: 50%;margin-left: 25%;">
+                        <el-input v-model="addTeamCheckFrom.teamNo" :disabled="true"></el-input>
                     </el-form-item>
-                    <el-form-item label="检测人数" prop="checkNum" style="width: 50%;margin-left: 25%;">
-                        <el-input v-model="addTeamCheckFrom.checkNum" oninput="if(value.length>11)value=value.slice(0,11)" type="number" placeholder="请输入检测人数"></el-input>
+                    <el-form-item label="检测人数" prop="teamNumber" style="width: 50%;margin-left: 25%;">
+                        <el-input v-model="addTeamCheckFrom.teamNumber" oninput="if(value.length>11)value=value.slice(0,11)" type="number" placeholder="请输入检测人数"></el-input>
                     </el-form-item>
                 </el-form>
                 <div style="width: 50%;display: flex;margin-left: 25%;">
@@ -98,8 +98,8 @@ export default {
         addCheckDilogShow:false,//新增套餐Dialog
         selectedPackagesDialogShow:false,//选择量表套餐Dialog
         addTeamCheckFrom:{
-            checkCode:'',
-            checkNum:'',
+            teamNo:'',
+            teamNumber:'',
             paramList:[]
         },
         addCheckPackagesRuleFrom:{
@@ -108,25 +108,54 @@ export default {
             ]
         },
         addTeamCheckFromRules:{
-            checkCode:[
+            teamNo:[
                 { required: true, message: '请输入检测编号', trigger: 'blur' },
             ],
-            checkNum:[
+            teamNumber:[
                 { required: true, message: '请输入检测人数', trigger: 'blur' },
             ]
         }
     };
   },created() {
-      this.getSheetList();
-      this.getTeamCheckCode();
+      this.type = this.$route.query.type;
       this.teamCode = this.$route.query.teamCode;
       this.addOrUpdateType = this.$route.query.type;
+      if(this.addOrUpdateType == 2){
+        this.addTeamCheckFrom = JSON.parse(this.$route.query.packageInfo);
+        if(this.addTeamCheckFrom != null){
+            var paramList = this.addTeamCheckFrom.paramList;
+            if(paramList != null && paramList.length > 0){
+                paramList.forEach(ele => {
+                    var packages = ele.package;
+                    var names='',uuids='';
+                    if(packages != null && packages.length>0){
+                        packages.forEach(e =>{
+                            names += e.name+",";
+                            uuids +=e.uuid+",";
+                        })
+                    }
+                    if (names.length > 0) {
+                        names = names.substr(0, names.length - 1);
+                    }
+                    if (uuids.length > 0) {
+                        uuids = uuids.substr(0, uuids.length - 1);
+                    }
+                    ele.packageNames = names;
+                    ele.packageUuids = uuids;
+                });
+            }
+        }
+        console.log(this.addTeamCheckFrom);
+      }else {
+        this.getTeamCheckCode();
+      }
+      this.getSheetList();
   },methods: {
       async getTeamCheckCode(){
         const { data: res } = await this.$http.post("/common/getCardNo", {});
         if(res == null && res.code != 200) return this.$message.error('检测编号获取失败,请点击重试');
         console.log(res);
-        this.addTeamCheckFrom.checkCode = res.data;
+        this.addTeamCheckFrom.teamNo = res.data;
       },addCheckPackage(){
         this.checkPackageFrom = {};
         this.addCheckDilogShow = true;
@@ -159,19 +188,6 @@ export default {
         });
         
       },saveTeamCheck(){//新增团队检测
-        if(this.addTeamCheckFrom != null){
-            if(this.addTeamCheckFrom.checkCode == ''){
-                return this.$message.error('请输入检测编号');
-            }
-            if(this.addTeamCheckFrom.checkNum == ''){
-                return this.$message.error('请输入检测人数');
-            }
-            if(this.addTeamCheckFrom.paramList == null || this.addTeamCheckFrom.paramList.length == 0){
-                return this.$message.error('请添加检测套餐');
-            }
-        }else {
-            return this.$message.error('请输入检测数据');
-        }
         this.$refs.addTeamCheckFromRef.validate(async (valid) =>{
             if(valid){
                 if(this.addTeamCheckFrom.paramList == null || this.addTeamCheckFrom.paramList.length == 0){
@@ -179,8 +195,8 @@ export default {
                 }
                 console.log(this.addTeamCheckFrom);
                 const { data: res } = await this.$http.post("teamList/add",{
-                    teamNo:this.addTeamCheckFrom.checkCode,
-                    teamNumber:this.addTeamCheckFrom.checkNum,
+                    teamNo:this.addTeamCheckFrom.teamNo,
+                    teamNumber:this.addTeamCheckFrom.teamNumber,
                     teamDept:this.teamCode,
                     paramList:this.addTeamCheckFrom.paramList
                 });

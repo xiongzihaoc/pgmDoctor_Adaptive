@@ -15,11 +15,12 @@
                       <span class="title">名称：{{teamInfo.name}}</span>
                       <span class="title">账号：{{teamInfo.account}}</span>
                       <span class="title">联系人：{{teamInfo.leader}}</span>
-                      <span class="title">联系电话：{{teamInfo.phone}}</span>
                     </li>
                     <div>
                         <li>
+                            <span class="title">联系电话：{{teamInfo.phone}}</span>
                             <span class="title" >地址：{{teamInfo.pcd}}</span>
+                            <span class="title" style="visibility: hidden;"></span>
                         </li>
                         <el-button type="primary" size="mini" style="float: right;" @click.prevent.stop="printTeamPackage">打印套餐</el-button>
                     </div>

@@ -1,0 +1,191 @@
+<template>
+    <div style="height: 80%;">
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/home/teamCenter' }">团队中心</el-breadcrumb-item>
+            <el-breadcrumb-item>检测人员</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div style="height: 100%;">
+          <el-card class="deptInfoCard">
+            <div> 
+                <span class="orangeYuan"></span>
+                <span class="perInfo">团队信息</span>
+            </div>
+            <div class="deptInfoDiv">
+              <li>
+                <span class="title">名称：{{teamInfo.name}}</span>
+                <span class="title">账号：{{teamInfo.account}}</span>
+                <span class="title">联系人：{{teamInfo.leader}}</span>
+                <span class="title">联系电话：{{teamInfo.phone}}</span>
+              </li>
+              <li>
+                
+                <span class="title" >创建时间：{{timesChangeDate(deptCheckInfo.createTime)}}</span>
+                <span class="title" >检测套餐：{{deptCheckInfo.packageName}}</span>
+                <span class="title" >录入人数：{{deptCheckInfo.checkNumber}}</span>
+                <span class="title" >已检测人数：{{deptCheckInfo.recordNumber}}</span>
+              </li>
+          </div>
+          </el-card>
+          <el-card class="deptPatientCard">
+            <el-table
+              :data="patientList"
+              style="margin-top:1%;"
+              :header-cell-style="{ background:'#5BAEFF',height:'50px',color:'#fff'}">
+              <el-table-column
+                  align="center"
+                  prop="teamNo"
+                  label="检测卡号"/>
+                <el-table-column
+                  align="center"
+                  prop="name"
+                  label="姓名"/>
+                <el-table-column
+                  align="center"
+                  prop="sex"
+                  label="性别"/>
+                <el-table-column
+                    align="center"
+                    prop="phone"
+                    label="手机"/>
+                <el-table-column
+                  align="center"
+                  prop="birth"
+                  label="生日"/>
+                <el-table-column
+                  align="center"
+                  prop="marriage"
+                  label="婚姻"/>
+                <el-table-column
+                  align="center"
+                  prop="edu"
+                  label="文化"/>
+                  <el-table-column
+                  align="center"
+                  prop="job"
+                  label="职业"/>
+                <el-table-column
+                  v-if="deptCode.length==3"
+                  align="center"
+                  prop="teamNo"
+                  label="部门"/>
+                <el-table-column
+                v-if="deptCode.length==3 || deptCode.length==6"
+                  align="center"
+                  prop="teamNo"
+                  label="小组"/>
+                <el-table-column
+                  align="center"
+                  prop="teamNo"
+                  label="检测套餐"/>
+                <el-table-column
+                  align="center"
+                  prop="teamNo"
+                  label="检测时间"/>
+                <el-table-column
+                  align="center"
+                  prop="teamNo"
+                  label="结果"/>
+                <el-table-column align="center" fixed="right" label="操作">
+                  <template slot-scope="scope">
+                    <el-button
+                      type="primary"
+                      size="mini"
+                      @click.prevent.stop="checkPatient(scope.row)">报告</el-button>
+                  </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChangev"
+              :current-page="pageNum"
+              :page-sizes="[10, 20,50]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"></el-pagination>
+          </el-card>
+        </div>
+    </div>
+</template>
+<script>
+  import { timesChangeDate } from "../../assets/js/util";
+export default {
+  data () {
+    return {
+      timesChangeDate,
+      deptCode:'',
+      teamInfo:'',
+      deptCheckInfo:{},//检测信息
+      patientList:[],
+      pageSize: 10,
+      pageNum: 1,
+      total: 0,
+    };
+  },
+  created() {
+    this.deptCode = this.$route.query.teamTypeCode;
+    this.deptCheckInfo = JSON.parse(this.$route.query.packageInfo);
+    this.getTeamInfo();
+  },
+  methods:{
+    async getTeamInfo(){//获取团队详情
+          const {data:res} = await this.$http.post("teamList/dept/info",{
+              code:this.deptCode
+          });
+          this.teamInfo = res.data;
+          this.getDeptPatient();
+      },
+    async getDeptPatient(){
+      const {data:res} = await this.$http.post("teamList/getTeamMember",{
+          teamNo:this.deptCheckInfo.teamNo,
+          teamDept:this.deptCode,
+          pageSize: this.pageSize,
+          pageNum: this.pageNum
+      });
+      console.log(res);
+      this.patientList = res.rows;
+      this.total = res.total;
+    },
+     // 分页
+    handleSizeChange(newSize) {
+      this.pageSize = newSize;
+    },
+    handleCurrentChangev(newPage) {
+      this.pageNum = newPage;
+      this.getDeptPatient();
+    },
+  }
+}
+</script>
+<style lang='less' scoped>
+.deptInfoCard {
+  height: 21%;
+  margin-bottom: 1%;
+}
+.deptInfoDiv li{
+  display: flex;
+  font-size: 16px;
+  color: #c1c2c9;
+  padding: 1% 0 0 5%;
+  box-sizing: border-box;
+}
+.deptInfoDiv li .title {
+  flex: 1;
+}
+.deptInfoCard .orangeYuan {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ff9a00;
+}
+.deptInfoCard .perInfo {
+  font-weight: 700;
+  padding-left: 5px;
+  box-sizing: border-box;
+}
+.deptPatientCard{
+    height: 83%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+</style>

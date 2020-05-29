@@ -81,10 +81,10 @@
             <span class="title">{{teamTypeTitle}}：{{currentTeamInfo.name}}</span>
             <span class="title">{{teamTypeAccount}}：{{currentTeamInfo.account}}</span>
             <span class="title">联系人：{{currentTeamInfo.leader}}</span>
-            <span class="title">联系电话：{{currentTeamInfo.phone}}</span>
           </li>
           <li>
-            <span class="title" :style="{display:this.currentTeamInfo.pcd == null?'none':'block'}">地址：{{currentTeamInfo.pcd}}</span>
+            <span class="title">联系电话：{{currentTeamInfo.phone}}</span>
+            <span class="title" :style="{visibility:this.currentTeamInfo.pcd == null?'hidden':'visible'}">地址：{{currentTeamInfo.pcd}}</span>
             <span class="title">检测次数：{{total}}</span>
           </li>
         </div>
@@ -135,7 +135,8 @@
                 size="mini"
                 @click.prevent.stop="teamPackages(scope.row)"
               >检测套餐</el-button>
-              <el-button v-if="scope.row.state !=0"
+              <!-- v-if="scope.row.state !=0" -->
+              <el-button 
                 type="primary"
                 size="mini"
                 @click.prevent.stop="teamReport(scope.row)"
@@ -300,6 +301,8 @@ export default {
     // 获取检测列表
     async getTeamCheckTypeList() {
       const { data: res } = await this.$http.post("teamList/list", {
+        pageSize: this.pageSize,
+        pageNum: this.pageNum,
         teamDept: this.currentTeamTypeCode
       });
       this.teamTypeList = res.rows;
@@ -324,7 +327,7 @@ export default {
       if(this.menuList != null && this.menuList.length > 0) {
           this.currentTeamInfo = this.menuList[0];
           this.currentTeamCode = this.currentTeamInfo.code;
-          this.currentTeamTypeCode = this.currentTeamCode;
+          this.currentTeamTypeCode = this.currentTeamInfo.code;
           console.log(this.currentTeamInfo);
           this.getTeamCheckTypeList();
       }
@@ -528,16 +531,16 @@ export default {
       this.$router.push({path:'/home/teamCenter/addTeamCheck',query:{teamCode:this.currentTeamCode}});
     },
     checkPatient(row){//查看检测人员
-      console.log(row);
+      this.$router.push({path:'/home/teamCenter/teamPatientDeail',query:{packageInfo:JSON.stringify(row),teamTypeCode:this.currentTeamTypeCode}})
     },
     teamPackages(row){//查看检测套餐
-      this.$router.push({path:'/home/teamCenter/teamCheckPackagesDetail',query:{teamCode:this.currentTeamCode,teamCheckNum:row.teamNo}});
+      this.$router.push({path:'/home/teamCenter/teamCheckPackagesDetail',query:{teamCode:this.currentTeamCode,teamCheckNum:row.teamNo,type:1}});
     },
-    teamReport(){//查看检测报告
-
+    teamReport(row){//查看检测报告
+      this.$router.push({path:'/home/teamCenter/teamDeptReportDetail',query:{packageInfo:JSON.stringify(row),teamTypeCode:this.currentTeamTypeCode}})
     },
-    updateCheck(){//修改检测套餐
-
+    updateCheck(row){//修改检测套餐
+      this.$router.push({path:'/home/teamCenter/addTeamCheck',query:{packageInfo:JSON.stringify(row),teamCode:this.currentTeamCode,teamCheckNum:row.teamNo,type:2}});
     }
   },
   watch: {
