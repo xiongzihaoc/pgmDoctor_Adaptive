@@ -32,13 +32,13 @@
           >
             <template slot-scope="scope">
               <i
-                style="display:inline-block"
+                style="display:inline-block;margin: 0 15px 0 0;"
                 class="el-icon-edit"
                 @click.prevent.stop="iconEdit(scope.row)"
               ></i>
               <i
-                v-if="scope.row.code.length !=9"
-                style="display:inline-block;margin: 0 15px;"
+                v-if="scope.row.code.length !== 9"
+                style="display:inline-block;margin: 0 15px 0 0;"
                 class="el-icon-circle-plus-outline"
                 @click.prevent.stop="iconAdd(scope.row)"
               ></i>
