@@ -5,10 +5,7 @@
       <el-breadcrumb-item :to="{ path: '/home/examiningReport' }">列表</el-breadcrumb-item>
       <el-breadcrumb-item>报告详情</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card
-      v-loading="fullscreenLoading"
-      style="height:85%;overflow: auto;-webkit-overflow-scrolling: touch;position: relative;"
-    >
+    <el-card class="card_top" style="height:32%;margin-bottom:1%;overflow:hidden">
       <el-button
         type="danger"
         size="mini"
@@ -16,54 +13,131 @@
         v-print="'#printDiv'"
         style="position: absolute;top:58px;right:22px"
       >打印</el-button>
-      <div style="height:100%" id="printDiv">
-        <h4>{{infoObj.name}}的检测报告</h4>
-        <div class="personalInformation">
-          <div style="display:flex;flex-direction: row;justify-content: space-between;">
-            <p class="title">
-              <span style="border-bottom:2px solid #000;">基本信息</span>
-            </p>
+      <!-- <div style="height:100%" id="printDiv"> -->
+      <div style="display:flex;flex-direction: row;justify-content: space-between;">
+        <div class="titleFlex">
+          <span class="orangeYuan"></span>
+          <span class="dataStat">个人资料</span>
+        </div>
+        <el-button
+          type="primary"
+          size="mini"
+          v-if="this.infoObj.checkState == 0"
+          v-cloak
+          @click.prevent.stop="hasConfirm"
+        >确认审核</el-button>
+      </div>
+      <ul class="content personalInfo">
+        <li>
+          <span>
+            姓名:
+            <i>{{infoObj.name}}</i>
+          </span>
+          <span>
+            手机:
+            <i>{{infoObj.phone}}</i>
+          </span>
+          <span>
+            性别:
+            <i>{{infoObj.sex}}</i>
+          </span>
+          <span>
+            年龄:
+            <i>{{infoObj.age}}</i>
+          </span>
+        </li>
+        <li>
+          <span>
+            婚姻状况:
+            <i>{{infoObj.marriage}}</i>
+          </span>
+          <span>
+            文化程度:
+            <i>{{infoObj.edu}}</i>
+          </span>
+          <span>所属:</span>
+          <span>
+            职业:
+            <i>{{infoObj.job}}</i>
+          </span>
+        </li>
+        <li>
+          <span>科室:</span>
+        </li>
+        <li>
+          <span>
+            检测卡号:
+            <i>{{infoObj.orderNo}}</i>
+          </span>
+          <span>
+            医生:
+            <i>{{infoObj.createBy}}</i>
+          </span>
+        </li>
+        <li>
+          <span>
+            检测时间:
+            <i>{{timesChangeDate(infoObj.createTime)}}</i>
+          </span>
+          <span>
+            报告时间:
+            <i>{{timesChangeDate(infoObj.createTime)}}</i>
+          </span>
+        </li>
+        <li>
+          <span>
+            套餐名称:
+            <i>{{str}}</i>
+          </span>
+        </li>
+      </ul>
+    </el-card>
+    <el-card
+      class="card_bottom"
+      style="height:52%;overflow: auto;-webkit-overflow-scrolling: touch;"
+    >
+      <div class="titleFlex">
+        <span class="orangeYuan"></span>
+        <span class="dataStat">检测结果</span>
+      </div>
+      <ul>
+        <li
+          style="display:flex;padding:5px 0;border-bottom:1px solid #f3f3f3;"
+          v-for="item in reportList"
+          :key="item.id"
+        >
+          <div class="liLeft">
+            <div class="wenjuanTitle" style="padding-left:30px;">
+              <span>{{item.sheetName}}</span>
+            </div>
+            <div style="padding: 0 0 7px 25px;">
+              <span class="score">总分：</span>
+              <span
+                class="score"
+                v-for="(subItem,i) in item.factor"
+                :key="i"
+              >{{subItem.name}}：{{subItem.score}}</span>
+            </div>
+            <div class="titleFlex">
+              <span class="orangeYuan"></span>
+              <span class="dataStat">检测评语</span>
+            </div>
+            <p v-html="item.comment" style="padding: 5px 0  0 30px;font-size:14px;"></p>
+          </div>
+          <div class="liRight">
             <el-button
               type="primary"
               size="mini"
-              v-if="this.infoObj.checkState == 0"
-              v-cloak
-              @click.prevent.stop="hasConfirm"
-            >确认审核</el-button>
+              plain
+              @click.prevent.stop="jumpAnsDet(item)"
+              class="lookAns"
+            >查看答题详情</el-button>
           </div>
-          <ul class="content">
-            <li>
-              <span style="flex:1">姓名: {{infoObj.name}}</span>
-              <span style="flex:1">手机: {{infoObj.phone}}</span>
-              <span style="flex:1">性别: {{infoObj.sex}}</span>
-              <span style="flex:1">年龄: {{infoObj.age}}</span>
-            </li>
-            <li>
-              <span style="flex:1">婚姻状况: {{infoObj.marriage}}</span>
-              <span style="flex:1">文化程度: {{infoObj.edu}}</span>
-              <span style="flex:1">所属:</span>
-              <span style="flex:1">职业: {{infoObj.job}}</span>
-            </li>
-            <li>
-              <span style="flex:1">科室:</span>
-            </li>
-            <li class="testContent">
-              <span style="flex:1">检测卡号: {{infoObj.orderNo}}</span>
-              <span style="flex:1">医生: {{infoObj.createBy}}</span>
-            </li>
-            <li>
-              <span style="flex:1">检测时间: {{timesChangeDate(infoObj.createTime)}}</span>
-              <span style="flex:1">报告时间: {{timesChangeDate(infoObj.createTime)}}</span>
-            </li>
-            <li>
-              <span style="flex:1">套餐名称: {{str}}</span>
-            </li>
-          </ul>
-        </div>
-        <!-- 单个检测报告图表等 -->
-        <div class="singleSheet" v-for="item in reportList" :key="item.id">
-          <p class="sheetName">{{item.sheetName}}</p>
-          <div v-if="item.isZh !== 'Y'" style="width:60%;margin:0 auto;">
+        </li>
+      </ul>
+      <!-- 单个检测报告图表等 -->
+      <!-- <p class="sheetName">{{item.sheetName}}</p> -->
+      <!-- <div v-if="item.isZh !== 'Y'" style="width:60%;margin:0 auto;">
             <p class="title">检测结果统计图</p>
 
             <ve-histogram
@@ -72,40 +146,21 @@
               :settings="chartSettings"
               :legend-visible="false"
             ></ve-histogram>
-          </div>
+      </div>-->
+      <!-- <p class="TitleContent" v-html="item.comment"></p>
+      <div v-if="item.isZh !== 'Y'" class="adviceCard">
+        <p class="title">
+          <span style="border-bottom:2px solid #000;">检测建议</span>
+        </p>
+        <p class="TitleContent" v-html="item.suggestion"></p>
+      </div>-->
 
-          <div style="text-align:center;overflow:hidden">
-            <span class="score">总分：{{item.score}}</span>
-            <span
-              class="score"
-              v-for="(subItem,i) in item.factor"
-              :key="i"
-            >{{subItem.name}}：{{subItem.score}}</span>
-          </div>
-          <p class="title" style="padding-top:60px">
-            <span style="border-bottom:2px solid #000;">答题记录</span>
-          </p>
-          <div class="answer">
-            <el-button type="primary" @click.prevent.stop="jumpAnsDet(item)">答题详情</el-button>
-          </div>
-          <p class="title" style="padding-top:60px">
-            <span style="border-bottom:2px solid #000;">检测评语</span>
-          </p>
-          <p class="TitleContent" v-html="item.comment"></p>
-          <div v-if="item.isZh !== 'Y'" class="adviceCard">
-            <p class="title">
-              <span style="border-bottom:2px solid #000;">检测建议</span>
-            </p>
-            <p class="TitleContent" v-html="item.suggestion"></p>
-          </div>
-        </div>
-        <!-- 总建议 -->
-        <div v-if="this.infoObj.isZh == 'Y'" class="adviceCard">
-          <p class="title">
-            <span style="border-bottom:2px solid #000;">检测建议</span>
-          </p>
-          <p class="title" v-html="this.advice"></p>
-        </div>
+      <!-- 总建议 -->
+      <div v-if="this.infoObj.isZh == 'Y'" class="adviceCard">
+        <!-- <p class="title">
+          <span style="border-bottom:2px solid #000;">检测建议</span>
+        </p>
+        <p class="title" v-html="this.advice"></p>-->
       </div>
     </el-card>
   </div>
@@ -142,7 +197,6 @@ export default {
     };
     return {
       timesChangeDate,
-      fullscreenLoading: true,
       Number: "",
       advice: "",
       infoObj: {},
@@ -171,10 +225,11 @@ export default {
       const { data: res } = await this.$http.post("checkList/getReport", {
         orderNo: this.Number
       });
+      console.log(res);
+
       if (res.code !== 200) {
         return this.$message("获取数据失败");
       } else {
-        this.fullscreenLoading = false;
       }
 
       // 个人资料数据
@@ -190,13 +245,16 @@ export default {
       });
 
       // 图表数据
-      console.log(this.reportList);
-
+      // console.log(this.reportList);
       // 循环添加量表名称
       var arr = res.data.report;
+      var sheetNameList = "";
       for (var i = 0; i < arr.length; i++) {
-        this.str += arr[i].sheetName + " , ";
+        sheetNameList += arr[i].sheetName + ",";
       }
+      // 去除字符串最后一个逗号
+      sheetNameList = sheetNameList.substr(0, sheetNameList.length - 1);
+      this.str = sheetNameList;
     },
     // 确认审核
     async hasConfirm() {
@@ -228,38 +286,20 @@ h4 {
 .title {
   font-weight: 700;
 }
-.personalInformation .content {
-  margin: 20px 0;
-  padding: 20px;
-  box-sizing: border-box;
-  background-color: #f9f9f9;
-}
-.personalInformation li {
-  padding: 5px 0;
-  display: flex;
-}
-.testContent {
-  margin-top: 20px;
-}
 .sheetName {
   text-align: center;
   font-weight: 700;
   padding: 10px 0;
   box-sizing: border-box;
 }
-.singleSheet {
-  border: 1px solid #f5f5f5;
-  border-bottom: none;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  box-sizing: border-box;
-  padding: 10px;
-}
 .score {
   display: inline-block;
+  border-radius: 5px;
+  color: #ff9a00;
+  font-size: 12px;
   padding: 4px 10px;
-  margin: 10px;
-  border: 1px solid #158db2;
+  margin: 5px;
+  border: 1px solid #ff9a00;
 }
 .answer {
   text-align: center;
@@ -272,8 +312,50 @@ h4 {
 }
 .adviceCard .content {
   box-sizing: border-box;
+  margin-top: 10px;
   border: 1px dashed #409eff;
   padding: 10px;
   border-radius: 7px;
+}
+.dataStat {
+  font-weight: 700;
+  padding-left: 5px;
+  box-sizing: border-box;
+}
+.titleFlex {
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+}
+.personalInfo li {
+  margin: 1% 0;
+  display: flex;
+  color: #c1c2c9;
+  font-size: 16px;
+  font-weight: 400;
+}
+.personalInfo li span {
+  flex: 1;
+}
+.personalInfo li i {
+  color: #2c3e50;
+  font-weight: 700;
+  font-style: normal;
+}
+.liLeft {
+  width: 80%;
+  box-sizing: border-box;
+}
+.liRight {
+  width: 20%;
+}
+.wenjuanTitle {
+  box-sizing: border-box;
+  font-weight: 700;
+  padding: 5px 0;
+}
+.lookAns {
+  margin-top: 30px;
 }
 </style>

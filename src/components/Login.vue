@@ -1,6 +1,6 @@
 <template>
   <div class="CONTENTLogin">
-    <div class="login_box animated bounceInRight">
+    <div class="login_box">
       <h3>欢迎登录</h3>
       <el-form ref="LoginFormRef" :model="LoginForm" :rules="loginRules">
         <el-form-item prop="loginName">
@@ -20,8 +20,8 @@
           ></el-input>
         </el-form-item>
         <div class="btnBox">
-          <el-button type="primary" @click.prevent.stop="handleLogin">登 录</el-button>
           <el-button type="danger" @click.prevent.stop="reset">重 置</el-button>
+          <el-button type="primary" @click.prevent.stop="handleLogin">登 录</el-button>
         </div>
       </el-form>
     </div>
@@ -77,27 +77,27 @@ export default {
 .CONTENTLogin {
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  background: #060709 url("../assets/images/dq.jpg") no-repeat center;
-  background-size: contain;
+  display: flex;
+  align-items: center; /*垂直居中*/
+  justify-content: center; /*水平居中*/
+  background: url("../assets/images/loginbg.jpg") no-repeat center;
+  background-size: cover;
 }
 .CONTENTLogin .login_box {
   overflow: hidden;
-  margin: 0 auto;
-  margin-top: 15%;
   width: 80%;
-  max-width: 600px;
+  max-width: 800px;
   box-sizing: border-box;
   padding: 5%;
-  border-radius: 7px;
-  background-image: linear-gradient(#fff, #000);
-  opacity: 0.8;
+  border-radius: 8px;
+  /* background-image: linear-gradient(#3399F0, #000); */
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 .CONTENTLogin form {
   width: 80%;
   margin: 0 auto;
-  max-width: 300px;
+  max-width: 400px;
 }
 .CONTENTLogin h3 {
   font-size: 20px;
@@ -107,5 +107,6 @@ export default {
 }
 .btnBox {
   float: right;
+  overflow: hidden;
 }
 </style>

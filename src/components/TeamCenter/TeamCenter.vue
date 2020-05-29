@@ -20,7 +20,8 @@
           @cell-click="cellClick"
           class="teamClass"
           @header-click="addInside($event)"
-          style="width: 100%;margin-bottom: 20px;">
+          style="width: 100%;margin-bottom: 20px;"
+        >
           <el-table-column align="left" prop="name" label="团队列表" label-class-name="ccc"></el-table-column>
           <el-table-column
             align="center"
@@ -31,13 +32,13 @@
           >
             <template slot-scope="scope">
               <i
-                style="display:inline-block"
+                style="display:inline-block;margin: 0 15px 0 0;"
                 class="el-icon-edit"
                 @click.prevent.stop="iconEdit(scope.row)"
               ></i>
               <i
-                v-if="scope.row.code.length !=9"
-                style="display:inline-block;margin: 0 15px;"
+                v-if="scope.row.code.length !== 9"
+                style="display:inline-block;margin: 0 15px 0 0;"
                 class="el-icon-circle-plus-outline"
                 @click.prevent.stop="iconAdd(scope.row)"
               ></i>
@@ -60,21 +61,25 @@
             v-model="input"
             class="searchInput"
             @input="searchin"
-          ></el-input> -->
-          <span style="line-height: 50px;width: 45%;font-weight: 700;padding-left: 5px;box-sizing: border-box;">{{currentTeamInfo.name}}</span>
+          ></el-input>-->
+          <span
+            style="line-height: 50px;width: 45%;font-weight: 700;padding-left: 5px;box-sizing: border-box;"
+          >{{currentTeamInfo.name}}</span>
           <div style="line-height: 50px;float: right;">
             <el-button
-            type="primary"
-            size="small"
-            @click.prevent.stop="addCheckPackages" v-if="isTeamParent">新增检测</el-button>
+              type="primary"
+              size="small"
+              @click.prevent.stop="addCheckPackages"
+              v-if="isTeamParent"
+            >新增检测</el-button>
           </div>
-          
+
           <!-- <el-button
             type="primary"
             size="small"
             @click.prevent.stop="newAddPerson"
             style="margin-left:2%"
-          >Excel导入</el-button> -->
+          >Excel导入</el-button>-->
         </div>
         <div class="teamDetail">
           <li>
@@ -92,76 +97,60 @@
         <el-table
           :data="teamTypeList"
           style="margin-top:1%;"
-          :header-cell-style="{ background:'#5BAEFF',height:'50px',color:'#fff'}">
-          <el-table-column
-              align="center"
-              prop="teamNo"
-              label="检测编号"/>
-            <el-table-column
-              v-if="isTeamParent"
-              align="center"
-              prop="teamNumber"
-              label="限定人数"/>
-            <el-table-column
-              align="center"
-              prop="recordNumber"
-              label="已录人数"/>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              prop="checkNumber"
-              label="检测人数"/>
-            <el-table-column
-              align="center"
-              prop="packageName"
-              label="套餐"/>
+          :header-cell-style="{ background:'#5BAEFF',height:'50px',color:'#fff'}"
+        >
+          <el-table-column align="center" prop="teamNo" label="检测编号" show-overflow-tooltip />
+          <el-table-column v-if="isTeamParent" align="center" prop="teamNumber" label="限定人数" />
+          <el-table-column align="center" prop="recordNumber" label="已录人数" />
+
+          <el-table-column align="center" prop="checkNumber" label="检测人数" />
+          <el-table-column align="center" prop="packageName" label="套餐" />
           <el-table-column align="center" label="状态" prop="state">
             <template slot-scope="scope">
               <div v-if="scope.row.state==0">未开始</div>
-              <div v-else-if="scope.row.state==1">已开始</div>     
-              <div v-else>已结束</div>                 
+              <div v-else-if="scope.row.state==1">已开始</div>
+              <div v-else>已结束</div>
             </template>
           </el-table-column>
-            <!-- 操作 -->
-          <el-table-column align="center" fixed="right" label="操作" width="250" v-if="isTeamParent">
+          <!-- 操作 -->
+          <el-table-column align="center" fixed="right" label="操作" width="249" v-if="isTeamParent">
             <template slot-scope="scope">
-              <el-button
-                type="primary"
-                size="mini"
-                @click.prevent.stop="checkPatient(scope.row)"
-              >人员</el-button>
+              <el-button type="primary" size="mini" @click.prevent.stop="checkPatient(scope.row)">人员</el-button>
               <el-button
                 type="primary"
                 size="mini"
                 @click.prevent.stop="teamPackages(scope.row)"
               >检测套餐</el-button>
+<<<<<<< HEAD
               <!-- v-if="scope.row.state !=0" -->
               <el-button 
+=======
+              <el-button
+                v-if="scope.row.state !=0"
+>>>>>>> 8a2c0dee9abf6674e5f5428f9809e97c51665a42
                 type="primary"
                 size="mini"
                 @click.prevent.stop="teamReport(scope.row)"
               >团队报告</el-button>
-              <el-button v-if="scope.row.state ==0"
+              <el-button
+                v-if="scope.row.state ==0"
                 type="danger"
                 size="mini"
                 @click.prevent.stop="updateCheck(scope.row)"
               >修改</el-button>
             </template>
-        </el-table-column>
-        <el-table-column  align="center" fixed="right" label="操作" width="150" v-else>
-          <template slot-scope="scope">
-            <el-button
-              type="primary"
-              size="mini"
-              @click.prevent.stop="checkPatient(scope.row)"
-            >人员</el-button>
-            <el-button v-if="scope.row.state !=0"
-              type="primary"
-              size="mini"
-              @click.prevent.stop="teamReport(scope.row)"
-            >团队报告</el-button>
-          </template>
-        </el-table-column>
+          </el-table-column>
+          <el-table-column align="center" fixed="right" label="操作" width="150" v-else>
+            <template slot-scope="scope">
+              <el-button type="primary" size="mini" @click.prevent.stop="checkPatient(scope.row)">人员</el-button>
+              <el-button
+                v-if="scope.row.state !=0"
+                type="primary"
+                size="mini"
+                @click.prevent.stop="teamReport(scope.row)"
+              >团队报告</el-button>
+            </template>
+          </el-table-column>
         </el-table>
         <!-- 分页 -->
         <el-pagination
@@ -171,7 +160,8 @@
           :page-sizes="[10, 20,50]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="total"></el-pagination>
+          :total="total"
+        ></el-pagination>
       </el-card>
     </div>
     <!-- 新增修改团队弹框-->
@@ -191,7 +181,7 @@
         </el-form-item>
         <!-- <el-form-item prop="password" :label="teamTypePassword">
           <el-input v-model="teamFram.password" placeholder="请输入密码"></el-input>
-        </el-form-item> -->
+        </el-form-item>-->
 
         <el-form-item prop="leader" label="联系人">
           <el-input v-model="teamFram.leader" placeholder="请输入联系人"></el-input>
@@ -210,7 +200,7 @@
           ></el-cascader>
         </el-form-item>
 
-        <el-form-item prop="address" label="详细地址" v-if='addressShow'>
+        <el-form-item prop="address" label="详细地址" v-if="addressShow">
           <el-input v-model="teamFram.address" placeholder="请输入地址"></el-input>
         </el-form-item>
       </el-form>
@@ -234,21 +224,21 @@ export default {
       return cb(new Error("请输入合法的手机号"));
     };
     return {
-      isTeamParent:true,
-      currentTeamInfo:{},//当前点击的团队/部门/小组数据
-      name:'www',
-      currentTeamCode:'',
-      currentTeamTypeCode:'',
-      cityprops:{
-        children:'child',
-        label:'name',
-        value:'name',
-        checkStrictly:true
+      isTeamParent: true,
+      currentTeamInfo: {}, //当前点击的团队/部门/小组数据
+      name: "www",
+      currentTeamCode: "",
+      currentTeamTypeCode: "",
+      cityprops: {
+        children: "child",
+        label: "name",
+        value: "name",
+        checkStrictly: true
       },
       cityList: [],
       options: [],
       teamTypeList: [],
-      addressShow:true,
+      addressShow: true,
       pageSize: 10,
       pageNum: 1,
       total: 0,
@@ -256,39 +246,35 @@ export default {
       menuList: [],
       teamFram: {
         name: "",
-        account:'',
+        account: "",
         // password:'',
-        leader:'',
-        phone:'',
-        pcd:'',
-        city:[],
-        address:'',
+        leader: "",
+        phone: "",
+        pcd: "",
+        city: [],
+        address: "",
         parentCode: ""
       },
       addTeamTile: "新增团队",
-      teamTypeTitle:'团队名称',
-      teamTypeAccount:'团队账号',
-      teamTypePassword:'团队密码',
+      teamTypeTitle: "团队名称",
+      teamTypeAccount: "团队账号",
+      teamTypePassword: "团队密码",
       editId: "",
       dialogVisible: false,
-      addTeamDialogType:1,
-      addTeamFormRules:{
-        name:[
-              { required: true, message: '请输入名称', trigger: 'blur' },
-          ],
-        account:[
-              { required: true, message: '请输入账号', trigger: 'blur' },
-          ],
+      addTeamDialogType: 1,
+      addTeamFormRules: {
+        name: [{ required: true, message: "请输入名称", trigger: "blur" }],
+        account: [{ required: true, message: "请输入账号", trigger: "blur" }],
         // password:[
         //       { required: true, message: '请输入密码', trigger: 'blur' },
         //   ],
-        leader:[
-              { required: true, message: '请输入名联系人', trigger: 'blur' },
-          ],
-        phone:[
-              { required: true, message: '请输入联系人电话', trigger: 'blur' },
-              { validator: checkMobile, trigger: "blur" }
-          ]
+        leader: [
+          { required: true, message: "请输入名联系人", trigger: "blur" }
+        ],
+        phone: [
+          { required: true, message: "请输入联系人电话", trigger: "blur" },
+          { validator: checkMobile, trigger: "blur" }
+        ]
       }
     };
   },
@@ -336,26 +322,26 @@ export default {
     iconEdit(val) {
       this.addTeamDialogType = 2;
       this.addTeamTile = "团体部门";
-      this.teamTypeTitle = '团体名称';
-      this.teamTypeAccount = '团体账号';
-      this.teamTypePassword = '团体密码';
-      if(val.code.length == 3){
+      this.teamTypeTitle = "团体名称";
+      this.teamTypeAccount = "团体账号";
+      this.teamTypePassword = "团体密码";
+      if (val.code.length == 3) {
         this.addTeamTile = "修改团体";
-        this.teamTypeTitle = '团体名称';
-        this.teamTypeAccount = '团体账号';
-        this.teamTypePassword = '团体密码';
+        this.teamTypeTitle = "团体名称";
+        this.teamTypeAccount = "团体账号";
+        this.teamTypePassword = "团体密码";
         this.addressShow = true;
       } else if (val.code.length == 6) {
         this.addTeamTile = "修改部门";
-        this.teamTypeTitle = '部门名称';
-        this.teamTypeAccount = '部门账号';
-        this.teamTypePassword = '部门密码';
+        this.teamTypeTitle = "部门名称";
+        this.teamTypeAccount = "部门账号";
+        this.teamTypePassword = "部门密码";
         this.addressShow = false;
       } else if (val.code.length == 9) {
         this.addTeamTile = "修改小组";
-        this.teamTypeTitle = '小组名称';
-        this.teamTypeAccount = '小组账号';
-        this.teamTypePassword = '部门密码';
+        this.teamTypeTitle = "小组名称";
+        this.teamTypeAccount = "小组账号";
+        this.teamTypePassword = "部门密码";
         this.addressShow = false;
       }
       this.dialogVisible = true;
@@ -412,56 +398,54 @@ export default {
       this.getTeamDeptList();
     },
     // 左侧增改弹框
-     dialogVisibleEnter() {
+    dialogVisibleEnter() {
       let httpUrl = "";
       let parm = {};
       console.log(this.teamFram);
       this.$refs.addTeamFormRef.validate(async valid => {
-        if(valid){
+        if (valid) {
           if (this.addTeamDialogType == 2) {
             httpUrl = "teamList/dept/update";
-            if(this.addressShow) {
+            if (this.addressShow) {
               parm = {
                 id: this.editId,
-                account:this.teamFram.account,
+                account: this.teamFram.account,
                 name: this.teamFram.name,
-                leader:this.teamFram.leader,
-                phone:this.teamFram.phone,
-                address:this.teamFram.address,
-                pcd:this.teamFram.city.join('-'),
+                leader: this.teamFram.leader,
+                phone: this.teamFram.phone,
+                address: this.teamFram.address,
+                pcd: this.teamFram.city.join("-")
               };
             } else {
               parm = {
                 id: this.editId,
-                account:this.teamFram.account,
+                account: this.teamFram.account,
                 name: this.teamFram.name,
-                leader:this.teamFram.leader,
-                phone:this.teamFram.phone,
+                leader: this.teamFram.leader,
+                phone: this.teamFram.phone
               };
             }
-            
           } else {
             httpUrl = "teamList/dept/add";
-            if(this.addressShow) {
+            if (this.addressShow) {
               parm = {
-                account:this.teamFram.account,
+                account: this.teamFram.account,
                 name: this.teamFram.name,
-                leader:this.teamFram.leader,
-                phone:this.teamFram.phone,
-                address:this.teamFram.address,
-                pcd:this.teamFram.city.join('-'),
+                leader: this.teamFram.leader,
+                phone: this.teamFram.phone,
+                address: this.teamFram.address,
+                pcd: this.teamFram.city.join("-"),
                 parentCode: this.teamFram.parentCode
               };
             } else {
               parm = {
-                account:this.teamFram.account,
+                account: this.teamFram.account,
                 name: this.teamFram.name,
-                leader:this.teamFram.leader,
-                phone:this.teamFram.phone,
+                leader: this.teamFram.leader,
+                phone: this.teamFram.phone,
                 parentCode: this.teamFram.parentCode
               };
             }
-            
           }
           const { data: res } = await this.$http.post(httpUrl, parm);
           if (res.code != 200) return this.$message.error("操作失败");
@@ -470,35 +454,36 @@ export default {
           this.dialogVisible = false;
         }
       });
-     
     },
     editDialogClosed() {
       this.dialogVisible = false;
     },
-    cellClick(val,column,cell,event){
-    },
-    handdle(val,column,event) {
-      if(val.code.length == 3) {//团队
-        this.teamTypeTitle = '团队名称';
-        this.teamTypeAccount = '团队账号';
-        this.teamTypePassword = '团体密码';
-      }else if(val.code.length == 6) {//部门
-        this.teamTypeTitle = '部门名称';
-        this.teamTypeAccount = '部门账号';
-        this.teamTypePassword = '部门密码';
-      }else if(val.code.length == 9) {//小组
-        this.teamTypeTitle = '小组名称';
-        this.teamTypeAccount = '小组账号';
-        this.teamTypePassword = '部门密码';
+    cellClick(val, column, cell, event) {},
+    handdle(val, column, event) {
+      if (val.code.length == 3) {
+        //团队
+        this.teamTypeTitle = "团队名称";
+        this.teamTypeAccount = "团队账号";
+        this.teamTypePassword = "团体密码";
+      } else if (val.code.length == 6) {
+        //部门
+        this.teamTypeTitle = "部门名称";
+        this.teamTypeAccount = "部门账号";
+        this.teamTypePassword = "部门密码";
+      } else if (val.code.length == 9) {
+        //小组
+        this.teamTypeTitle = "小组名称";
+        this.teamTypeAccount = "小组账号";
+        this.teamTypePassword = "部门密码";
       }
       this.currentTeamInfo = val;
       this.requestCode = val.code;
       this.currentTeamTypeCode = val.code;
       this.getTeamCheckTypeList();
-      if(val.code.length == 3) {
+      if (val.code.length == 3) {
         this.isTeamParent = true;
         this.currentTeamCode = val.code;
-      }else{
+      } else {
         this.isTeamParent = false;
       }
       // this.getCardList();
@@ -511,9 +496,9 @@ export default {
         this.dialogVisible = true;
         this.addTeamDialogType = 1;
         this.addTeamTile = "团体部门";
-        this.teamTypeTitle = '团体名称';
-        this.teamTypeAccount = '团体账号';
-        this.teamTypePassword = '团体密码';
+        this.teamTypeTitle = "团体名称";
+        this.teamTypeAccount = "团体账号";
+        this.teamTypePassword = "团体密码";
         this.addressShow = true;
         this.teamFram.parentCode = "0";
       }
@@ -527,8 +512,11 @@ export default {
       this.getTeamCheckTypeList();
     },
     //新增团队检测
-    addCheckPackages(){
-      this.$router.push({path:'/home/teamCenter/addTeamCheck',query:{teamCode:this.currentTeamCode}});
+    addCheckPackages() {
+      this.$router.push({
+        path: "/home/teamCenter/addTeamCheck",
+        query: { teamCode: this.currentTeamCode }
+      });
     },
     checkPatient(row){//查看检测人员
       this.$router.push({path:'/home/teamCenter/teamPatientDeail',query:{packageInfo:JSON.stringify(row),teamTypeCode:this.currentTeamTypeCode}})
@@ -570,7 +558,7 @@ export default {
 }
 .connectTeam .searchBox {
   height: 50px;
-  border-bottom:#cec7c7  solid 1px;
+  border-bottom: #cec7c7 solid 1px;
 }
 .connectTeam .searchInput {
   width: 45%;
@@ -590,7 +578,7 @@ export default {
   cursor: pointer;
   font-size: 30px !important;
 }
-.teamDetail li{
+.teamDetail li {
   display: flex;
   font-size: 16px;
   color: #c1c2c9;
