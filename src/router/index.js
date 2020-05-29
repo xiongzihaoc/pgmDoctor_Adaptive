@@ -69,6 +69,22 @@ const routes = [{
         }
       },
       {
+        path:'/home/teamCenter/teamPatientDeail',
+        name:'teamPatientDeail',
+        component:()=>import('@/components/TeamCenter/TeamPatientDeail.vue'),
+        meta:{
+          title:'检测人员列表'
+        }
+      },
+      {
+        path:'/home/teamCenter/teamDeptReportDetail',
+        name:'teamDeptReportDetail',
+        component:()=>import('@/components/TeamCenter/TeamDeptReportDetail.vue'),
+        meta:{
+          title:'团队检测报告'
+        }
+      },
+      {
         path: '/home/userCenter/addNewPer',
         name: "addNewPer",
         component: () => import('@/components/UserList/AddNewPer.vue'),
