@@ -41,11 +41,103 @@
                         <div class="teamReportSheetDetail" v-for="(item,index) in deptReportInfo" :key="index">
                             <p class="teamReportSheetName">{{item.sheetName}}</p>
                             <p class="teamReportSheetDec">{{item.sheetInstruction}}</p>
-                        </div>
-                        <el-table 
-                            style="margin-top:1%;">
+                            <div style="margin-top: 20px;">
+                                <span class="orangeYuan"></span>
+                                <span class="perInfo">参试人员性别统计分布表</span>
+                            </div>
+                            
+                            <!-- <div style="margin-top: 20px;" v-html="item.tableStr">{{item.tableStr}}</div> -->
+                            <!-- <div style="margin-top: 20px;"> -->
+                                <el-table style="width: 100%;margin-top: 20px;" :data="item.checkPeopleSumData" border
+                                :header-cell-style="{ background:'#f5f5f5',height:'50px',color:'#909399'}">
+                                    <el-table-column align="center"
+                                        prop="title"
+                                        label=""></el-table-column>
+                                    <el-table-column align="center"
+                                        prop="man"
+                                        label="男"></el-table-column>
+                                    <el-table-column align="center"
+                                        prop="women"
+                                        label="女"></el-table-column>
+                                        <el-table-column align="center"
+                                        prop="sum"
+                                        label="总体"></el-table-column>
+                                </el-table>
+                            <!-- </div> -->
+                            <div style="margin-top: 20px;">
+                                <span class="orangeYuan"></span>
+                                <span class="perInfo">参试人员性别统计分布图</span>
+                            </div>
+                            <div style="margin-top: 20px;width: 100%;">
+                                <ve-pie :data="item.chartData" radius="100"></ve-pie>
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <span class="orangeYuan"></span>
+                                <span class="perInfo">参试人员体质统计表</span>
+                            </div>
+                            <el-table :data="item.factor" style="width: 100%;margin-top: 20px;">
+                                <el-table-column align="center"
+                                    prop="factor_name"
+                                    label="体质">
+                                </el-table-column>
+                                <el-table-column align="center"
+                                    label="总体">
+                                    <el-table-column align="center"
+                                        prop="sum"
+                                        label="人数">
+                                    </el-table-column>
+                                    <el-table-column align="center"
+                                        prop="sumPro"
+                                        label="百分比">
+                                    </el-table-column>
+                                </el-table-column>
+                                <el-table-column align="center"
+                                    label="女性">
+                                    <el-table-column align="center"
+                                        prop="women"
+                                        label="人数">
+                                    </el-table-column>
+                                    <el-table-column align="center"
+                                        prop="womenPro"
+                                        label="百分比">
+                                    </el-table-column>
+                                </el-table-column>
+                                <el-table-column align="center"
+                                    label="男性">
+                                    <el-table-column align="center"
+                                        prop="man"
+                                        label="人数">
+                                    </el-table-column>
+                                    <el-table-column align="center"
+                                        prop="manPro"
+                                        label="百分比">
+                                    </el-table-column>
+                                </el-table-column>
+                            </el-table>
+                            <div style="margin-top: 20px;">
+                                <span class="orangeYuan"></span>
+                                <span class="perInfo">参试人员因子总体统计图</span>
+                            </div>
+                            <div style="margin-top: 20px;width: 100%;">
+                                <ve-pie :data="item.factorSumPeopleChart" radius="100"></ve-pie>
+                            </div>
 
-                        </el-table>
+                            <div style="margin-top: 20px;">
+                                <span class="orangeYuan"></span>
+                                <span class="perInfo">参试人员因子男性统计图</span>
+                            </div>
+                            <div style="margin-top: 20px;width: 100%;">
+                                <ve-pie :data="item.factorManPeopleChart" radius="100"></ve-pie>
+                            </div>
+
+                            <div style="margin-top: 20px;">
+                                <span class="orangeYuan"></span>
+                                <span class="perInfo">参试人员因子女性统计图</span>
+                            </div>
+                            <div style="margin-top: 20px;width: 100%;">
+                                <ve-pie :data="item.factorWomenPeopleChart" radius="100"></ve-pie>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </el-card>
@@ -84,21 +176,110 @@ export default {
             teamDept:this.deptCode,
             countType:0
         });
-        console.log(res);
         this.deptReportInfo = res.data;
         this.getStatisticalData();
     },
-    getStatisticalData(statisticalData){
-        var people = this.deptReportInfo[0].people;
-        var table='<table>';
-        table += '<tr><td></td>';
-        for(var i=0;i<people.length;i++){
-            table +='<td>'+people[i].title+'</td>';
+    getStatisticalData(){
+        if(this.deptReportInfo != null &&this.deptReportInfo.length>0){
+            for(var i=0;i<this.deptReportInfo.length;i++){
+                var staticalData = this.deptReportInfo[i];
+                var factor = staticalData.factor;
+                var factorSumPeopleChart = {};
+                var factorSumPeopleChartColumns = ['factorName','count'];
+                var factorSumPeopleChartRow = [];
+
+                var factorManPeopleChart = {};
+                var factorManPeopleChartRow = [];
+
+                var factorWomenPeopleChart = {};
+                var factorWomenPeopleChartRow = [];
+
+                for(var j=0;j<factor.length;j++){
+                    var factorSumPeopleChartRowInfo = {};
+                    var factorManPeopleChartRowInfo = {};
+                    var factorWomenPeopleChartRowInfo = {};
+                    var factorInfo = factor[j];
+                    factorInfo.sumPro = 100+"%";
+                    factorInfo.manPro = (factorInfo.man/factorInfo.sum*100)+"%";
+                    factorInfo.womenPro = (factorInfo.women/factorInfo.sum*100)+"%";
+                    factorSumPeopleChartRowInfo.factorName = factorInfo.factor_name;
+                    factorSumPeopleChartRowInfo.count = factorInfo.sum;
+                    factorSumPeopleChartRow.push(factorSumPeopleChartRowInfo);
+
+                    factorManPeopleChartRowInfo.factorName = factorInfo.factor_name;
+                    factorManPeopleChartRowInfo.count = factorInfo.sum;
+                    factorManPeopleChartRow.push(factorSumPeopleChartRowInfo);
+
+                    factorManPeopleChartRowInfo.factorName = factorInfo.factor_name;
+                    factorManPeopleChartRowInfo.count = factorInfo.sum;
+                    factorWomenPeopleChartRow.push(factorSumPeopleChartRowInfo);
+                }
+                factorSumPeopleChart.columns = factorSumPeopleChartColumns;
+                factorSumPeopleChart.rows = factorSumPeopleChartRow;
+                staticalData.factorSumPeopleChart = factorSumPeopleChart;
+
+                factorManPeopleChart.columns = factorSumPeopleChartColumns;
+                factorManPeopleChart.rows = factorManPeopleChartRow;
+                staticalData.factorManPeopleChart = factorManPeopleChart;
+
+
+                factorWomenPeopleChart.columns = factorSumPeopleChartColumns;
+                factorWomenPeopleChart.rows = factorWomenPeopleChartRow;
+                staticalData.factorWomenPeopleChart = factorWomenPeopleChart;
+
+               
+                
+                var people = staticalData.people;
+                var checkPeopleSumData=[];
+                var checkPeopleSumDataInfo = {};
+                checkPeopleSumDataInfo.title="人数";
+                var manData = people[0];
+                var women = people[1];
+                checkPeopleSumDataInfo.man = manData.count;
+                checkPeopleSumDataInfo.women = women.count;
+                checkPeopleSumDataInfo.sum = manData.sum;
+                checkPeopleSumData.push(checkPeopleSumDataInfo);
+
+                var checkPeopleProDataInfo = {};
+                checkPeopleProDataInfo.title="百分比";
+                checkPeopleProDataInfo.man = (manData.count/manData.sum*100)+"%";
+                checkPeopleProDataInfo.women = (women.count/manData.sum*100)+"%"
+                checkPeopleProDataInfo.sum = '100%';
+                checkPeopleSumData.push(checkPeopleProDataInfo);
+                staticalData.checkPeopleSumData=checkPeopleSumData;
+
+                var sexChartData ={};
+                // var table = '<table class="reportTable" border="1" style="width: 100%;text-align: center;border-collapse:collapse;"><tr style="background:#FAFAFA;color:#000000;font-weight:700"><td></td>';
+                // var sumPeople = people[0].sum;
+                var columns = ['sex','count'];
+                var chartData = [];
+                for(var j=0;j<people.length;j++){
+                    var chartDataInfo = {};
+                    chartDataInfo.sex = people[j].title;
+                    chartDataInfo.count = people[j].count;
+                    chartData.push(chartDataInfo);
+                    // table+='<td border="1">'+people[j].title+'</td>';
+                }
+                // table+='<td>总数</td></tr><tr><td>人数</td>';
+                // for(var j=0;j<people.length;j++){
+                //     table+='<td>'+people[j].count+'</td>';
+                // }
+                // table+='<td>'+sumPeople+'</td></tr><tr><td>百分比</td>';
+                // for(var j=0;j<people.length;j++){
+                //     table+='<td>'+people[j].count/sumPeople*100+'%</td>';
+                // }
+                // table+='<td>100%</td></tr></table>';
+                // staticalData.tableStr = table;
+                sexChartData.columns = columns;
+                sexChartData.rows = chartData;
+                staticalData.chartData = sexChartData;
+            }
         }
-        table+='<td>总数</td></tr></table>';
-        console.log(table);
+        console.log(this.deptReportInfo);
+       
         // var tableHeader = [];
         // var tableData=[];
+        // var tab
         // var tableDataHeader = {
         //     lngTitle:'人数'
         // };
@@ -108,6 +289,7 @@ export default {
         // };
         // tableHeader.push(tableHeadetFirst);
         // var sumPatient = 0;
+        
         // for(var i=0;i<people.length;i++){
         //     var tableTitle={};
         //     tableTitle.title = people[i].title;
@@ -116,7 +298,6 @@ export default {
         //     }else{
         //         tableTitle.prop = 'woman'
         //     }
-            
         //     tableHeader.push(tableTitle);
         //     sumPatient =  people[i].count;
         // }
@@ -183,5 +364,17 @@ export default {
     color: #444444;
     font-size: 15px;
     padding-top: 10px;
+}
+.table{
+    width: 100%;
+    bottom: 1px;
+}
+.reportTable{
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.reportTable td{
+    border-left: 1px solid black;
+    border-top: 1px solid black;
 }
 </style>

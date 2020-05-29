@@ -121,13 +121,8 @@
                 size="mini"
                 @click.prevent.stop="teamPackages(scope.row)"
               >检测套餐</el-button>
-<<<<<<< HEAD
               <!-- v-if="scope.row.state !=0" -->
               <el-button 
-=======
-              <el-button
-                v-if="scope.row.state !=0"
->>>>>>> 8a2c0dee9abf6674e5f5428f9809e97c51665a42
                 type="primary"
                 size="mini"
                 @click.prevent.stop="teamReport(scope.row)"
