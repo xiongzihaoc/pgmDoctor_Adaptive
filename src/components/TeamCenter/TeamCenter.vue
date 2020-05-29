@@ -121,8 +121,9 @@
                 size="mini"
                 @click.prevent.stop="teamPackages(scope.row)"
               >检测套餐</el-button>
-              <!-- v-if="scope.row.state !=0" -->
+              <!--  -->
               <el-button 
+                v-if="scope.row.state !=0"
                 type="primary"
                 size="mini"
                 @click.prevent.stop="teamReport(scope.row)"
