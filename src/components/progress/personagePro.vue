@@ -68,7 +68,7 @@
         ></el-pagination>
       </el-card>
       <!-- 右侧卡片 -->
-      <CardR></CardR>
+      <!-- <CardR></CardR> -->
     </div>
   </div>
 </template>
@@ -155,7 +155,7 @@ export default {
 }
 .cardLeft {
   float: left;
-  width: 60%;
+  width: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   height: 100%;

@@ -33,7 +33,7 @@
               :header-cell-style="{ background:'#5BAEFF',height:'50px',color:'#fff'}">
               <el-table-column
                   align="center"
-                  prop="teamNo"
+                  prop="orderNo"
                   label="检测卡号"/>
                 <el-table-column
                   align="center"
@@ -59,38 +59,48 @@
                   align="center"
                   prop="edu"
                   label="文化"/>
-                  <el-table-column
+                <el-table-column
                   align="center"
                   prop="job"
                   label="职业"/>
                 <el-table-column
                   v-if="deptCode.length==3"
                   align="center"
-                  prop="teamNo"
+                  prop="teamDept"
                   label="部门"/>
                 <el-table-column
                 v-if="deptCode.length==3 || deptCode.length==6"
                   align="center"
-                  prop="teamNo"
+                  prop="teamDept"
                   label="小组"/>
-                <el-table-column
+                <!-- <el-table-column
                   align="center"
                   prop="teamNo"
-                  label="检测套餐"/>
+                  label="检测套餐"/> -->
                 <el-table-column
                   align="center"
-                  prop="teamNo"
-                  label="检测时间"/>
+                  prop="checkTime"
+                  label="检测时间">
+                    <template slot-scope="scope">
+                      <div>{{timesChangeDate(scope.row.checkTime)}}</div>
+                    </template>
+                  </el-table-column>
                 <el-table-column
                   align="center"
-                  prop="teamNo"
-                  label="结果"/>
+                  prop="state"
+                  label="结果">
+                    <template slot-scope="scope">
+                      <div v-if="scope.row.state==3">已检测</div>
+                      <div v-else>未检测</div>
+                    </template>
+                </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作">
                   <template slot-scope="scope">
-                    <el-button
+                    <el-button v-if="scope.row.state==3"
                       type="primary"
                       size="mini"
-                      @click.prevent.stop="checkPatient(scope.row)">报告</el-button>
+                      @click.prevent.stop="checkPatientReport(scope.row)">报告</el-button>
+                    <el-button v-else type="info"  size="mini" disabled>未检测</el-button>
                   </template>
                 </el-table-column>
             </el-table>
@@ -153,6 +163,9 @@ export default {
       this.pageNum = newPage;
       this.getDeptPatient();
     },
+    checkPatientReport(info){
+      this.$router.push({path:'/home/examiningReport/examiningDetail',query:{orderNo:info.orderNo}});
+    }
   }
 }
 </script>

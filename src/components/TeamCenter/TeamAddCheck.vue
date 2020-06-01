@@ -98,6 +98,7 @@ export default {
         addCheckDilogShow:false,//新增套餐Dialog
         selectedPackagesDialogShow:false,//选择量表套餐Dialog
         addTeamCheckFrom:{
+            id:'',
             teamNo:'',
             teamNumber:'',
             paramList:[]
@@ -193,14 +194,38 @@ export default {
                 if(this.addTeamCheckFrom.paramList == null || this.addTeamCheckFrom.paramList.length == 0){
                     return this.$message.error('请添加检测套餐');
                 }
-                console.log(this.addTeamCheckFrom);
-                const { data: res } = await this.$http.post("teamList/add",{
-                    teamNo:this.addTeamCheckFrom.teamNo,
-                    teamNumber:this.addTeamCheckFrom.teamNumber,
-                    teamDept:this.teamCode,
-                    paramList:this.addTeamCheckFrom.paramList
-                });
-                if(res == null || res.code != 200) return this.$message.error('添加检测失败，请重试');
+                var params = {};
+                var url='teamList/add';
+                if(this.addOrUpdateType == 1){
+                    url='teamList/add';
+                }else {
+                    url='teamList/update';
+                }
+                if(this.addOrUpdateType == 1){
+                    params = {
+                        teamNo:this.addTeamCheckFrom.teamNo,
+                        teamNumber:this.addTeamCheckFrom.teamNumber,
+                        teamDept:this.teamCode,
+                        paramList:this.addTeamCheckFrom.paramList
+                    };
+                }else {
+                    params = {
+                        id:this.addTeamCheckFrom.id,
+                        teamNo:this.addTeamCheckFrom.teamNo,
+                        teamNumber:this.addTeamCheckFrom.teamNumber,
+                        teamDept:this.teamCode,
+                        paramList:this.addTeamCheckFrom.paramList
+                    };
+                }
+                const { data: res } = await this.$http.post(url,params);
+                if(res == null || res.code != 200){
+                    if(this.addOrUpdateType == 1){
+                        return this.$message.error('添加检测失败，请重试');
+                    }else {
+                        return this.$message.error('修改检测失败，请重试');
+                    }
+                    
+                }
                 this.addTeamCheckFrom = {};
                 this.$router.push({path:'/home/teamCenter'});
                 console.log(res);
