@@ -14,12 +14,17 @@
           :inline="true"
           label-position="right"
         >
+          <!-- 体卡类型  出生日期 -->
           <li style="width:100%;display:flex;justify-content: center;">
-            <el-form-item label="医  生" prop="docName" style="margin-right:5%">
-              <el-input v-model="editAddForm.docName"></el-input>
+            <el-form-item label="体卡类型" prop="entityCard" style="margin-right:5%">
+              <el-select v-model="editAddForm.entityCard" placeholder="请选择体卡类型" style="width:202px">
+                <el-option label="虚拟卡" value="虚拟卡"></el-option>
+                <!-- <el-option label="实体卡" value="实体卡"></el-option> -->
+              </el-select>
             </el-form-item>
             <el-form-item label="出生日期" prop="birth" class="birth">
               <el-date-picker
+                style="width:202px"
                 v-model="editAddForm.birth"
                 :editable="false"
                 type="date"
@@ -27,23 +32,70 @@
               ></el-date-picker>
             </el-form-item>
           </li>
-          <li style="display:flex;justify-content: center;">
+          <!-- 姓名  手机 -->
+          <li style="width:100%;display:flex;justify-content: center;">
             <el-form-item label="姓  名" prop="name" style="margin-right:5%">
               <el-input v-model="editAddForm.name"></el-input>
             </el-form-item>
+            <el-form-item label="手  机" prop="phone">
+              <el-input v-model="editAddForm.phone"></el-input>
+            </el-form-item>
+          </li>
+          <!-- 科室  性别 -->
+          <li style="width:100%;display:flex;justify-content: center;">
+            <el-form-item label="科  室" prop="docName" style="margin-right:5%">
+              <el-select
+                filterable
+                v-model="editAddForm.docName"
+                placeholder="请选择科室"
+                style="width:202px"
+              >
+                <el-option
+                  v-for="item in docList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.uuid"
+                >
+                  <div style="display:flex;">
+                    <span style="flex: 1;font-weight:700;">{{ item.name }}</span>
+                    <span style="flex: 1;text-align:center">{{ item.hospital }}</span>
+                    <span style="flex: 1;text-align:center">{{ item.office }}</span>
+                  </div>
+                </el-option>
+              </el-select>
+            </el-form-item>
             <el-form-item label="性  别" prop="sex">
-              <el-select v-model="editAddForm.sex" placeholder="请选择性别">
+              <el-select v-model="editAddForm.sex" placeholder="请选择性别" style="width:202px">
                 <el-option label="男" value="男"></el-option>
                 <el-option label="女" value="女"></el-option>
               </el-select>
             </el-form-item>
           </li>
-          <li style="display:flex;justify-content: center;">
-            <el-form-item label="手  机" prop="phone" style="margin-right:5%">
-              <el-input v-model="editAddForm.phone"></el-input>
+          <!-- 医生  职业 -->
+          <li style="width:100%;display:flex;justify-content: center;">
+            <el-form-item label="医  生" prop="docName" style="margin-right:5%">
+              <el-select
+                filterable
+                v-model="editAddForm.docName"
+                placeholder="请选择医生"
+                style="width:202px"
+              >
+                <el-option
+                  v-for="item in docList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.uuid"
+                >
+                  <div style="display:flex;">
+                    <span style="flex: 1;font-weight:700;">{{ item.name }}</span>
+                    <span style="flex: 1;text-align:center">{{ item.hospital }}</span>
+                    <span style="flex: 1;text-align:center">{{ item.office }}</span>
+                  </div>
+                </el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="职  业" prop="job">
-              <el-select v-model="editAddForm.job" placeholder="请选择职业">
+              <el-select v-model="editAddForm.job" placeholder="请选择职业" style="width:202px">
                 <el-option
                   v-for="item in jobList"
                   :key="item.id"
@@ -53,26 +105,9 @@
               </el-select>
             </el-form-item>
           </li>
+          <!-- 套餐  婚姻 -->
           <li style="display:flex;justify-content: center;">
-            <el-form-item label="婚  姻" prop="marriage" style="margin-right:5%">
-              <el-select v-model="editAddForm.marriage" placeholder="请选择" style="width:202px">
-                <el-option label="未婚" value="未婚"></el-option>
-                <el-option label="已婚" value="已婚"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="教  育" prop="edu">
-              <el-select v-model="editAddForm.edu" placeholder="请选择职业">
-                <el-option
-                  v-for="item in eduList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </li>
-          <li style="display:flex;justify-content: center;">
-            <el-form-item label="套  餐" style="margin-right:5%">
+            <el-form-item label="套  餐" style="margin-right:5%" prop="taocao">
               <el-input
                 v-model="strUserName"
                 placeholder="请选择套餐"
@@ -88,9 +123,11 @@
                 >{{item.sheetName}}</li>
               </ul>
             </el-form-item>
-            <!-- 占位隐藏布局 -->
-            <el-form-item label="隐  藏" style="visibility:hidden">
-              <el-select v-model="editAddForm.marriage" disabled></el-select>
+            <el-form-item label="婚  姻" prop="marriage">
+              <el-select v-model="editAddForm.marriage" placeholder="请选择" style="width:202px">
+                <el-option label="未婚" value="未婚"></el-option>
+                <el-option label="已婚" value="已婚"></el-option>
+              </el-select>
             </el-form-item>
           </li>
           <li style="display:flex;justify-content: center;">
@@ -142,6 +179,10 @@ export default {
       timesChangeDate,
       Addrules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        entityCard: [
+          { required: true, message: "请输入姓名", trigger: "blur" }
+        ],
+        // taocao: [{ required: true, message: "请选择套餐" }],
         docName: [
           { required: true, message: "请输入医生姓名", trigger: "blur" }
         ],
@@ -164,6 +205,7 @@ export default {
       },
       editAddForm: {
         docName: "",
+        entityCard: "虚拟卡",
         name: "",
         phone: "",
         sex: "",
@@ -191,6 +233,7 @@ export default {
       checked: false,
       comboList: [],
       checkList: [],
+      docList: [],
       uuid: "",
       strUserName: "",
       openOrcls: false
@@ -199,13 +242,31 @@ export default {
   created() {
     if (this.$route.query.mess == "修改") {
       this.editAddForm = JSON.parse(window.sessionStorage.getItem("editInfo"));
+    } else if (this.$route.query.mess == "追加检测") {
+      this.editAddForm = JSON.parse(this.$route.query.info);
+      this.editAddForm.sex = JSON.parse(this.$route.query.info).gender
+      this.editAddForm.birth = JSON.parse(this.$route.query.info).birthday
     }
+    console.log(this.editAddForm);
+    
     this.getInfoList();
+    this.getDocList();
   },
   methods: {
+    // 获取个人信息
     async getInfoList() {
       const { data: res } = await this.$http.post("/office_package/load", {});
+      console.log(res);
+
       this.comboList = res.rows;
+    },
+    // 获取医生列表
+    async getDocList() {
+      const { data: res } = await this.$http.post("doc/getDoctor", {});
+      if (res.code !== 200) return this.$message.error("获取医生列表失败");
+      console.log(res);
+
+      this.docList = res.rows;
     },
     // 保存信息
     enterSave() {

@@ -9,7 +9,7 @@
       <el-button
         type="danger"
         size="mini"
-        v-if="this.infoObj.checkState != 0"
+        v-show="print"
         v-print="'#printDiv'"
         style="position: absolute;top:58px;right:22px"
       >打印</el-button>
@@ -21,12 +21,15 @@
         <el-button
           type="primary"
           size="mini"
-          v-if="this.infoObj.checkState == 0"
+          v-show="Confirm"
           v-cloak
           @click.prevent.stop="hasConfirm"
         >确认审核</el-button>
       </div>
-      <ul class="content personalInfo" style="background:#f5f5f5;padding:1%;box-sizing:border-box;border-radius: 10px;">
+      <ul
+        class="content personalInfo"
+        style="background:#f5f5f5;padding:1%;box-sizing:border-box;border-radius: 10px;"
+      >
         <li>
           <span>
             姓名:
@@ -62,7 +65,7 @@
         </li>
         <!-- <li>
           <span>科室:</span>
-        </li> -->
+        </li>-->
         <li>
           <span>
             检测卡号:
@@ -105,7 +108,7 @@
               <span>{{item.sheetName}}</span>
             </div>
             <div style="padding: 0 0 7px 25px;">
-              <span class="score">总分：</span>
+              <span class="score">总分：{{item.score}}</span>
               <span
                 class="score"
                 v-for="(subItem,i) in item.factor"
@@ -213,6 +216,8 @@ export default {
       reportList: [],
       str: "",
       Arr: [],
+      Confirm: false,
+      print: false,
       chartData: {
         columns: ["type", "def"],
         rows: [
@@ -245,6 +250,11 @@ export default {
       // 个人资料数据
       this.advice = res.data.advice;
       this.infoObj = res.data.info;
+      if (this.infoObj.checkState != 0) {
+        this.print = true;
+      } else {
+        this.Confirm = true;
+      }
       this.reportList = res.data.report;
       console.log(res.data);
 
@@ -369,6 +379,5 @@ h4 {
   display: inline-block;
   margin: 30px 0 0 50%;
   transform: translate(-50%);
-  
 }
 </style>

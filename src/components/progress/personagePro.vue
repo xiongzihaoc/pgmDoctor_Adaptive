@@ -26,7 +26,7 @@
           >新增个人</el-button>
         </div>
         <!-- 调用公用表格组件 -->
-        <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:2%;" height="100">
+        <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;" height="100">
           <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
             <template slot-scope="scope">
               <div>{{scope.row.createTime}}</div>
@@ -68,7 +68,7 @@
         ></el-pagination>
       </el-card>
       <!-- 右侧卡片 -->
-      <!-- <CardR></CardR> -->
+      <CardR>1111</CardR>
     </div>
   </div>
 </template>
@@ -154,7 +154,7 @@ export default {
 }
 .cardLeft {
   float: left;
-  width: 100%;
+  width: 60%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   height: 100%;

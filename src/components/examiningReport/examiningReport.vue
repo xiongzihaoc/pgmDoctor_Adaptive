@@ -8,7 +8,7 @@
       <el-card class="cardLeft">
         <div class="searchBox">
           <el-input
-            size="medium"
+            size="small"
             class="searchInput"
             placeholder="请输入手机号/姓名"
             prefix-icon="el-icon-search"
