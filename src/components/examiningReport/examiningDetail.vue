@@ -5,7 +5,7 @@
       <el-breadcrumb-item :to="{ path: '/home/examiningReport' }">列表</el-breadcrumb-item>
       <el-breadcrumb-item>报告详情</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card class="card_top" style="height:32%;margin-bottom:1%;overflow:hidden">
+    <el-card class="card_top" style="height:85%;overflow: auto;-webkit-overflow-scrolling: touch;">
       <el-button
         type="danger"
         size="mini"
@@ -13,8 +13,7 @@
         v-print="'#printDiv'"
         style="position: absolute;top:58px;right:22px"
       >打印</el-button>
-      <!-- <div style="height:100%" id="printDiv"> -->
-      <div style="display:flex;flex-direction: row;justify-content: space-between;">
+      <div style="display:flex;flex-direction: row;justify-content: space-between;margin-bottom:1%">
         <div class="titleFlex">
           <span class="orangeYuan"></span>
           <span class="dataStat">个人资料</span>
@@ -27,7 +26,7 @@
           @click.prevent.stop="hasConfirm"
         >确认审核</el-button>
       </div>
-      <ul class="content personalInfo">
+      <ul class="content personalInfo" style="background:#f5f5f5;padding:1%;box-sizing:border-box">
         <li>
           <span>
             姓名:
@@ -61,9 +60,9 @@
             <i>{{infoObj.job}}</i>
           </span>
         </li>
-        <li>
+        <!-- <li>
           <span>科室:</span>
-        </li>
+        </li> -->
         <li>
           <span>
             检测卡号:
@@ -91,12 +90,7 @@
           </span>
         </li>
       </ul>
-    </el-card>
-    <el-card
-      class="card_bottom"
-      style="height:52%;overflow: auto;-webkit-overflow-scrolling: touch;"
-    >
-      <div class="titleFlex">
+      <div class="titleFlex" style="margin-top:1%;">
         <span class="orangeYuan"></span>
         <span class="dataStat">检测结果</span>
       </div>
@@ -173,6 +167,12 @@
         <p class="title" v-html="this.advice"></p>-->
       </div>
     </el-card>
+    <!-- <el-card
+      class="card_bottom"
+      style="height:52%;overflow: auto;-webkit-overflow-scrolling: touch;"
+    >
+     
+    </el-card>-->
   </div>
 </template>
 <script>
@@ -246,7 +246,7 @@ export default {
       this.advice = res.data.advice;
       this.infoObj = res.data.info;
       this.reportList = res.data.report;
-      console.log(this.reportList);
+      console.log(res.data);
 
       // 量表建议评语等数据
       var obj = {};
