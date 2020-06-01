@@ -6,9 +6,16 @@
     </el-breadcrumb>
     <div style="height:100%;overflow:hidden">
       <el-card style="height:85%;padding-top:8%;box-sizing:border-box;">
-        <el-form :model="editAddForm" label-width="80px" :rules="Addrules" ref="addInfoRef" label-position="right">
+        <el-form
+          :model="editAddForm"
+          label-width="80px"
+          :rules="Addrules"
+          ref="addInfoRef"
+          :inline="true"
+          label-position="right"
+        >
           <li style="width:100%;display:flex;justify-content: center;">
-            <el-form-item label="医生姓名" prop="docName" style="margin-right:5%">
+            <el-form-item label="医  生" prop="docName" style="margin-right:5%">
               <el-input v-model="editAddForm.docName"></el-input>
             </el-form-item>
             <el-form-item label="出生日期" prop="birth" class="birth">
@@ -32,8 +39,8 @@
             </el-form-item>
           </li>
           <li style="display:flex;justify-content: center;">
-            <el-form-item label="年  龄" prop="age" style="margin-right:5%">
-              <el-input v-model="editAddForm.age"></el-input>
+            <el-form-item label="手  机" prop="phone" style="margin-right:5%">
+              <el-input v-model="editAddForm.phone"></el-input>
             </el-form-item>
             <el-form-item label="职  业" prop="job">
               <el-select v-model="editAddForm.job" placeholder="请选择职业">
@@ -47,8 +54,11 @@
             </el-form-item>
           </li>
           <li style="display:flex;justify-content: center;">
-            <el-form-item label="地  址" prop="address" style="margin-right:5%">
-              <el-input v-model="editAddForm.address"></el-input>
+            <el-form-item label="婚  姻" prop="marriage" style="margin-right:5%">
+              <el-select v-model="editAddForm.marriage" placeholder="请选择" style="width:202px">
+                <el-option label="未婚" value="未婚"></el-option>
+                <el-option label="已婚" value="已婚"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="教  育" prop="edu">
               <el-select v-model="editAddForm.edu" placeholder="请选择职业">
@@ -58,17 +68,6 @@
                   :label="item.name"
                   :value="item.name"
                 ></el-option>
-              </el-select>
-            </el-form-item>
-          </li>
-          <li style="display:flex;justify-content: center;">
-            <el-form-item label="手  机" prop="phone" style="margin-right:5%">
-              <el-input v-model="editAddForm.phone"></el-input>
-            </el-form-item>
-            <el-form-item label="婚  姻" prop="marriage">
-              <el-select v-model="editAddForm.marriage" placeholder="请选择">
-                <el-option label="未婚" value="未婚"></el-option>
-                <el-option label="已婚" value="已婚"></el-option>
               </el-select>
             </el-form-item>
           </li>
@@ -90,7 +89,7 @@
               </ul>
             </el-form-item>
             <!-- 占位隐藏布局 -->
-            <el-form-item style="visibility:hidden">
+            <el-form-item label="隐  藏" style="visibility:hidden">
               <el-select v-model="editAddForm.marriage" disabled></el-select>
             </el-form-item>
           </li>
@@ -164,16 +163,16 @@ export default {
         // ]
       },
       editAddForm: {
-        docName: "熊紫豪",
+        docName: "",
         name: "",
-        phone: 18682308445,
-        sex: "女",
-        birth: "2020-10-01",
-        job: "前端",
-        marriage: "已婚",
-        age: "24",
-        edu: "本科",
-        address: "杭州西湖"
+        phone: "",
+        sex: "",
+        birth: "",
+        job: "",
+        marriage: "",
+        age: "",
+        edu: "",
+        address: ""
       },
       jobList: [
         { id: 1, name: "前端" },
@@ -268,7 +267,7 @@ export default {
     dialogVisibleCancel() {
       this.str = "";
       this.dialogVisible = false;
-    },
+    }
   }
 };
 </script>
