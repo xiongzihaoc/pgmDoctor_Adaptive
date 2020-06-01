@@ -101,7 +101,7 @@ export default {
       const { data: res } = await this.$http.post("checkList/list", {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        name: this.input
+        params: { search: this.input }
       });
       console.log(res);
       this.userList = res.rows;
@@ -111,12 +111,11 @@ export default {
     searchin() {
       this.getCardList();
     },
+    // 新增个人
     newAddPerson() {
       this.$router.push("/home/userCenter/addNewPer");
     },
     JumpUserCenter(info) {
-      console.log(info);
-
       this.$router.push({
         path: "/home/examiningReport/examiningDetail",
         query: { orderNo: info.orderNo }

@@ -26,7 +26,7 @@
           @click.prevent.stop="hasConfirm"
         >确认审核</el-button>
       </div>
-      <ul class="content personalInfo" style="background:#f5f5f5;padding:1%;box-sizing:border-box">
+      <ul class="content personalInfo" style="background:#f5f5f5;padding:1%;box-sizing:border-box;border-radius: 10px;">
         <li>
           <span>
             姓名:
@@ -369,5 +369,6 @@ h4 {
   display: inline-block;
   margin: 30px 0 0 50%;
   transform: translate(-50%);
+  
 }
 </style>
