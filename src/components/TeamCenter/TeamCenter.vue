@@ -104,7 +104,7 @@
           <el-table-column align="center" prop="recordNumber" label="已录人数" />
 
           <el-table-column align="center" prop="checkNumber" label="检测人数" />
-          <el-table-column align="center" prop="packageName" label="套餐" />
+          <el-table-column align="center" prop="packageName" v-if="isTeamParent" label="套餐" />
           <el-table-column align="center" label="状态" prop="state">
             <template slot-scope="scope">
               <div v-if="scope.row.state==0">未开始</div>
@@ -127,7 +127,7 @@
                 type="primary"
                 size="mini"
                 @click.prevent.stop="teamReport(scope.row)"
-              >团队报告</el-button>
+              >报告</el-button>
               <el-button
                 v-if="scope.row.state ==0"
                 type="danger"
@@ -144,7 +144,7 @@
                 type="primary"
                 size="mini"
                 @click.prevent.stop="teamReport(scope.row)"
-              >团队报告</el-button>
+              >报告</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -220,6 +220,7 @@ export default {
       return cb(new Error("请输入合法的手机号"));
     };
     return {
+      type:'',
       isTeamParent: true,
       currentTeamInfo: {}, //当前点击的团队/部门/小组数据
       name: "www",
@@ -275,9 +276,12 @@ export default {
     };
   },
   created() {
-    // this.getCardList();
-    this.getTeamDeptList();
+    this.type = this.$route.query.type;
+    if(this.type == 'index'){
+      this.currentTeamCode = this.$route.query.teamCode;
+    }
     this.getCity();
+    this.getTeamDeptList();
   },
   methods: {
     // 获取检测列表
@@ -307,13 +311,24 @@ export default {
 
       this.menuList = res.data;
       if(this.menuList != null && this.menuList.length > 0) {
-          this.currentTeamInfo = this.menuList[0];
-          this.currentTeamCode = this.currentTeamInfo.code;
-          this.currentTeamTypeCode = this.currentTeamInfo.code;
-          console.log(this.currentTeamInfo);
+          if(this.type == 'index'){
+            this.currentTeamCode = this.currentTeamCode;
+            this.currentTeamTypeCode = this.currentTeamCode;
+            this.getTeamInfo();
+          }else {
+            this.currentTeamInfo = this.menuList[0];
+            this.currentTeamCode = this.currentTeamInfo.code;
+            this.currentTeamTypeCode = this.currentTeamInfo.code;
+          }
           this.getTeamCheckTypeList();
       }
     },
+    async getTeamInfo(){//获取团队详情
+          const {data:res} = await this.$http.post("teamList/dept/info",{
+              code:this.currentTeamCode
+          });
+          this.currentTeamInfo = res.data;
+      },
     // 左侧修改
     iconEdit(val) {
       this.addTeamDialogType = 2;
@@ -524,13 +539,28 @@ export default {
       this.$router.push({path:'/home/teamCenter/teamDeptReportDetail',query:{packageInfo:JSON.stringify(row),teamTypeCode:this.currentTeamTypeCode}})
     },
     updateCheck(row){//修改检测套餐
+      console.log(row);
       this.$router.push({path:'/home/teamCenter/addTeamCheck',query:{packageInfo:JSON.stringify(row),teamCode:this.currentTeamCode,teamCheckNum:row.teamNo,type:2}});
     }
   },
   watch: {
     menuList: function() {
       this.$nextTick(function() {
-        this.$refs.singleTable.setCurrentRow(this.menuList[0]);
+        console.log(this.currentTeamCode);
+        var teamInfo={};
+        if(this.currentTeamCode != null && this.currentTeamCode != ""){
+          if(this.menuList != null && this.menuList.length > 0){
+            for(var i=0;i<this.menuList.length;i++){
+                if(this.currentTeamCode == this.menuList[i].code){
+                  teamInfo = this.menuList[i];
+                  break;
+                }
+            }
+          }
+         
+        }
+        
+        this.$refs.singleTable.setCurrentRow(teamInfo);
       });
     }
   }
@@ -578,7 +608,7 @@ export default {
   display: flex;
   font-size: 16px;
   color: #c1c2c9;
-  padding: 2% 0 0 5%;
+  padding-top: 2%;
   box-sizing: border-box;
 }
 .teamDetail li .title {

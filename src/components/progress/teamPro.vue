@@ -17,26 +17,22 @@
             prefix-icon="el-icon-search"
             v-model="input"
             @input="searchin"
+            style="display: none;"
           ></el-input>
           <el-button
             type="primary"
             size="small"
             @click.prevent.stop="newAddPerson"
-            style="margin-left:2%"
+            style="margin-left:2%;display: none;"
           >新增团队</el-button>
         </div>
         <!-- 调用公用表格组件 -->
-        <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:2%;" height="100">
-          <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
-            <template slot-scope="scope">
-              <div>{{timesChangeDate(scope.row.createTime)}}</div>
-            </template>
-          </el-table-column>
+        <ElTable :data="teamTypeList" :header="tableHeaderBig" style="margin-top:2%;" height="100">
           <el-table-column
             align="center"
             slot="fixed"
             fixed="right"
-            label="测试情况"
+            label="状态"
             prop="state"
             :formatter="ifendcaseJck"
           ></el-table-column>
@@ -45,7 +41,7 @@
               <el-button
                 type="primary"
                 size="mini"
-                @click.prevent.stop="JumpUserCenter(scope.row)"
+                @click.prevent.stop="JumpTeamCenter(scope.row)"
               >查看</el-button>
             </template>
           </el-table-column>
@@ -62,7 +58,7 @@
         ></el-pagination>
       </el-card>
       <!-- 右侧卡片 -->
-      <CardR></CardR>
+      <!-- <CardR></CardR> -->
     </div>
   </div>
 </template>
@@ -76,11 +72,14 @@ export default {
     return {
       timesChangeDate,
       tableHeaderBig: [
-        { prop: "orderNo", label: "检测卡号" },
-        { prop: "name", label: "姓名" },
-        { prop: "phone", label: "手机号" }
+        { prop: "teamNo", label: "检测编号" },
+        { prop: "teamName", label: "团队名称" },
+        { prop: "teamNumber", label: "限定人数" },
+        { prop: "recordNumber", label: "已录人数" },
+        { prop: "checkNumber", label: "检测人数" },
+        {prop:"packageName",label:"检测套餐"}
       ],
-      userList: [],
+      teamTypeList: [],
       pageSize: 10,
       pageNum: 1,
       total: 0,
@@ -94,17 +93,18 @@ export default {
     };
   },
   created() {
-    this.getCardList();
+    this.getTeamCheckTypeList();
   },
   methods: {
     // 获取检查单列表
-    async getCardList() {
-      const { data: res } = await this.$http.post("checkList/list", {
+    async getTeamCheckTypeList() {
+      const { data: res } = await this.$http.post("teamList/list", {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        name: this.input
+        params: {'type':'all'}
       });
-      this.userList = res.rows;
+      console.log(res);
+      this.teamTypeList = res.rows;
       this.total = res.total;
     },
     searchin() {
@@ -114,8 +114,8 @@ export default {
     newAddPerson() {
       this.$router.push("/home/userCenter/addNewTeam");
     },
-    JumpUserCenter(info) {
-      this.$router.push("/home/userCenter");
+    JumpTeamCenter(info) {
+      this.$router.push({path:'/home/teamCenter',query:{teamCode:info.teamDept,type:'index'}});
     },
     perPro() {
       this.$emit("jumpTeam", "jumpPer");
@@ -130,10 +130,12 @@ export default {
     },
     // 检测卡类型状态码数字转中文
     ifendcaseJck(val) {
-      if (val.state == "1") {
-        return "已检测";
-      } else if (val.state == "2") {
-        return "未检测";
+      if (val.state == "0") {
+        return "未开始";
+      } else if (val.state == "1") {
+        return "已开始";
+      }else{
+        return "已结束";
       }
     }
   }
@@ -150,7 +152,7 @@ export default {
 }
 .cardLeft {
   float: left;
-  width: 60%;
+  width: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   height: 100%;

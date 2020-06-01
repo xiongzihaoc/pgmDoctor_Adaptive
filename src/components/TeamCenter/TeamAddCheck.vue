@@ -115,39 +115,40 @@
 export default {
   data() {
     return {
-      addOrUpdateType: 1, //1:添加 2:修改
-      packageInfoUpdateType: 1, //1添加 2：修改
-      packageInfoUpdateIndex: 0, //当前修改的套餐下标
-      teamCode: "", //团队Code
-      checkList: [],
-      sheetList: [],
-      packagesList: [],
-      checkPackageFrom: {
-        packageName: "",
-        packageNames: "",
-        packageUuids: "",
-        package: []
-      },
-      addCheckDilogShow: false, //新增套餐Dialog
-      selectedPackagesDialogShow: false, //选择量表套餐Dialog
-      addTeamCheckFrom: {
-        teamNo: "",
-        teamNumber: "",
-        paramList: []
-      },
-      addCheckPackagesRuleFrom: {
-        packageName: [
-          { required: true, message: "请输入套餐名称", trigger: "blur" }
-        ]
-      },
-      addTeamCheckFromRules: {
-        teamNo: [
-          { required: true, message: "请输入检测编号", trigger: "blur" }
-        ],
-        teamNumber: [
-          { required: true, message: "请输入检测人数", trigger: "blur" }
-        ]
-      }
+        addOrUpdateType:1,//1:添加 2:修改
+        packageInfoUpdateType:1,//1添加 2：修改
+        packageInfoUpdateIndex:0,//当前修改的套餐下标
+        teamCode:'',//团队Code
+        checkList:[],
+        sheetList:[],
+        packagesList:[],
+        checkPackageFrom:{
+            packageName:'',
+            packageNames:'',
+            packageUuids:'',
+            package:[]
+        },
+        addCheckDilogShow:false,//新增套餐Dialog
+        selectedPackagesDialogShow:false,//选择量表套餐Dialog
+        addTeamCheckFrom:{
+            id:'',
+            teamNo:'',
+            teamNumber:'',
+            paramList:[]
+        },
+        addCheckPackagesRuleFrom:{
+            packageName:[
+                { required: true, message: '请输入套餐名称', trigger: 'blur' },
+            ]
+        },
+        addTeamCheckFromRules:{
+            teamNo:[
+                { required: true, message: '请输入检测编号', trigger: 'blur' },
+            ],
+            teamNumber:[
+                { required: true, message: '请输入检测人数', trigger: 'blur' },
+            ]
+        }
     };
   },
   created() {
@@ -205,57 +206,70 @@ export default {
     },
     async saveCheckPackage(formName) {
       this.$refs.addCheckPackagesFromRef.validate(valid => {
-        if (valid) {
-          if (
-            this.checkPackageFrom.packageNames == "" ||
-            this.checkPackageFrom.packageNames == null
-          ) {
-            return this.$message.error("请选择套餐");
-          }
-          if (this.packageInfoUpdateType == 2) {
-            this.addTeamCheckFrom.paramList.forEach((element, index) => {
-              if (index == this.packageInfoUpdateIndex) {
-                element = this.checkPackageFrom;
-              }
-            });
-            this.packageInfoUpdateType = 1;
-            this.packageInfoUpdateIndex = 0;
-          } else {
-            this.addTeamCheckFrom.paramList.push(this.checkPackageFrom);
-          }
-          this.addCheckDilogShow = false;
-        } else {
-          return false;
-        }
-      });
-    },
-    saveTeamCheck() {
-      //新增团队检测
-      this.$refs.addTeamCheckFromRef.validate(async valid => {
-        if (valid) {
-          if (
-            this.addTeamCheckFrom.paramList == null ||
-            this.addTeamCheckFrom.paramList.length == 0
-          ) {
-            return this.$message.error("请添加检测套餐");
-          }
-          console.log(this.addTeamCheckFrom);
-          const { data: res } = await this.$http.post("teamList/add", {
-            teamNo: this.addTeamCheckFrom.teamNo,
-            teamNumber: this.addTeamCheckFrom.teamNumber,
-            teamDept: this.teamCode,
-            paramList: this.addTeamCheckFrom.paramList
-          });
-          if (res == null || res.code != 200)
-            return this.$message.error("添加检测失败，请重试");
-          this.addTeamCheckFrom = {};
-          this.$router.push({ path: "/home/teamCenter" });
-          console.log(res);
-        }
-      });
-    },
-    async getSheetList() {
-      //获取量表列表
+            if (valid) {
+                if (this.checkPackageFrom.packageNames == "" ||
+                    this.checkPackageFrom.packageNames == null) {
+                    return this.$message.error("请选择套餐");
+                }
+                if (this.packageInfoUpdateType == 2) {
+                    this.addTeamCheckFrom.paramList.forEach((element, index) => {
+                    if (index == this.packageInfoUpdateIndex) {
+                        element = this.checkPackageFrom;
+                    }
+                    });
+                    this.packageInfoUpdateType = 1;
+                    this.packageInfoUpdateIndex = 0;
+                } else {
+                    this.addTeamCheckFrom.paramList.push(this.checkPackageFrom);
+                }
+            }
+        });
+        
+      },saveTeamCheck(){//新增团队检测
+        this.$refs.addTeamCheckFromRef.validate(async (valid) =>{
+            if(valid){
+                if(this.addTeamCheckFrom.paramList == null || this.addTeamCheckFrom.paramList.length == 0){
+                    return this.$message.error('请添加检测套餐');
+                }
+                var params = {};
+                var url='teamList/add';
+                if(this.addOrUpdateType == 1){
+                    url='teamList/add';
+                }else {
+                    url='teamList/update';
+                }
+                if(this.addOrUpdateType == 1){
+                    params = {
+                        teamNo:this.addTeamCheckFrom.teamNo,
+                        teamNumber:this.addTeamCheckFrom.teamNumber,
+                        teamDept:this.teamCode,
+                        paramList:this.addTeamCheckFrom.paramList
+                    };
+                }else {
+                    params = {
+                        id:this.addTeamCheckFrom.id,
+                        teamNo:this.addTeamCheckFrom.teamNo,
+                        teamNumber:this.addTeamCheckFrom.teamNumber,
+                        teamDept:this.teamCode,
+                        paramList:this.addTeamCheckFrom.paramList
+                    };
+                }
+                const { data: res } = await this.$http.post(url,params);
+                if(res == null || res.code != 200){
+                    if(this.addOrUpdateType == 1){
+                        return this.$message.error('添加检测失败，请重试');
+                    }else {
+                        return this.$message.error('修改检测失败，请重试');
+                    }
+                    
+                }
+                this.addTeamCheckFrom = {};
+                this.$router.push({path:'/home/teamCenter'});
+                console.log(res);
+            }
+        });
+        
+      },async getSheetList() {//获取量表列表
       const { data: res } = await this.$http.post("/office_package/load", {});
       if (res == null && res.code != 200)
         return this.$message.error("量表列表获取失败");
