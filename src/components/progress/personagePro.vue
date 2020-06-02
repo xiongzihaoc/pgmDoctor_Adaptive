@@ -124,6 +124,7 @@ export default {
     // 跳转修改
     JumpEdit(info) {
       window.sessionStorage.setItem("editInfo", JSON.stringify(info));
+    
       this.$router.push({
         path: "/home/userCenter/addNewPer",
         query: { mess: "修改" }
