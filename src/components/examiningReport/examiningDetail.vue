@@ -57,15 +57,20 @@
             文化程度:
             <i>{{infoObj.edu}}</i>
           </span>
-          <span>所属:</span>
+          <span>
+            所属:
+            <i v-text="infoObj.source==0?'个人':'团队'">{{}}</i>
+          </span>
           <span>
             职业:
             <i>{{infoObj.job}}</i>
           </span>
         </li>
-        <!-- <li>
-          <span>科室:</span>
-        </li>-->
+        <li>
+          <span>科室:
+            <i>心理科</i>
+          </span>
+        </li>
         <li>
           <span>
             检测卡号:

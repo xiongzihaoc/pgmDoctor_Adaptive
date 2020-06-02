@@ -229,6 +229,7 @@ export default {
       deptList: [],
       IsDeptDisabled: false,
       IsDocDisabled: false,
+      selectDeptNum: "",
       addNewProps: {
         children: "child",
         label: "deptName",
@@ -245,8 +246,6 @@ export default {
     //   this.editAddForm = JSON.parse(this.$route.query.info);
     // }
     this.judge = JSON.parse(window.localStorage.getItem("mess"));
-    console.log(this.judge);
-
     this.Judgerole();
     this.getInfoList();
   },
@@ -260,8 +259,14 @@ export default {
     },
     // 获取医生列表
     async getDocList() {
+      var DeptStr = "";
+      if (this.selectDeptNum == "") {
+        DeptStr = this.judge.dcDept;
+      } else {
+        DeptStr = this.selectDeptNum;
+      }
       const { data: res } = await this.$http.post("doc/list", {
-        dcDept: this.judge.dcDept
+        dcDept: DeptStr
       });
       if (res.code !== 200) return this.$message.error("获取医生列表失败");
       console.log(res);
@@ -286,25 +291,26 @@ export default {
         // this.deptList = { name: this.judge.office, uuid: this.judge.dcDept };
         this.IsDeptDisabled = true;
       } else if (this.judge.accountType == 2) {
+        
       } else {
       }
-    },
-    // 点击医生下拉选加载医生数据
-    handleDocFoucs() {
-      this.getDocList();
     },
     // 点击科室下拉选加载医生数据
     handleDeptFoucs() {
       this.getDeptList();
     },
+    // 点击医生下拉选加载医生数据
+    handleDocFoucs() {
+      this.getDocList();
+    },
     handleChange(val) {
-      console.log(val);
+      this.selectDeptNum = val.pop();
     },
     // 保存信息
     enterSave() {
       this.$refs.addInfoRef.validate(async valid => {
         if (!valid) return;
-        // if (!this.strUserName) return this.$message.error("请选择套餐");
+        if (!this.strUserName) return this.$message.error("请选择套餐");
         const { data: res } = await this.$http.post("checkList/add", {
           type: "个人",
           name: this.editAddForm.name,
