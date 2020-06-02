@@ -224,6 +224,7 @@ export default {
       Arr: [],
       Confirm: false,
       print: false,
+      ansId: "",
       chartData: {
         columns: ["type", "def"],
         rows: [
@@ -285,6 +286,7 @@ export default {
     // 确认审核
     async hasConfirm() {
       const { data: res } = await this.$http.post("checkList/update", {
+        id: this.ansId,
         checkState: "1"
       });
       console.log(res);

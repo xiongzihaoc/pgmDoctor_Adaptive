@@ -16,8 +16,8 @@
         >
           <!-- 体卡类型  出生日期 -->
           <li style="width:100%;display:flex;justify-content: center;">
-            <el-form-item label="体卡类型" prop="entityCard" style="margin-right:5%">
-              <el-select v-model="editAddForm.entityCard" placeholder="请选择体卡类型" style="width:202px">
+            <el-form-item label="体卡类型" prop="orderType" style="margin-right:5%">
+              <el-select v-model="editAddForm.orderType" placeholder="请选择体卡类型" style="width:202px">
                 <el-option label="虚拟卡" value="虚拟卡"></el-option>
                 <el-option label="实体卡" value="实体卡"></el-option>
               </el-select>
@@ -187,9 +187,7 @@ export default {
       timesChangeDate,
       Addrules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        entityCard: [
-          { required: true, message: "请输入姓名", trigger: "blur" }
-        ],
+        orderType: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         dept: [{ required: true, message: "请选择科室", trigger: "blur" }],
         docName: [
           { required: true, message: "请输入医生姓名", trigger: "blur" }
@@ -213,7 +211,7 @@ export default {
       },
       editAddForm: {
         docName: "",
-        entityCard: "虚拟卡",
+        orderType: "虚拟卡",
         name: "",
         phone: "",
         gender: "",
@@ -276,14 +274,17 @@ export default {
   created() {
     if (this.$route.query.mess == "修改") {
       this.editAddForm = JSON.parse(window.sessionStorage.getItem("editInfo"));
+      this.editAddForm.gender = JSON.parse(
+        window.sessionStorage.getItem("editInfo")
+      ).sex;
+      this.editAddForm.birthday = JSON.parse(
+        window.sessionStorage.getItem("editInfo")
+      ).birth;
     }
-    // else if (this.$route.query.mess == "追加检测") {
-    //   this.editAddForm = JSON.parse(this.$route.query.info);
-    // }
-    this.judge = JSON.parse(window.localStorage.getItem("mess"));
-    this.Judgerole();
     this.getInfoList();
     this.getDeptList();
+    this.judge = JSON.parse(window.localStorage.getItem("mess"));
+    this.Judgerole();
   },
   methods: {
     // 获取个人信息
@@ -331,8 +332,6 @@ export default {
       } else {
       }
     },
-    // 点击科室下拉选加载医生数据
-    handleDeptFoucs() {},
     // 点击医生下拉选加载医生数据
     handleDocFoucs() {
       this.getDocList();
@@ -358,7 +357,7 @@ export default {
           birth: this.timesChangeDate(this.editAddForm.birthday),
           job: this.editAddForm.job,
           marriage: this.editAddForm.marriage,
-          orderType: this.editAddForm.entityCard,
+          orderType: this.editAddForm.orderType,
           orderDept: this.editAddForm.dept,
           packageUuid: this.uuid
         });
