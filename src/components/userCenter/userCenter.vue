@@ -17,6 +17,12 @@
             class="searchInput"
             @input="searchin"
           ></el-input>
+          <el-button
+            type="primary"
+            size="small"
+            @click.prevent.stop="newAddPerson"
+            style="margin-left:2%"
+          >新增个人</el-button>
         </div>
         <!-- 调用公用表格组件 -->
         <EleTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
@@ -123,6 +129,9 @@ export default {
       } else if (val.state == "0") {
         return "未作答";
       }
+    },
+    newAddPerson(){
+      this.$router.push("/home/userCenter/addNewPer");
     }
   }
 };

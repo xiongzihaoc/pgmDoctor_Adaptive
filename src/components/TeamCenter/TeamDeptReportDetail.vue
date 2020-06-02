@@ -6,6 +6,7 @@
         </el-breadcrumb>
         <div style="height: 100%;">
             <el-card class="reportdeptInfoCard">
+                <!-- v-print="'#printdiv'" -->
                 <el-button
                     type="danger"
                     size="mini"
@@ -35,20 +36,18 @@
                     </div>
                     <div class="teamReportDiv">
                         <div>
-                            <span class="orangeYuan"></span>
+                            <span class="orangeYuan" style="margin-left:20px"></span>
                             <span class="perInfo">体检量表简介</span>
                         </div>
                         <div class="teamReportSheetDetail" v-for="(item,index) in deptReportInfo" :key="index">
                             <p class="teamReportSheetName">{{item.sheetName}}</p>
                             <p class="teamReportSheetDec">{{item.sheetInstruction}}</p>
-                            <div style="margin-top: 20px;">
+                            <div style="padding-top: 20px;">
                                 <span class="orangeYuan"></span>
                                 <span class="perInfo">参试人员性别统计分布表</span>
                             </div>
                             
-                            <!-- <div style="margin-top: 20px;" v-html="item.tableStr">{{item.tableStr}}</div> -->
-                            <!-- <div style="margin-top: 20px;"> -->
-                                <el-table style="width: 100%;margin-top: 20px;" :data="item.checkPeopleSumData" border
+                                <el-table style="margin-top: 20px;" :data="item.checkPeopleSumData" border
                                 :header-cell-style="{ background:'#f5f5f5',height:'50px',color:'#909399'}">
                                     <el-table-column align="center"
                                         prop="title"
@@ -64,14 +63,14 @@
                                         label="总体"></el-table-column>
                                 </el-table>
                             <!-- </div> -->
-                            <div style="margin-top: 20px;">
+                            <div style="padding-top: 20px;">
                                 <span class="orangeYuan"></span>
                                 <span class="perInfo">参试人员性别统计分布图</span>
                             </div>
-                            <div style="margin-top: 20px;width: 100%;">
-                                <ve-pie :data="item.chartData" radius="100"></ve-pie>
+                            <div style="padding-top: 20px;width: 100%;" id="peopleCheckNum">
+                                <ve-pie :data="item.chartData" radius="100":settings="chartSettings"></ve-pie>
                             </div>
-                            <div style="margin-top: 20px;">
+                            <div style="padding-top: 20px;">
                                 <span class="orangeYuan"></span>
                                 <span class="perInfo">参试人员体质统计表</span>
                             </div>
@@ -118,24 +117,39 @@
                                 <span class="orangeYuan"></span>
                                 <span class="perInfo">参试人员因子总体统计图</span>
                             </div>
-                            <div style="margin-top: 20px;width: 100%;">
-                                <ve-pie :data="item.factorSumPeopleChart" radius="100"></ve-pie>
+                            <div style="padding-top: 20px;width: 100%;display: flex;">
+                                <div style="width: 50%;">
+                                    <ve-pie :data="item.factorSumPeopleChart" radius="100" :settings="chartSettings"></ve-pie>
+                                </div>
+                                <div style="width: 50%;padding: 150px 10% 0 10%;">
+                                    <span style="font-size: 21px;color: #444444;">如左图中,{{item.factorSumPeopleChartInstructions}}</span>
+                                </div>
                             </div>
 
-                            <div style="margin-top: 20px;">
+                            <div style="padding-top: 20px;">
                                 <span class="orangeYuan"></span>
                                 <span class="perInfo">参试人员因子男性统计图</span>
                             </div>
-                            <div style="margin-top: 20px;width: 100%;">
-                                <ve-pie :data="item.factorManPeopleChart" radius="100"></ve-pie>
+                            <div style="padding-top: 20px;width: 100%;display: flex;">
+                                <div style="width: 50%;">
+                                    <ve-pie :data="item.factorManPeopleChart" radius="100" :settings="chartSettings"></ve-pie>
+                                </div>
+                                <div style="width: 50%;padding: 150px 10% 0 10%;">
+                                    <span style="font-size: 21px;color: #444444;">如左图中,{{item.factorManPeopleChartInstructions}}</span>
+                                </div>
                             </div>
 
-                            <div style="margin-top: 20px;">
+                            <div style="padding-top: 20px;">
                                 <span class="orangeYuan"></span>
                                 <span class="perInfo">参试人员因子女性统计图</span>
                             </div>
-                            <div style="margin-top: 20px;width: 100%;">
-                                <ve-pie :data="item.factorWomenPeopleChart" radius="100"></ve-pie>
+                            <div style="padding-top: 20px;width: 100%;display: flex;">
+                                <div style="width: 50%;">
+                                    <ve-pie :data="item.factorWomenPeopleChart" radius="100" :settings="chartSettings"></ve-pie>
+                                </div>
+                                <div style="width: 50%;padding: 150px 10% 0 10%;">
+                                    <span style="font-size: 21px;color: #444444;">如左图中,{{item.factorWomenPeopleChartInstructions}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -148,6 +162,19 @@
     import { timesChangeDate } from "../../assets/js/util";
 export default {
   data () {
+    this.chartSettings = {
+        center:[0,300],
+        label:{
+            fontSize:20,
+            formatter:'{d}%'
+        },
+        labelLine:{
+            length:5
+        },
+        itemStyle:{
+            borderWidth:1
+        }
+      }
     return {
         timesChangeDate,
         deptCode:'',
@@ -163,7 +190,7 @@ export default {
     this.getTeamInfo();
   },
   methods:{
-    async getTeamInfo(){//获取团队详情
+      async getTeamInfo(){//获取团队详情
           const {data:res} = await this.$http.post("teamList/dept/info",{
               code:this.deptCode
           });
@@ -176,6 +203,7 @@ export default {
             teamDept:this.deptCode,
             countType:0
         });
+        console.log(res);
         this.deptReportInfo = res.data;
         this.getStatisticalData();
     },
@@ -183,58 +211,27 @@ export default {
         if(this.deptReportInfo != null &&this.deptReportInfo.length>0){
             for(var i=0;i<this.deptReportInfo.length;i++){
                 var staticalData = this.deptReportInfo[i];
-                var factor = staticalData.factor;
-                var factorSumPeopleChart = {};
-                var factorSumPeopleChartColumns = ['factorName','count'];
-                var factorSumPeopleChartRow = [];
 
-                var factorManPeopleChart = {};
-                var factorManPeopleChartRow = [];
-
-                var factorWomenPeopleChart = {};
-                var factorWomenPeopleChartRow = [];
-
-                for(var j=0;j<factor.length;j++){
-                    var factorSumPeopleChartRowInfo = {};
-                    var factorManPeopleChartRowInfo = {};
-                    var factorWomenPeopleChartRowInfo = {};
-                    var factorInfo = factor[j];
-                    factorInfo.sumPro = 100+"%";
-                    factorInfo.manPro = (factorInfo.man/factorInfo.sum*100)+"%";
-                    factorInfo.womenPro = (factorInfo.women/factorInfo.sum*100)+"%";
-                    factorSumPeopleChartRowInfo.factorName = factorInfo.factor_name;
-                    factorSumPeopleChartRowInfo.count = factorInfo.sum;
-                    factorSumPeopleChartRow.push(factorSumPeopleChartRowInfo);
-
-                    factorManPeopleChartRowInfo.factorName = factorInfo.factor_name;
-                    factorManPeopleChartRowInfo.count = factorInfo.sum;
-                    factorManPeopleChartRow.push(factorSumPeopleChartRowInfo);
-
-                    factorManPeopleChartRowInfo.factorName = factorInfo.factor_name;
-                    factorManPeopleChartRowInfo.count = factorInfo.sum;
-                    factorWomenPeopleChartRow.push(factorSumPeopleChartRowInfo);
-                }
-                factorSumPeopleChart.columns = factorSumPeopleChartColumns;
-                factorSumPeopleChart.rows = factorSumPeopleChartRow;
-                staticalData.factorSumPeopleChart = factorSumPeopleChart;
-
-                factorManPeopleChart.columns = factorSumPeopleChartColumns;
-                factorManPeopleChart.rows = factorManPeopleChartRow;
-                staticalData.factorManPeopleChart = factorManPeopleChart;
-
-
-                factorWomenPeopleChart.columns = factorSumPeopleChartColumns;
-                factorWomenPeopleChart.rows = factorWomenPeopleChartRow;
-                staticalData.factorWomenPeopleChart = factorWomenPeopleChart;
-
-               
-                
                 var people = staticalData.people;
                 var checkPeopleSumData=[];
                 var checkPeopleSumDataInfo = {};
                 checkPeopleSumDataInfo.title="人数";
-                var manData = people[0];
-                var women = people[1];
+                var manData = {};
+                var women = {};
+                var sexChartData ={};
+                var columns = ['sex','count'];
+                var chartData = [];
+                for(var j=0;j<people.length;j++){
+                    var chartDataInfo = {};
+                    if(people[j].title=='男'){
+                        manData = people[j];
+                    }else{
+                        women = people[j];
+                    }
+                    chartDataInfo.sex = people[j].title;
+                    chartDataInfo.count = people[j].count;
+                    chartData.push(chartDataInfo);
+                }
                 checkPeopleSumDataInfo.man = manData.count;
                 checkPeopleSumDataInfo.women = women.count;
                 checkPeopleSumDataInfo.sum = manData.sum;
@@ -248,18 +245,82 @@ export default {
                 checkPeopleSumData.push(checkPeopleProDataInfo);
                 staticalData.checkPeopleSumData=checkPeopleSumData;
 
-                var sexChartData ={};
+                
+                
+                var factor = staticalData.factor;
+                var factorSumPeopleChart = {};
+                var factorSumPeopleChartColumns = ['factorName','count'];
+                var factorSumPeopleChartRow = [];
+                var factorSumPeopleChartInstructions='检测总人数为:'+manData.sum+"人,";
+
+                var factorManPeopleChart = {};
+                var factorManPeopleChartRow = [];
+                var factorManPeopleChartInstructions="男性检测人数为:"+manData.count+"人,";
+
+                var factorWomenPeopleChart = {};
+                var factorWomenPeopleChartRow = [];
+                var factorWomenPeopleChartInstructions="女性检测人数为:"+women.count+"人,";
+                var factorSum = 0;
+                var factorMan = 0;
+                var factorWomen = 0;
+                for(var j=0;j<factor.length;j++){
+                    factorSum+=factor[j].sum;
+                    factorMan+=factor[j].man;
+                    factorWomen+=factor[j].women;
+                }
+
+                for(var j=0;j<factor.length;j++){
+                    var factorSumPeopleChartRowInfo = {};
+                    var factorManPeopleChartRowInfo = {};
+                    var factorWomenPeopleChartRowInfo = {};
+                    var factorInfo = factor[j];
+                    if(j == factor.length-1){
+                        factorSumPeopleChartInstructions+=factorInfo.sum+"位"+ factorInfo.factor_name+"。"
+                        factorManPeopleChartInstructions+=factorInfo.man+"位"+ factorInfo.factor_name+"。"
+                        factorWomenPeopleChartInstructions+=factorInfo.women+"位"+ factorInfo.factor_name+"。"
+                    }else {
+                        factorSumPeopleChartInstructions+=factorInfo.sum+"位"+ factorInfo.factor_name+","
+                        factorManPeopleChartInstructions+=factorInfo.man+"位"+ factorInfo.factor_name+","
+                        factorWomenPeopleChartInstructions+=factorInfo.women+"位"+ factorInfo.factor_name+","
+                    }
+                    
+                    factorInfo.sumPro = (factorInfo.sum/factorSum*100).toFixed(2)+"%";
+                    factorInfo.manPro = (factorInfo.man/factorMan*100).toFixed(2)+"%";
+                    factorInfo.womenPro = (factorInfo.women/factorWomen*100).toFixed(2)+"%";
+                    factorSumPeopleChartRowInfo.factorName = factorInfo.factor_name;
+                    factorSumPeopleChartRowInfo.count = factorInfo.sum;
+                    // factorSumPeopleChartRowInfo.pro= (factorInfo.sum/factorSum*100).toFixed(2)+"%";
+                    factorSumPeopleChartRow.push(factorSumPeopleChartRowInfo);
+
+                    factorManPeopleChartRowInfo.factorName = factorInfo.factor_name;
+                    factorManPeopleChartRowInfo.count = factorInfo.man;
+                    // factorManPeopleChartRowInfo.pro= (factorInfo.man/factorMan*100).toFixed(2)+"%";
+                    factorManPeopleChartRow.push(factorManPeopleChartRowInfo);
+
+                    factorWomenPeopleChartRowInfo.factorName = factorInfo.factor_name;
+                    factorWomenPeopleChartRowInfo.count = factorInfo.women;
+                    // factorWomenPeopleChartRowInfo.pro= (factorInfo.women/factorWomen*100).toFixed(2)+"%";
+                    factorWomenPeopleChartRow.push(factorWomenPeopleChartRowInfo);
+                }
+                factorSumPeopleChart.columns = factorSumPeopleChartColumns;
+                factorSumPeopleChart.rows = factorSumPeopleChartRow;
+                staticalData.factorSumPeopleChart = factorSumPeopleChart;
+
+                factorManPeopleChart.columns = factorSumPeopleChartColumns;
+                factorManPeopleChart.rows = factorManPeopleChartRow;
+                staticalData.factorManPeopleChart = factorManPeopleChart;
+
+
+                factorWomenPeopleChart.columns = factorSumPeopleChartColumns;
+                factorWomenPeopleChart.rows = factorWomenPeopleChartRow;
+                staticalData.factorWomenPeopleChart = factorWomenPeopleChart;
+                staticalData.factorSumPeopleChartInstructions = factorSumPeopleChartInstructions;
+                staticalData.factorManPeopleChartInstructions = factorManPeopleChartInstructions;
+                staticalData.factorWomenPeopleChartInstructions = factorWomenPeopleChartInstructions;
+
                 // var table = '<table class="reportTable" border="1" style="width: 100%;text-align: center;border-collapse:collapse;"><tr style="background:#FAFAFA;color:#000000;font-weight:700"><td></td>';
                 // var sumPeople = people[0].sum;
-                var columns = ['sex','count'];
-                var chartData = [];
-                for(var j=0;j<people.length;j++){
-                    var chartDataInfo = {};
-                    chartDataInfo.sex = people[j].title;
-                    chartDataInfo.count = people[j].count;
-                    chartData.push(chartDataInfo);
-                    // table+='<td border="1">'+people[j].title+'</td>';
-                }
+                // table+='<td border="1">'+people[j].title+'</td>';
                 // table+='<td>总数</td></tr><tr><td>人数</td>';
                 // for(var j=0;j<people.length;j++){
                 //     table+='<td>'+people[j].count+'</td>';

@@ -54,14 +54,6 @@
       <!-- 右侧卡片 -->
       <el-card class="cardRight">
         <div class="searchBox">
-          <!-- <el-input
-            placeholder="请输入手机号/姓名"
-            prefix-icon="el-icon-search"
-            size="small"
-            v-model="input"
-            class="searchInput"
-            @input="searchin"
-          ></el-input>-->
           <span
             style="line-height: 50px;width: 45%;font-weight: 700;padding-left: 5px;box-sizing: border-box;"
           >{{currentTeamInfo.name}}</span>
@@ -73,13 +65,6 @@
               v-if="isTeamParent"
             >新增检测</el-button>
           </div>
-
-          <!-- <el-button
-            type="primary"
-            size="small"
-            @click.prevent.stop="newAddPerson"
-            style="margin-left:2%"
-          >Excel导入</el-button>-->
         </div>
         <div class="teamDetail">
           <li>
@@ -90,7 +75,7 @@
           <li>
             <span class="title">联系电话：{{currentTeamInfo.phone}}</span>
             <span class="title" :style="{visibility:this.currentTeamInfo.pcd == null?'hidden':'visible'}">地址：{{currentTeamInfo.pcd}}</span>
-            <span class="title">检测次数：{{total}}</span>
+            <!-- <span class="title">检测次数：{{total}}</span> -->
           </li>
         </div>
         <!-- 调用公用表格组件 -->
@@ -101,9 +86,11 @@
         >
           <el-table-column align="center" prop="teamNo" label="检测编号" show-overflow-tooltip />
           <el-table-column v-if="isTeamParent" align="center" prop="teamNumber" label="限定人数" />
-          <el-table-column align="center" prop="recordNumber" label="已录人数" />
+          <el-table-column align="center" prop="recordNumber" label="已录入" />
 
-          <el-table-column align="center" prop="checkNumber" label="检测人数" />
+          <el-table-column align="center" prop="checkNumber" label="已检测" />
+
+          <el-table-column align="center" prop="checkNumber" label="未检测" />
           <el-table-column align="center" prop="packageName" v-if="isTeamParent" label="套餐" />
           <el-table-column align="center" label="状态" prop="state">
             <template slot-scope="scope">
@@ -173,7 +160,7 @@
           <el-input v-model="teamFram.name" placeholder="请输入名称"></el-input>
         </el-form-item>
         <el-form-item prop="account" :label="teamTypeAccount">
-          <el-input v-model="teamFram.account" placeholder="请输入账号"></el-input>
+          <el-input v-model="teamFram.account" placeholder="请输入账号,可使用账号登录,查看团队报告,账号默认密码：12345678"></el-input>
         </el-form-item>
         <!-- <el-form-item prop="password" :label="teamTypePassword">
           <el-input v-model="teamFram.password" placeholder="请输入密码"></el-input>
@@ -230,7 +217,6 @@ export default {
         children: "child",
         label: "name",
         value: "name",
-        checkStrictly: true
       },
       cityList: [],
       options: [],
@@ -239,7 +225,6 @@ export default {
       pageSize: 10,
       pageNum: 1,
       total: 0,
-      requestCode: 100,
       menuList: [],
       teamFram: {
         name: "",
@@ -265,13 +250,13 @@ export default {
         // password:[
         //       { required: true, message: '请输入密码', trigger: 'blur' },
         //   ],
-        leader: [
-          { required: true, message: "请输入名联系人", trigger: "blur" }
-        ],
-        phone: [
-          { required: true, message: "请输入联系人电话", trigger: "blur" },
-          { validator: checkMobile, trigger: "blur" }
-        ]
+        // leader: [
+        //   { required: true, message: "请输入名联系人", trigger: "blur" }
+        // ],
+        // phone: [
+        //   { required: true, message: "请输入联系人电话", trigger: "blur" },
+        //   { validator: checkMobile, trigger: "blur" }
+        // ]
       }
     };
   },
@@ -418,6 +403,10 @@ export default {
           if (this.addTeamDialogType == 2) {
             httpUrl = "teamList/dept/update";
             if (this.addressShow) {
+              var pcd = '';
+              if(this.teamFram.city != null && this.teamFram.city.length >0){
+                pcd = this.teamFram.city.join("-");
+              }
               parm = {
                 id: this.editId,
                 account: this.teamFram.account,
@@ -425,7 +414,7 @@ export default {
                 leader: this.teamFram.leader,
                 phone: this.teamFram.phone,
                 address: this.teamFram.address,
-                pcd: this.teamFram.city.join("-")
+                pcd: pcd
               };
             } else {
               parm = {
@@ -439,13 +428,17 @@ export default {
           } else {
             httpUrl = "teamList/dept/add";
             if (this.addressShow) {
-              parm = {
+              var pcd = '';
+              if(this.teamFram.city != null && this.teamFram.city.length >0){
+                pcd = this.teamFram.city.join("-");
+              }
+              parm = {  
                 account: this.teamFram.account,
                 name: this.teamFram.name,
                 leader: this.teamFram.leader,
                 phone: this.teamFram.phone,
                 address: this.teamFram.address,
-                pcd: this.teamFram.city.join("-"),
+                pcd: pcd,
                 parentCode: this.teamFram.parentCode
               };
             } else {
@@ -459,7 +452,7 @@ export default {
             }
           }
           const { data: res } = await this.$http.post(httpUrl, parm);
-          if (res.code != 200) return this.$message.error("操作失败");
+          if (res.code != 200) return this.$message.error(res.data);
           this.$message.success("操作成功");
           this.getTeamDeptList();
           this.dialogVisible = false;
@@ -488,7 +481,6 @@ export default {
         this.teamTypePassword = "部门密码";
       }
       this.currentTeamInfo = val;
-      this.requestCode = val.code;
       this.currentTeamTypeCode = val.code;
       this.getTeamCheckTypeList();
       if (val.code.length == 3) {
@@ -524,6 +516,9 @@ export default {
     },
     //新增团队检测
     addCheckPackages() {
+      if(this.currentTeamCode == null || this.currentTeamCode == ''){
+        return this.$message.error('请选择团队');
+      }
       this.$router.push({
         path: "/home/teamCenter/addTeamCheck",
         query: { teamCode: this.currentTeamCode }
@@ -541,6 +536,9 @@ export default {
     updateCheck(row){//修改检测套餐
       console.log(row);
       this.$router.push({path:'/home/teamCenter/addTeamCheck',query:{packageInfo:JSON.stringify(row),teamCode:this.currentTeamCode,teamCheckNum:row.teamNo,type:2}});
+    },
+    rowClick(){
+      alert('www');
     }
   },
   watch: {

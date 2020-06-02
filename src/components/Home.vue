@@ -33,8 +33,8 @@
             您好
             <a href="javascript:;">{{hosMess.name}}</a> 欢迎来到PHM检测中心后台！
           </span>
-          <span class="editPass" @click.prevent.stop="editPassword">修改密码</span> |
-          <span class="loginOut" @click.prevent.stop="loginOut">退出登录</span>
+          <span class="editPass" @click.prevent.stop="editPassword" style="color: red;">修改密码</span> |
+          <span class="loginOut" @click.prevent.stop="loginOut" style="color: royalblue;">退出登录</span>
           <img
             class="warningImg"
             src="../assets/images/warning.png"
@@ -80,7 +80,7 @@ export default {
         },
         {
           icon: "iconfont icon-yonhu",
-          name: "用户中心",
+          name: "个人中心",
           path: "home/userCenter",
           id: "2"
         },
@@ -90,36 +90,36 @@ export default {
           path: "home/teamCenter",
           id: "8"
         },
-        {
-          icon: "iconfont icon-liangbiao",
-          name: "他评量表",
-          path: "home/HisScale",
-          id: "3"
-        },
+        // {
+        //   icon: "iconfont icon-liangbiao",
+        //   name: "他评量表",
+        //   path: "home/HisScale",
+        //   id: "3"
+        // },
         {
           icon: "iconfont icon-baogao-copy",
           name: "检测报告",
           path: "home/examiningReport",
           id: "4"
         },
-        {
-          icon: "iconfont icon-yujing",
-          name: "预警提醒",
-          path: "home/warning",
-          id: "5"
-        },
-        {
-          icon: "iconfont icon-huizhen",
-          name: "会诊操作",
-          path: "home/consultation",
-          id: "6"
-        },
-        {
-          icon: "iconfont icon-icon-",
-          name: "数据统计",
-          path: "home/dataStatistics",
-          id: "7"
-        }
+        // {
+        //   icon: "iconfont icon-yujing",
+        //   name: "预警提醒",
+        //   path: "home/warning",
+        //   id: "5"
+        // },
+        // {
+        //   icon: "iconfont icon-huizhen",
+        //   name: "会诊操作",
+        //   path: "home/consultation",
+        //   id: "6"
+        // },
+        // {
+        //   icon: "iconfont icon-icon-",
+        //   name: "数据统计",
+        //   path: "home/dataStatistics",
+        //   id: "7"
+        // }
       ],
       passwordType: "password",
       loginRules: {

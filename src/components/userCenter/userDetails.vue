@@ -26,7 +26,7 @@
     </el-card>
 
     <el-card class="cardBox">
-      <div class="buttonBox">
+      <div class="buttonBox" style="display: none;">
         <el-button type="primary" plain size="small" @click.prevent.stop="consultation">会诊</el-button>
         <el-button type="primary" plain size="small" @click.prevent.stop="Hisconsultation">历次会诊</el-button>
         <el-button type="primary" plain size="small" @click.prevent.stop="additionalTesting">追加检测</el-button>

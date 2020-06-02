@@ -152,7 +152,7 @@ export default {
     };
   },
   created() {
-    this.type = this.$route.query.type;
+    var type = this.$route.query.type;
     this.teamCode = this.$route.query.teamCode;
     this.addOrUpdateType = this.$route.query.type;
     if (this.addOrUpdateType == 2) {
@@ -183,9 +183,11 @@ export default {
       }
       console.log(this.addTeamCheckFrom);
     } else {
+      this.addOrUpdateType = 1;
       this.getTeamCheckCode();
     }
     this.getSheetList();
+    console.log(this.addOrUpdateType);
   },
   methods: {
     async getTeamCheckCode() {
@@ -222,6 +224,7 @@ export default {
                 } else {
                     this.addTeamCheckFrom.paramList.push(this.checkPackageFrom);
                 }
+                this.addCheckDilogShow = false;
             }
         });
         
@@ -233,6 +236,7 @@ export default {
                 }
                 var params = {};
                 var url='teamList/add';
+                console.log(this.addOrUpdateType);
                 if(this.addOrUpdateType == 1){
                     url='teamList/add';
                 }else {
