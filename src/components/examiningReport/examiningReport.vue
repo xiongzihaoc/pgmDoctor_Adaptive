@@ -19,7 +19,7 @@
           style="margin-left: 20px;"
           @click="teamReport()">团队报告</el-button>
           <el-input
-            size="medium"
+            size="small"
             class="searchInput"
             placeholder="请输入手机号/姓名"
             prefix-icon="el-icon-search"

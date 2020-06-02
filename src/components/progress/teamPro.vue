@@ -77,7 +77,7 @@ export default {
         { prop: "teamNumber", label: "限定人数" },
         { prop: "recordNumber", label: "已录人数" },
         { prop: "checkNumber", label: "检测人数" },
-        {prop:"packageName",label:"检测套餐"}
+        { prop: "packageName", label: "检测套餐" }
       ],
       teamTypeList: [],
       pageSize: 10,
@@ -101,7 +101,7 @@ export default {
       const { data: res } = await this.$http.post("teamList/list", {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        params: {'type':'all'}
+        params: { type: "all" }
       });
       console.log(res);
       this.teamTypeList = res.rows;
@@ -115,7 +115,10 @@ export default {
       this.$router.push("/home/userCenter/addNewTeam");
     },
     JumpTeamCenter(info) {
-      this.$router.push({path:'/home/teamCenter',query:{teamCode:info.teamDept,type:'index'}});
+      this.$router.push({
+        path: "/home/teamCenter",
+        query: { teamCode: info.teamDept, type: "index" }
+      });
     },
     perPro() {
       this.$emit("jumpTeam", "jumpPer");
@@ -134,7 +137,7 @@ export default {
         return "未开始";
       } else if (val.state == "1") {
         return "已开始";
-      }else{
+      } else {
         return "已结束";
       }
     }

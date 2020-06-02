@@ -30,7 +30,7 @@ const routes = [{
       {
         path: '/home/userCenter',
         name: "userCenter",
-        hidden:true,
+        hidden: true,
         component: () => import('@/components/userCenter/userCenter.vue'),
         meta: {
           title: '用户中心',
@@ -44,44 +44,52 @@ const routes = [{
           title: '团队中心',
         },
       },
-	   {
+      {
         path: '/home/teamCenter/addTeamCheck',
-        name:'addTeamCheck',
-        component:()=>import('@/components/TeamCenter/TeamAddCheck.vue'),
+        name: 'addTeamCheck',
+        component: () => import('@/components/TeamCenter/TeamAddCheck.vue'),
         meta: {
           title: '新增检测',
         },
       },
       {
+        path: '/home/userCenter/AdditionalTest',
+        name: 'AdditionalTest',
+        component: () => import('@/components/UserList/AdditionalAddPer.vue'),
+        meta: {
+          title: '追加检测',
+        },
+      },
+      {
         path: '/home/teamCenter/teamCheckPackagesDetail',
-        name:'addTeamCheck',
-        component:()=>import('@/components/TeamCenter/TeamCheckPackagesDetail.vue'),
+        name: 'teamCheckPackagesDetail',
+        component: () => import('@/components/TeamCenter/TeamCheckPackagesDetail.vue'),
         meta: {
           title: '团队套餐',
         },
       },
       {
-        path:'/home/teamCenter/teamPackagesPrint',
-        name:'teamPackagesPrint',
-        component:()=>import('@/components/TeamCenter/TeamPackagesPrint.vue'),
-        meta:{
-          title:'打印团队套餐'
+        path: '/home/teamCenter/teamPackagesPrint',
+        name: 'teamPackagesPrint',
+        component: () => import('@/components/TeamCenter/TeamPackagesPrint.vue'),
+        meta: {
+          title: '打印团队套餐'
         }
       },
       {
-        path:'/home/teamCenter/teamPatientDeail',
-        name:'teamPatientDeail',
-        component:()=>import('@/components/TeamCenter/TeamPatientDeail.vue'),
-        meta:{
-          title:'检测人员列表'
+        path: '/home/teamCenter/teamPatientDeail',
+        name: 'teamPatientDeail',
+        component: () => import('@/components/TeamCenter/TeamPatientDeail.vue'),
+        meta: {
+          title: '检测人员列表'
         }
       },
       {
-        path:'/home/teamCenter/teamDeptReportDetail',
-        name:'teamDeptReportDetail',
-        component:()=>import('@/components/TeamCenter/TeamDeptReportDetail.vue'),
-        meta:{
-          title:'团队检测报告'
+        path: '/home/teamCenter/teamDeptReportDetail',
+        name: 'teamDeptReportDetail',
+        component: () => import('@/components/TeamCenter/TeamDeptReportDetail.vue'),
+        meta: {
+          title: '团队检测报告'
         }
       },
       {

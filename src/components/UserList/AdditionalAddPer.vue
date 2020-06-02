@@ -47,12 +47,13 @@
             <el-form-item label="科  室" prop="dept" style="margin-right:5%">
               <el-cascader
                 :disabled="IsDeptDisabled"
+                style="width:202px"
                 v-model="editAddForm.dept"
                 :options="deptList"
-                @change="handleChange"
                 :props="addNewProps"
                 :show-all-levels="false"
-                style="width:202px"
+                clearable
+                @change="handleChange"
               ></el-cascader>
             </el-form-item>
             <el-form-item label="性  别" prop="gender">
@@ -71,14 +72,18 @@
                 placeholder="请选择医生"
                 style="width:202px"
                 :disabled="IsDocDisabled"
-                @focus="handleDocFoucs"
               >
                 <el-option
                   v-for="item in docList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.uuid"
-                ></el-option>
+                >
+                  <div style="display:flex;">
+                    <span style="flex: 1;font-weight:700;">{{ item.name }}</span>
+                    <span style="flex: 1;text-align:center">{{ item.office }}</span>
+                  </div>
+                </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="职  业" prop="job">
@@ -92,32 +97,7 @@
               </el-select>
             </el-form-item>
           </li>
-          <!-- 教育  婚姻 -->
-          <li style="display:flex;justify-content: center;">
-            <el-form-item label="教  育" prop="edu" style="margin-right:5%">
-              <el-select
-                filterable
-                v-model="editAddForm.edu"
-                placeholder="请选择学历"
-                style="width:202px"
-              >
-                <el-option
-                  v-for="item in eduList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="婚  姻" prop="marriage">
-              <el-select v-model="editAddForm.marriage" placeholder="请选择" style="width:202px">
-                <el-option label="未婚" value="未婚"></el-option>
-                <el-option label="已婚" value="已婚"></el-option>
-                <el-option label="离异" value="离异 "></el-option>
-                <el-option label="丧偶" value="丧偶"></el-option>
-              </el-select>
-            </el-form-item>
-          </li>
+          <!-- 套餐  婚姻 -->
           <li style="display:flex;justify-content: center;">
             <el-form-item label="套  餐" style="margin-right:5%" prop="strUserName">
               <el-input
@@ -135,7 +115,7 @@
                 >{{item.sheetName}}</li>
               </ul>
             </el-form-item>
-            <el-form-item label="测  试" prop="marriage" style="visibility: hidden;">
+            <el-form-item label="婚  姻" prop="marriage">
               <el-select v-model="editAddForm.marriage" placeholder="请选择" style="width:202px">
                 <el-option label="未婚" value="未婚"></el-option>
                 <el-option label="已婚" value="已婚"></el-option>
@@ -223,37 +203,21 @@ export default {
         gender: "",
         birthday: "",
         job: "",
-        edu: "",
         marriage: "",
-        dept: "",
+        dept: [],
         uuid: ""
       },
       jobList: [
-        { id: 1, name: "国家公务员" },
-        { id: 2, name: "专业技术人员" },
-        { id: 3, name: "职员" },
-        { id: 4, name: "企业管理人员" },
-        { id: 5, name: "工人" },
-        { id: 6, name: "农民" },
-        { id: 7, name: "学生" },
-        { id: 8, name: "现役军人" },
-        { id: 9, name: "自由职业者" },
-        { id: 10, name: "个体经营者" },
-        { id: 11, name: "无业人员" },
-        { id: 12, name: "退(离)休人员" },
-        { id: 13, name: "其他" }
+        { id: 1, name: "前端" },
+        { id: 2, name: "测试" },
+        { id: 3, name: "UI" }
       ],
       eduList: [
-        { id: 1, name: "博士" },
-        { id: 2, name: "硕士" },
-        { id: 3, name: "本科" },
-        { id: 4, name: "大专" },
-        { id: 5, name: "中专和中技" },
-        { id: 6, name: "技工学校" },
-        { id: 7, name: "高中" },
-        { id: 8, name: "初中" },
-        { id: 9, name: "小学" },
-        { id: 10, name: "文盲与半文盲" }
+        { id: 1, name: "本科" },
+        { id: 2, name: "大专" },
+        { id: 3, name: "高中" },
+        { id: 4, name: "初中" },
+        { id: 5, name: "其他" }
       ],
       taocanList: [],
       dialogVisible: false,
@@ -268,7 +232,6 @@ export default {
       deptList: [],
       IsDeptDisabled: false,
       IsDocDisabled: false,
-      selectDeptNum: "",
       addNewProps: {
         children: "child",
         label: "deptName",
@@ -280,14 +243,11 @@ export default {
   created() {
     if (this.$route.query.mess == "修改") {
       this.editAddForm = JSON.parse(window.sessionStorage.getItem("editInfo"));
+    } else if (this.$route.query.mess == "追加检测") {
+      this.editAddForm = JSON.parse(this.$route.query.info);
     }
-    // else if (this.$route.query.mess == "追加检测") {
-    //   this.editAddForm = JSON.parse(this.$route.query.info);
-    // }
-    this.judge = JSON.parse(window.localStorage.getItem("mess"));
-
-    this.Judgerole();
     this.getInfoList();
+    this.getDocList();
     this.getDeptList();
   },
   methods: {
@@ -300,17 +260,12 @@ export default {
     },
     // 获取医生列表
     async getDocList() {
-      var DeptStr = "";
-      if (this.selectDeptNum == "") {
-        DeptStr = this.judge.dcDept;
-      } else {
-        DeptStr = this.selectDeptNum;
-      }
       const { data: res } = await this.$http.post("doc/list", {
-        dcDept: DeptStr
+        dcDept: this.judge.dcDept
       });
       if (res.code !== 200) return this.$message.error("获取医生列表失败");
       console.log(res);
+
       this.docList = res.rows;
     },
     // 获取部门列表
@@ -322,33 +277,8 @@ export default {
       console.log(res);
       this.deptList = res.data;
     },
-    // 判断accountType 登录角色
-    Judgerole() {
-      if (this.judge.accountType == 0) {
-        this.editAddForm.docName = this.judge.name;
-        this.editAddForm.uuid = this.judge.uuid;
-        this.IsDocDisabled = true;
-      } else if (this.judge.accountType == 1) {
-        this.editAddForm.dept = this.judge.dcDept;
-        this.IsDeptDisabled = true;
-      } else if (this.judge.accountType == 2) {
-      } else {
-      }
-    },
-    // 点击科室下拉选加载医生数据
-    // handleDeptFoucs() {
-
-    // },
-    // 点击医生下拉选加载医生数据
-    handleDocFoucs() {
-      this.getDocList();
-    },
     handleChange(val) {
-      var valLength = val.length;
-      this.selectDeptNum = val[valLength - 1];
-      console.log(this.selectDeptNum);
-
-      this.editAddForm.dept = this.selectDeptNum;
+      console.log(val);
     },
     // 保存信息
     enterSave() {
@@ -356,21 +286,21 @@ export default {
         if (!valid) return;
         if (!this.strUserName) return this.$message.error("请选择套餐");
         const { data: res } = await this.$http.post("checkList/add", {
-          source: "0",
+          type: "个人",
           name: this.editAddForm.name,
           docName: this.editAddForm.docName,
           docUuid: this.editAddForm.uuid,
           phone: this.editAddForm.phone,
-          sex: this.editAddForm.gender,
+          gender: this.editAddForm.gender,
           birth: this.timesChangeDate(this.editAddForm.birthday),
           job: this.editAddForm.job,
           marriage: this.editAddForm.marriage,
           orderType: this.editAddForm.entityCard,
-          orderDept: this.editAddForm.dept,
+          orderDept: this.editAddForm.marriage,
           packageUuid: this.uuid
         });
-        // if (res.code != 200) return this.$message.error("添加失败");
-        // this.$message.success("添加成功");
+        if (res.code != 200) return this.$message.error("添加失败");
+        this.$message.success("添加成功");
         // this.$router.push("/home/index");
       });
     },

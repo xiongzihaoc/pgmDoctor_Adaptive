@@ -103,9 +103,6 @@ export default {
         query: { id: info.uuid, phone: info.phone }
       });
     },
-    newAddPerson() {
-      this.$router.push("/home/userCenter/addNewPer");
-    },
     editDialogClosed() {},
     // 搜索
     searchin() {
@@ -132,6 +129,9 @@ export default {
       } else if (val.state == "0") {
         return "未作答";
       }
+    },
+    newAddPerson(){
+      this.$router.push("/home/userCenter/addNewPer");
     }
   }
 };

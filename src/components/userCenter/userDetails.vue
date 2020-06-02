@@ -4,7 +4,7 @@
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/home/userCenter' }">用户中心</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/home/userCenter' }">个人列表</el-breadcrumb-item>
-      <el-breadcrumb-item>检测报告</el-breadcrumb-item>
+      <el-breadcrumb-item>会诊操作</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card class="topCard">
       <div>
@@ -29,7 +29,7 @@
       <div class="buttonBox" style="display: none;">
         <el-button type="primary" plain size="small" @click.prevent.stop="consultation">会诊</el-button>
         <el-button type="primary" plain size="small" @click.prevent.stop="Hisconsultation">历次会诊</el-button>
-        <el-button type="primary" plain size="small">追加检测</el-button>
+        <el-button type="primary" plain size="small" @click.prevent.stop="additionalTesting">追加检测</el-button>
         <el-button type="primary" plain size="small">历次检测对比</el-button>
         <el-button type="primary" plain size="small">其他检测</el-button>
       </div>
@@ -53,7 +53,7 @@
               plain
               size="mini"
               @click.prevent.stop="JumpUserCenter(scope.row)"
-              v-if="scope.row.state!=3"
+              v-if="scope.row.state!==3"
               disabled
             >查看</el-button>
             <el-button
@@ -198,6 +198,13 @@ export default {
       this.$router.push({
         path: "/home/consultationList",
         query: { mesType: "consult-in", id: this.infomation.uuid }
+      });
+    },
+    // 追加检测
+    additionalTesting() {
+      this.$router.push({
+        path: "/home/userCenter/addNewPer",
+        query: { info: JSON.stringify(this.infomation) }
       });
     },
     async dialogVisibleEnter() {
