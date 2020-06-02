@@ -54,7 +54,7 @@ const routes = [{
       },
       {
         path: '/home/teamCenter/teamCheckPackagesDetail',
-        name: 'addTeamCheck',
+        name: 'teamCheckPackagesDetail',
         component: () => import('@/components/TeamCenter/TeamCheckPackagesDetail.vue'),
         meta: {
           title: '团队套餐',

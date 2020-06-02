@@ -19,13 +19,13 @@
             <el-form-item label="体卡类型" prop="entityCard" style="margin-right:5%">
               <el-select v-model="editAddForm.entityCard" placeholder="请选择体卡类型" style="width:202px">
                 <el-option label="虚拟卡" value="虚拟卡"></el-option>
-                <!-- <el-option label="实体卡" value="实体卡"></el-option> -->
+                <el-option label="实体卡" value="实体卡"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="出生日期" prop="birth" class="birth">
               <el-date-picker
                 style="width:202px"
-                v-model="editAddForm.birth"
+                v-model="editAddForm.birthday"
                 :editable="false"
                 type="date"
                 placeholder="选择日期"
@@ -43,7 +43,13 @@
           </li>
           <!-- 科室  性别 -->
           <li style="width:100%;display:flex;justify-content: center;">
-            <el-form-item label="科  室" prop="docName" style="margin-right:5%">
+            <!-- 医院 部门 -->
+            <el-form-item
+              label="科  室"
+              prop="docName"
+              style="margin-right:5%"
+              v-if="this.judge.dcDept.length == 9"
+            >
               <el-select
                 filterable
                 v-model="editAddForm.docName"
@@ -64,8 +70,36 @@
                 </el-option>
               </el-select>
             </el-form-item>
+            <!-- 医院 部门 科室 -->
+            <el-form-item
+              label="科  室"
+              prop="docName"
+              v-else-if="this.judge.dcDept.length == 12"
+              style="margin-right:5%"
+            >
+              <el-select
+                filterable
+                disabled
+                v-model="editAddForm.docName"
+                placeholder="请选择科室"
+                style="width:202px"
+              >
+                <el-option
+                  v-for="item in docList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.uuid"
+                >
+                  <div style="display:flex;">
+                    <span style="flex: 1;font-weight:700;">{{ item.name }}</span>
+                    <span style="flex: 1;text-align:center">{{ item.hospital }}</span>
+                    <span style="flex: 1;text-align:center">{{ item.office }}</span>
+                  </div>
+                </el-option>
+              </el-select>
+            </el-form-item>
             <el-form-item label="性  别" prop="sex">
-              <el-select v-model="editAddForm.sex" placeholder="请选择性别" style="width:202px">
+              <el-select v-model="editAddForm.gender" placeholder="请选择性别" style="width:202px">
                 <el-option label="男" value="男"></el-option>
                 <el-option label="女" value="女"></el-option>
               </el-select>
@@ -208,13 +242,10 @@ export default {
         entityCard: "虚拟卡",
         name: "",
         phone: "",
-        sex: "",
-        birth: "",
+        gender: "",
+        birthday: "",
         job: "",
-        marriage: "",
-        age: "",
-        edu: "",
-        address: ""
+        marriage: ""
       },
       jobList: [
         { id: 1, name: "前端" },
@@ -236,19 +267,19 @@ export default {
       docList: [],
       uuid: "",
       strUserName: "",
-      openOrcls: false
+      openOrcls: false,
+      judge: {}
     };
   },
   created() {
+    this.judge = JSON.parse(window.localStorage.getItem("mess"));
+    console.log(this.judge);
     if (this.$route.query.mess == "修改") {
       this.editAddForm = JSON.parse(window.sessionStorage.getItem("editInfo"));
     } else if (this.$route.query.mess == "追加检测") {
       this.editAddForm = JSON.parse(this.$route.query.info);
-      this.editAddForm.sex = JSON.parse(this.$route.query.info).gender
-      this.editAddForm.birth = JSON.parse(this.$route.query.info).birthday
     }
     console.log(this.editAddForm);
-    
     this.getInfoList();
     this.getDocList();
   },
@@ -262,7 +293,9 @@ export default {
     },
     // 获取医生列表
     async getDocList() {
-      const { data: res } = await this.$http.post("doc/getDoctor", {});
+      const { data: res } = await this.$http.post("doc/getDoctor", {
+        dcDept: this.judge.dcDept
+      });
       if (res.code !== 200) return this.$message.error("获取医生列表失败");
       console.log(res);
 
@@ -277,14 +310,13 @@ export default {
           type: "个人",
           name: this.editAddForm.name,
           docName: this.editAddForm.docName,
+          docUuid: this.editAddForm.docName,
           phone: this.editAddForm.phone,
-          sex: this.editAddForm.sex,
-          birth: this.timesChangeDate(this.editAddForm.birth),
+          sex: this.editAddForm.gender,
+          birth: this.timesChangeDate(this.editAddForm.birthday),
           job: this.editAddForm.job,
-          age: this.editAddForm.age,
           marriage: this.editAddForm.marriage,
-          edu: this.editAddForm.edu,
-          address: this.editAddForm.address,
+          orderType: this.editAddForm.marriage,
           packageUuid: this.uuid
         });
         if (res.code != 200) return this.$message.error("添加失败");
