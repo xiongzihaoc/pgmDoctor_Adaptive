@@ -92,7 +92,32 @@
               </el-select>
             </el-form-item>
           </li>
-          <!-- 套餐  婚姻 -->
+          <!-- 教育  婚姻 -->
+          <li style="display:flex;justify-content: center;">
+            <el-form-item label="教  育" prop="edu" style="margin-right:5%">
+              <el-select
+                filterable
+                v-model="editAddForm.edu"
+                placeholder="请选择学历"
+                style="width:202px"
+              >
+                <el-option
+                  v-for="item in eduList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="婚  姻" prop="marriage">
+              <el-select v-model="editAddForm.marriage" placeholder="请选择" style="width:202px">
+                <el-option label="未婚" value="未婚"></el-option>
+                <el-option label="已婚" value="已婚"></el-option>
+                <el-option label="离异" value="离异 "></el-option>
+                <el-option label="丧偶" value="丧偶"></el-option>
+              </el-select>
+            </el-form-item>
+          </li>
           <li style="display:flex;justify-content: center;">
             <el-form-item label="套  餐" style="margin-right:5%" prop="strUserName">
               <el-input
@@ -110,7 +135,7 @@
                 >{{item.sheetName}}</li>
               </ul>
             </el-form-item>
-            <el-form-item label="婚  姻" prop="marriage">
+            <el-form-item label="测  试" prop="marriage" style="visibility: hidden;">
               <el-select v-model="editAddForm.marriage" placeholder="请选择" style="width:202px">
                 <el-option label="未婚" value="未婚"></el-option>
                 <el-option label="已婚" value="已婚"></el-option>
@@ -198,21 +223,37 @@ export default {
         gender: "",
         birthday: "",
         job: "",
+        edu: "",
         marriage: "",
         dept: "",
         uuid: ""
       },
       jobList: [
-        { id: 1, name: "前端" },
-        { id: 2, name: "测试" },
-        { id: 3, name: "UI" }
+        { id: 1, name: "国家公务员" },
+        { id: 2, name: "专业技术人员" },
+        { id: 3, name: "职员" },
+        { id: 4, name: "企业管理人员" },
+        { id: 5, name: "工人" },
+        { id: 6, name: "农民" },
+        { id: 7, name: "学生" },
+        { id: 8, name: "现役军人" },
+        { id: 9, name: "自由职业者" },
+        { id: 10, name: "个体经营者" },
+        { id: 11, name: "无业人员" },
+        { id: 12, name: "退(离)休人员" },
+        { id: 13, name: "其他" }
       ],
       eduList: [
-        { id: 1, name: "本科" },
-        { id: 2, name: "大专" },
-        { id: 3, name: "高中" },
-        { id: 4, name: "初中" },
-        { id: 5, name: "其他" }
+        { id: 1, name: "博士" },
+        { id: 2, name: "硕士" },
+        { id: 3, name: "本科" },
+        { id: 4, name: "大专" },
+        { id: 5, name: "中专和中技" },
+        { id: 6, name: "技工学校" },
+        { id: 7, name: "高中" },
+        { id: 8, name: "初中" },
+        { id: 9, name: "小学" },
+        { id: 10, name: "文盲与半文盲" }
       ],
       taocanList: [],
       dialogVisible: false,
@@ -288,9 +329,6 @@ export default {
         this.editAddForm.uuid = this.judge.uuid;
         this.IsDocDisabled = true;
       } else if (this.judge.accountType == 1) {
-        this.editAddForm.docName = this.judge.name;
-        this.editAddForm.uuid = this.judge.uuid;
-        this.editAddForm.dept = this.judge.dcDept;
         this.IsDeptDisabled = true;
       } else if (this.judge.accountType == 2) {
       } else {
