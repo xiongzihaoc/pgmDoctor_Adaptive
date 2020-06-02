@@ -56,7 +56,10 @@
               文化程度:
               <i>{{infoObj.edu}}</i>
             </span>
-            <span>所属:</span>
+            <span>
+              所属:
+              <i v-text="this.infoObj.source == 0?'个人':'团队'"></i>
+            </span>
             <span>
               职业:
               <i>{{infoObj.job}}</i>
