@@ -329,6 +329,7 @@ export default {
         this.editAddForm.uuid = this.judge.uuid;
         this.IsDocDisabled = true;
       } else if (this.judge.accountType == 1) {
+        this.editAddForm.dept = this.judge.dcDept;
         this.IsDeptDisabled = true;
       } else if (this.judge.accountType == 2) {
       } else {
