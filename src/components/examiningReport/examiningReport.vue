@@ -129,7 +129,7 @@ export default {
         source:this.reportType,
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        name: this.input
+        params: { search: this.input }
       });
       if(this.reportType == 0) {
         this.reoprtList = res.rows;

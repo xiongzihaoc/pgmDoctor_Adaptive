@@ -17,7 +17,7 @@
           <!-- 体卡类型  出生日期 -->
           <li style="width:100%;display:flex;justify-content: center;">
             <el-form-item label="体卡类型" prop="orderType" style="margin-right:5%">
-              <el-select v-model="editAddForm.orderType" placeholder="请选择体卡类型" style="width:202px">
+              <el-select disabled v-model="editAddForm.orderType" placeholder="请选择体卡类型" style="width:202px">
                 <el-option label="虚拟卡" value="虚拟卡"></el-option>
                 <el-option label="实体卡" value="实体卡"></el-option>
               </el-select>
@@ -29,6 +29,8 @@
                 :editable="false"
                 type="date"
                 placeholder="选择日期"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-form-item>
           </li>
@@ -90,7 +92,7 @@
           </li>
           <!-- 教育  婚姻 -->
           <li style="display:flex;justify-content: center;">
-            <el-form-item label="教  育" prop="edu" style="margin-right:5%">
+            <el-form-item label="文  化" prop="edu" style="margin-right:5%">
               <el-select
                 filterable
                 v-model="editAddForm.edu"
@@ -170,6 +172,23 @@
         <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+            title="检测二维码"
+            :visible.sync="checkQCodeDialogShow"
+            center>
+            <div style="text-align: center;">
+                <vue-qr :text="QcodeUrl" :size="300"></vue-qr>
+                
+            </div>
+            <div style="text-align: center;">
+              <span style="font-size: 17px;font-weight: 600;">[扫描二维码开始检测]</span>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="checkQCodeDialogShow = false">取 消</el-button>
+                <el-button type="primary" @click="checkQCodeDone">确 定</el-button>
+            </span>
+        </el-dialog>
   </div>
 </template>
 <script>
@@ -185,9 +204,11 @@ export default {
     };
     return {
       timesChangeDate,
+      checkQCodeDialogShow:false,
+      QcodeUrl:'',
       Addrules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        orderType: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        orderType: [{ required: true, message: "请选择体检卡类型", trigger: "blur" }],
         dept: [{ required: true, message: "请选择科室", trigger: "blur" }],
         docName: [
           { required: true, message: "请输入医生姓名", trigger: "blur" }
@@ -284,6 +305,7 @@ export default {
     this.getInfoList();
     this.getDeptList();
     this.judge = JSON.parse(window.localStorage.getItem("mess"));
+    
     this.Judgerole();
   },
   methods: {
@@ -354,17 +376,22 @@ export default {
           docUuid: this.editAddForm.uuid,
           phone: this.editAddForm.phone,
           sex: this.editAddForm.gender,
-          birth: this.timesChangeDate(this.editAddForm.birthday),
+          birth: this.editAddForm.birthday,
           job: this.editAddForm.job,
           marriage: this.editAddForm.marriage,
           orderType: this.editAddForm.orderType,
           orderDept: this.editAddForm.dept,
-          packageUuid: this.uuid
+          packageUuid: this.uuid,
+          edu:this.editAddForm.edu
         });
         if (res.code != 200) return this.$message.error("添加失败");
-        this.$message.success("添加成功");
-        this.$router.push("/home/index");
+        console.log(res);
+        this.QcodeUrl = this.$userUrlLogin+res.data;
+        this.checkQCodeDialogShow = true;
       });
+    },
+    checkQCodeDone(){
+      this.$router.push("/home/index");
     },
     getT(val) {
       this.editAddForm.docName = val.name;

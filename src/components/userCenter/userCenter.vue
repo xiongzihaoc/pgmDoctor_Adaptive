@@ -88,7 +88,7 @@ export default {
       const { data: res } = await this.$http.post("doc/getPatients", {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        name: this.input
+        params: { search: this.input }
       });
       console.log(res);
 

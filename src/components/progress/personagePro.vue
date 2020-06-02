@@ -23,7 +23,7 @@
             size="small"
             @click.prevent.stop="newAddPerson"
             style="margin-left:2%"
-          >新增检测</el-button>
+          >新增个人</el-button>
         </div>
         <!-- 调用公用表格组件 -->
         <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;" height="100">

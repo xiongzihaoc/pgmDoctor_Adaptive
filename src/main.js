@@ -28,6 +28,7 @@ import vueQr from 'vue-qr'
 Vue.use(vueQr)
 
 Vue.prototype.$userUrlInfo = 'http://192.168.0.131:8082/#/lookTeamInfo';
+Vue.prototype.$userUrlLogin = 'http://192.168.0.131:8082/#/login?orderNo=';
 
 // import Print from './plugins/print/Print'
 // Vue.use(Print)
