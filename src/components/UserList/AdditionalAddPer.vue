@@ -46,7 +46,6 @@
             <!-- 医院 部门 -->
             <el-form-item label="科  室" prop="dept" style="margin-right:5%">
               <el-cascader
-                @focus="handleDeptFoucs"
                 :disabled="IsDeptDisabled"
                 style="width:202px"
                 v-model="editAddForm.dept"
@@ -73,14 +72,18 @@
                 placeholder="请选择医生"
                 style="width:202px"
                 :disabled="IsDocDisabled"
-                @focus="handleDocFoucs"
               >
                 <el-option
                   v-for="item in docList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.uuid"
-                ></el-option>
+                >
+                  <div style="display:flex;">
+                    <span style="flex: 1;font-weight:700;">{{ item.name }}</span>
+                    <span style="flex: 1;text-align:center">{{ item.office }}</span>
+                  </div>
+                </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="职  业" prop="job">
@@ -240,15 +243,12 @@ export default {
   created() {
     if (this.$route.query.mess == "修改") {
       this.editAddForm = JSON.parse(window.sessionStorage.getItem("editInfo"));
+    } else if (this.$route.query.mess == "追加检测") {
+      this.editAddForm = JSON.parse(this.$route.query.info);
     }
-    // else if (this.$route.query.mess == "追加检测") {
-    //   this.editAddForm = JSON.parse(this.$route.query.info);
-    // }
-    this.judge = JSON.parse(window.localStorage.getItem("mess"));
-    console.log(this.judge);
-
-    this.Judgerole();
     this.getInfoList();
+    this.getDocList();
+    this.getDeptList();
   },
   methods: {
     // 获取个人信息
@@ -265,6 +265,7 @@ export default {
       });
       if (res.code !== 200) return this.$message.error("获取医生列表失败");
       console.log(res);
+
       this.docList = res.rows;
     },
     // 获取部门列表
@@ -276,27 +277,6 @@ export default {
       console.log(res);
       this.deptList = res.data;
     },
-    // 判断accountType 登录角色
-    Judgerole() {
-      if (this.judge.accountType == 0) {
-        this.editAddForm.docName = this.judge.name;
-        this.editAddForm.uuid = this.judge.uuid;
-        this.IsDocDisabled = true;
-      } else if (this.judge.accountType == 1) {
-        // this.deptList = { name: this.judge.office, uuid: this.judge.dcDept };
-        this.IsDeptDisabled = true;
-      } else if (this.judge.accountType == 2) {
-      } else {
-      }
-    },
-    // 点击医生下拉选加载医生数据
-    handleDocFoucs() {
-      this.getDocList();
-    },
-    // 点击科室下拉选加载医生数据
-    handleDeptFoucs() {
-      this.getDeptList();
-    },
     handleChange(val) {
       console.log(val);
     },
@@ -304,7 +284,7 @@ export default {
     enterSave() {
       this.$refs.addInfoRef.validate(async valid => {
         if (!valid) return;
-        // if (!this.strUserName) return this.$message.error("请选择套餐");
+        if (!this.strUserName) return this.$message.error("请选择套餐");
         const { data: res } = await this.$http.post("checkList/add", {
           type: "个人",
           name: this.editAddForm.name,

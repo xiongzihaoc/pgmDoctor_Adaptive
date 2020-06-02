@@ -53,6 +53,14 @@ const routes = [{
         },
       },
       {
+        path: '/home/userCenter/AdditionalTest',
+        name: 'AdditionalTest',
+        component: () => import('@/components/UserList/AdditionalAddPer.vue'),
+        meta: {
+          title: '追加检测',
+        },
+      },
+      {
         path: '/home/teamCenter/teamCheckPackagesDetail',
         name: 'teamCheckPackagesDetail',
         component: () => import('@/components/TeamCenter/TeamCheckPackagesDetail.vue'),

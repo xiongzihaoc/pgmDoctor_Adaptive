@@ -1,7 +1,7 @@
 <template>
   <div class="ConnectHo">
     <div class="asdie">
-      <img :src="this.hosMess.photoUrl" alt class="logoImg" />
+      <img :src="this.hosMess.hospitalLogo" alt class="logoImg" />
       <h3>{{hosMess.hospital}}</h3>
       <el-menu
         background-color="#fff"
@@ -143,6 +143,7 @@ export default {
   },
   created() {
     this.hosMess = JSON.parse(window.localStorage.getItem("mess"));
+    console.log(this.hosMess);
   },
   methods: {
     // 退出

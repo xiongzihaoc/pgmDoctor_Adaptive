@@ -29,7 +29,7 @@
       <div class="buttonBox">
         <el-button type="primary" plain size="small" @click.prevent.stop="consultation">添加会诊意见</el-button>
         <el-button type="primary" plain size="small" @click.prevent.stop="Hisconsultation">历次会诊</el-button>
-        <el-button type="primary" plain size="small">追加检测</el-button>
+        <el-button type="primary" plain size="small" @click.prevent.stop="additionalTesting">追加检测</el-button>
         <el-button type="primary" plain size="small">历次检测对比</el-button>
         <el-button type="primary" plain size="small">其他检测</el-button>
       </div>
@@ -194,6 +194,13 @@ export default {
     },
     dialogVisibleCancel() {
       this.consultationForm = {};
+    },
+    // 追加检测
+    additionalTesting() {
+      this.$router.push({
+        path: "/home/userCenter/AdditionalTest",
+        query: { info: JSON.stringify(this.infomation) }
+      });
     },
     // 分页
     handleSizeChange(newSize) {

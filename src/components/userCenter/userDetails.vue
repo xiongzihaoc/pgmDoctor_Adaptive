@@ -204,7 +204,7 @@ export default {
     additionalTesting() {
       this.$router.push({
         path: "/home/userCenter/addNewPer",
-        query: { mess: "追加检测", info: JSON.stringify(this.infomation) }
+        query: { info: JSON.stringify(this.infomation) }
       });
     },
     async dialogVisibleEnter() {
