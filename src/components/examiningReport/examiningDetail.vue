@@ -110,7 +110,7 @@
                 <span>{{item.sheetName}}</span>
               </div>
               <div style="padding: 0 0 7px 25px;">
-                <span class="score">总分：</span>
+                <!-- <span class="score">总分：{{item.score}}</span> -->
                 <span
                   class="score"
                   v-for="(subItem,i) in item.factor"
