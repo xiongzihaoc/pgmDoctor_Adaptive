@@ -67,7 +67,8 @@
           </span>
         </li>
         <li>
-          <span>科室:
+          <span>
+            科室:
             <i>心理科</i>
           </span>
         </li>
