@@ -63,16 +63,16 @@
                   align="center"
                   prop="job"
                   label="职业"/>
-                <el-table-column
+                <!-- <el-table-column
                   v-if="deptCode.length==3"
                   align="center"
                   prop="teamDept"
-                  label="部门"/>
+                  label="组织"/> -->
                 <el-table-column
                 v-if="deptCode.length==3 || deptCode.length==6"
                   align="center"
                   prop="teamDept"
-                  label="小组"/>
+                  label="组织"/>
                 <!-- <el-table-column
                   align="center"
                   prop="teamNo"

@@ -90,7 +90,7 @@
 
           <el-table-column align="center" prop="checkNumber" label="已检测" />
 
-          <el-table-column align="center" prop="checkNumber" label="未检测" />
+          <el-table-column align="center" prop="checkNotNum" label="未检测" />
           <el-table-column align="center" prop="packageName" v-if="isTeamParent" label="套餐" />
           <el-table-column align="center" label="状态" prop="state">
             <template slot-scope="scope">
@@ -276,7 +276,14 @@ export default {
         pageNum: this.pageNum,
         teamDept: this.currentTeamTypeCode
       });
-      this.teamTypeList = res.rows;
+      var teamTypeList = res.rows;
+      for(var i=0;i<teamTypeList.length;i++){
+        var teamCheckInfo = teamTypeList[i];
+        teamCheckInfo.checkNotNum = teamCheckInfo.recordNumber-teamCheckInfo.checkNumber;
+      }
+      console.log('ddddd');
+      console.log(this.teamTypeList);
+      this.teamTypeList = teamTypeList;
       this.total = res.total;
     },
     async getCity() {

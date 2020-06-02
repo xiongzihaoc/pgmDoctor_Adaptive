@@ -28,7 +28,30 @@
           ></el-input>
         </div>
         <!-- 调用公用表格组件 -->
-        <ElTable :data="reoprtList" :header="tableHeaderBig" style="margin-top:1%;">
+        <ElTable :data="reoprtList" :header="tableHeaderBig" style="margin-top:1%;" v-if="reportType==0">
+          <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
+            <template slot-scope="scope">
+              <div>{{timesChangeDate(scope.row.createTime)}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" slot="fixed" fixed="right" label="审核状态" prop="checkState">
+            <template slot-scope="scope">
+              <span v-if="scope.row.checkState== 0" style="color:#F56C6C">未审核</span>
+              <span v-else-if="scope.row.checkState== 1" style="color:#67C23A">已审核</span>
+              <span v-else style="color:#E6A23C">已打印</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" slot="fixed" fixed="right" label="操作">
+            <template slot-scope="scope">
+              <el-button
+                type="primary"
+                size="mini"
+                @click.prevent.stop="JumpUserCenter(scope.row)"
+              >查看</el-button>
+            </template>
+          </el-table-column>
+        </ElTable>
+        <ElTable :data="teamReoprtList" :header="teamtableHeaderBig" style="margin-top:1%;" v-else>
           <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
             <template slot-scope="scope">
               <div>{{timesChangeDate(scope.row.createTime)}}</div>
@@ -81,11 +104,18 @@ export default {
         { prop: "name", label: "姓名" },
         { prop: "phone", label: "手机号" }
       ],
+      teamtableHeaderBig: [
+        { prop: "orderNo", label: "检测卡号" },
+        { prop: "name", label: "姓名" },
+        { prop: "phone", label: "手机号" },
+        { prop: "teamName", label: "团队" }
+      ],
       reoprtList: [],
       pageSize: 10,
       pageNum: 1,
       total: 0,
-      input: ""
+      input: "",
+      teamReoprtList:[]
     };
   },
   created() {
@@ -101,7 +131,12 @@ export default {
         pageNum: this.pageNum,
         name: this.input
       });
-      this.reoprtList = res.rows;
+      if(this.reportType == 0) {
+        this.reoprtList = res.rows;
+      }else {
+        this.teamReoprtList = res.rows;
+      }
+      // this.reoprtList = res.rows;
       this.total = res.total;
       console.log(res);
     },
@@ -138,12 +173,14 @@ export default {
       this.getReportList();
       this.peopleButtonType=false;
       this.teamButtonType=true;
+      // window.location.reload();
     },
     teamReport(){
       this.reportType = 1;
       this.getReportList();
       this.peopleButtonType=true;
       this.teamButtonType=false;
+      // window.location.reload();
     }
   }
 };

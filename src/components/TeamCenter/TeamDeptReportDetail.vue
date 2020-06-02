@@ -29,8 +29,8 @@
                             <li>
                                 <span class="title" >创建时间：{{timesChangeDate(deptCheckInfo.createTime)}}</span>
                                 <span class="title" >检测套餐：{{deptCheckInfo.packageName}}</span>
-                                <span class="title" >已录入人数：{{deptCheckInfo.checkNumber}}</span>
-                                <span class="title" >已检测人数：{{deptCheckInfo.recordNumber}}</span>
+                                <span class="title" >已录入人数：{{deptCheckInfo.recordNumber}}</span>
+                                <span class="title" >已检测人数：{{deptCheckInfo.checkNumber}}</span>
                             </li>
                         </ul>
                     </div>
