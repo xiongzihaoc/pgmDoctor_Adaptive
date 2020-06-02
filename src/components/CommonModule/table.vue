@@ -262,9 +262,9 @@ export default {
       }
     }
   }
-  // .el-table {
+  /* // .el-table {
   //   // border: 1px solid #dddddd;
-  // }
+  // } */
   .el-table .darg_start {
     background-color: #f3f3f3;
   }
@@ -298,9 +298,9 @@ export default {
       }
     }
   }
-  // .cell {
+  /* // .cell {
   //   // overflow: visible;
-  // }
+  // } */
   .thead-cell {
     padding: 0;
     display: inline-flex;

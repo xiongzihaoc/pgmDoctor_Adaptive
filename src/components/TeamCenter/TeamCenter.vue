@@ -74,8 +74,8 @@
           </li>
           <li>
             <span class="title">联系电话：{{currentTeamInfo.phone}}</span>
-            <span class="title" :style="{visibility:this.currentTeamInfo.pcd == null?'hidden':'visible'}">地址：{{currentTeamInfo.pcd}}</span>
-            <!-- <span class="title">检测次数：{{total}}</span> -->
+            <span class="title" :style="{visibility:this.currentTeamInfo.pcd == null || this.currentTeamInfo.pcd == ''?'hidden':'visible'}">地址：{{currentTeamInfo.pcd}}</span>
+            <span class="title" style="visibility: hidden;">检测次数：{{total}}</span>
           </li>
         </div>
         <!-- 调用公用表格组件 -->
