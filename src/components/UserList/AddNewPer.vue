@@ -46,15 +46,13 @@
             <!-- 医院 部门 -->
             <el-form-item label="科  室" prop="dept" style="margin-right:5%">
               <el-cascader
-                @focus="handleDeptFoucs"
                 :disabled="IsDeptDisabled"
-                style="width:202px"
                 v-model="editAddForm.dept"
                 :options="deptList"
+                @change="handleChange"
                 :props="addNewProps"
                 :show-all-levels="false"
-                clearable
-                @change="handleChange"
+                style="width:202px"
               ></el-cascader>
             </el-form-item>
             <el-form-item label="性  别" prop="gender">
@@ -201,7 +199,7 @@ export default {
         birthday: "",
         job: "",
         marriage: "",
-        dept: [],
+        dept: "",
         uuid: ""
       },
       jobList: [
@@ -246,8 +244,10 @@ export default {
     //   this.editAddForm = JSON.parse(this.$route.query.info);
     // }
     this.judge = JSON.parse(window.localStorage.getItem("mess"));
+
     this.Judgerole();
     this.getInfoList();
+    this.getDeptList();
   },
   methods: {
     // 获取个人信息
@@ -288,23 +288,28 @@ export default {
         this.editAddForm.uuid = this.judge.uuid;
         this.IsDocDisabled = true;
       } else if (this.judge.accountType == 1) {
-        // this.deptList = { name: this.judge.office, uuid: this.judge.dcDept };
+        this.editAddForm.docName = this.judge.name;
+        this.editAddForm.uuid = this.judge.uuid;
+        this.editAddForm.dept = this.judge.dcDept;
         this.IsDeptDisabled = true;
       } else if (this.judge.accountType == 2) {
-        
       } else {
       }
     },
     // 点击科室下拉选加载医生数据
-    handleDeptFoucs() {
-      this.getDeptList();
-    },
+    // handleDeptFoucs() {
+
+    // },
     // 点击医生下拉选加载医生数据
     handleDocFoucs() {
       this.getDocList();
     },
     handleChange(val) {
-      this.selectDeptNum = val.pop();
+      var valLength = val.length;
+      this.selectDeptNum = val[valLength - 1];
+      console.log(this.selectDeptNum);
+
+      this.editAddForm.dept = this.selectDeptNum;
     },
     // 保存信息
     enterSave() {
@@ -312,21 +317,21 @@ export default {
         if (!valid) return;
         if (!this.strUserName) return this.$message.error("请选择套餐");
         const { data: res } = await this.$http.post("checkList/add", {
-          type: "个人",
+          source: "0",
           name: this.editAddForm.name,
           docName: this.editAddForm.docName,
           docUuid: this.editAddForm.uuid,
           phone: this.editAddForm.phone,
-          gender: this.editAddForm.gender,
+          sex: this.editAddForm.gender,
           birth: this.timesChangeDate(this.editAddForm.birthday),
           job: this.editAddForm.job,
           marriage: this.editAddForm.marriage,
           orderType: this.editAddForm.entityCard,
-          orderDept: this.editAddForm.marriage,
+          orderDept: this.editAddForm.dept,
           packageUuid: this.uuid
         });
-        if (res.code != 200) return this.$message.error("添加失败");
-        this.$message.success("添加成功");
+        // if (res.code != 200) return this.$message.error("添加失败");
+        // this.$message.success("添加成功");
         // this.$router.push("/home/index");
       });
     },
