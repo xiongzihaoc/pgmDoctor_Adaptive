@@ -164,16 +164,16 @@ export default {
         // ]
       },
       editAddForm: {
-        docName: "熊紫豪",
+        docName: "",
         name: "",
-        phone: 18682308445,
-        sex: "女",
-        birth: "2020-10-01",
-        job: "前端",
-        marriage: "已婚",
-        age: "24",
-        edu: "本科",
-        address: "杭州西湖"
+        phone:'',
+        sex: "",
+        birth: "",
+        job: "",
+        marriage: "",
+        age: "",
+        edu: "",
+        address: ""
       },
       jobList: [
         { id: 1, name: "前端" },

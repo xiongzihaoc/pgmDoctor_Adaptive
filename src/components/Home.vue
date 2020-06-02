@@ -33,8 +33,8 @@
             您好
             <a href="javascript:;">{{hosMess.name}}</a> 欢迎来到PHM检测中心后台！
           </span>
-          <span class="editPass" @click.prevent.stop="editPassword">修改密码</span> |
-          <span class="loginOut" @click.prevent.stop="loginOut">退出登录</span>
+          <span class="editPass" @click.prevent.stop="editPassword" style="color: red;">修改密码</span> |
+          <span class="loginOut" @click.prevent.stop="loginOut" style="color: royalblue;">退出登录</span>
           <img
             class="warningImg"
             src="../assets/images/warning.png"
@@ -78,12 +78,12 @@ export default {
           path: "home/index",
           id: "1"
         },
-        // {
-        //   icon: "iconfont icon-yonhu",
-        //   name: "用户中心",
-        //   path: "home/userCenter",
-        //   id: "2"
-        // },
+        {
+          icon: "iconfont icon-yonhu",
+          name: "个人中心",
+          path: "home/userCenter",
+          id: "2"
+        },
         {
           icon: "iconfont icon-hexintuandui",
           name: "团体中心",

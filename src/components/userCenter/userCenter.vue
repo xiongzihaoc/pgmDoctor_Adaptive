@@ -22,7 +22,7 @@
             size="small"
             @click.prevent.stop="newAddPerson"
             style="margin-left:2%"
-          >新增用户</el-button>
+          >新增个人</el-button>
         </div>
         <!-- 调用公用表格组件 -->
         <EleTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">

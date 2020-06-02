@@ -27,7 +27,7 @@ Vue.use(animated)
 import vueQr from 'vue-qr'
 Vue.use(vueQr)
 
-Vue.prototype.$userUrlInfo = 'http://192.168.0.131:8081/#/lookTeamInfo';
+Vue.prototype.$userUrlInfo = 'http://192.168.0.131:8082/#/lookTeamInfo';
 
 // import Print from './plugins/print/Print'
 // Vue.use(Print)
