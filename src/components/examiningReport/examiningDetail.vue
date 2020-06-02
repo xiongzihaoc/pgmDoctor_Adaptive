@@ -269,9 +269,9 @@ export default {
     },
     // 确认审核
     async hasConfirm() {
-      const { data: res } = await this.$http.post("checkList/updateReportState", {
-        orderNo:this.infoObj.orderNo,
-        status: "2"
+      const { data: res } = await this.$http.post("checkList/update", {
+        id:this.infoObj.id,
+        checkState: "2"
       });
       this.getDetaiList();
       console.log(res);

@@ -130,7 +130,7 @@ export default {
         return "未作答";
       }
     },
-    newAddPerson(){
+    newAddPerson() {
       this.$router.push("/home/userCenter/addNewPer");
     }
   }
