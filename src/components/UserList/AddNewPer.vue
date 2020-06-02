@@ -72,13 +72,9 @@
                 style="width:202px"
                 :disabled="IsDocDisabled"
                 @focus="handleDocFoucs"
+                @change="getT"
               >
-                <el-option
-                  v-for="item in docList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.uuid"
-                ></el-option>
+                <el-option v-for="item in docList" :key="item.id" :label="item.name" :value="item"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="职  业" prop="job">
@@ -285,7 +281,6 @@ export default {
     //   this.editAddForm = JSON.parse(this.$route.query.info);
     // }
     this.judge = JSON.parse(window.localStorage.getItem("mess"));
-
     this.Judgerole();
     this.getInfoList();
     this.getDeptList();
@@ -294,8 +289,6 @@ export default {
     // 获取个人信息
     async getInfoList() {
       const { data: res } = await this.$http.post("/office_package/load", {});
-      console.log(res);
-
       this.comboList = res.rows;
     },
     // 获取医生列表
@@ -328,17 +321,18 @@ export default {
         this.editAddForm.docName = this.judge.name;
         this.editAddForm.uuid = this.judge.uuid;
         this.IsDocDisabled = true;
+        this.IsDeptDisabled = true;
+        this.editAddForm.dept = this.judge.dcDept;
       } else if (this.judge.accountType == 1) {
         this.editAddForm.dept = this.judge.dcDept;
         this.IsDeptDisabled = true;
       } else if (this.judge.accountType == 2) {
+        this.editAddForm.dept = this.judge.dcDept;
       } else {
       }
     },
     // 点击科室下拉选加载医生数据
-    // handleDeptFoucs() {
-
-    // },
+    handleDeptFoucs() {},
     // 点击医生下拉选加载医生数据
     handleDocFoucs() {
       this.getDocList();
@@ -347,7 +341,6 @@ export default {
       var valLength = val.length;
       this.selectDeptNum = val[valLength - 1];
       console.log(this.selectDeptNum);
-
       this.editAddForm.dept = this.selectDeptNum;
     },
     // 保存信息
@@ -369,10 +362,14 @@ export default {
           orderDept: this.editAddForm.dept,
           packageUuid: this.uuid
         });
-        // if (res.code != 200) return this.$message.error("添加失败");
-        // this.$message.success("添加成功");
-        // this.$router.push("/home/index");
+        if (res.code != 200) return this.$message.error("添加失败");
+        this.$message.success("添加成功");
+        this.$router.push("/home/index");
       });
+    },
+    getT(val) {
+      this.editAddForm.docName = val.name;
+      this.editAddForm.uuid = val.uuid;
     },
     editDialogClosed() {},
     // 套餐input弹出框
