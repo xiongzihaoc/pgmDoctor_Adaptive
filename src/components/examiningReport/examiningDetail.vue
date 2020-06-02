@@ -25,7 +25,10 @@
           <span class="orangeYuan"></span>
           <span class="dataStat">个人资料</span>
         </div>
-        <ul class="content personalInfo" style="background:#f5f5f5;padding:1%;box-sizing:border-box;margin-top: 10px;">
+        <ul
+          class="content personalInfo"
+          style="background:#f5f5f5;padding:1%;box-sizing:border-box;margin-top: 10px;"
+        >
           <li>
             <span>
               姓名:
@@ -61,7 +64,7 @@
           </li>
           <!-- <li>
             <span>科室:</span>
-          </li> -->
+          </li>-->
           <li>
             <span>
               检测卡号:
@@ -69,7 +72,7 @@
             </span>
             <span>
               医生:
-              <i>{{infoObj.createBy}}</i>
+              <i>{{infoObj.docName}}</i>
             </span>
           </li>
           <li>
@@ -157,7 +160,7 @@
           </p>
           <p class="TitleContent" v-html="item.suggestion"></p>
         </div>-->
-  
+
         <!-- 总建议 -->
         <div v-if="this.infoObj.isZh == 'Y'" class="adviceCard">
           <!-- <p class="title">
@@ -166,7 +169,6 @@
           <p class="title" v-html="this.advice"></p>-->
         </div>
       </div>
-      
     </el-card>
     <!-- <el-card
       class="card_bottom"
@@ -247,7 +249,7 @@ export default {
       this.advice = res.data.advice;
       this.infoObj = res.data.info;
       this.reportList = res.data.report;
-      console.log(res.data);
+      console.log(this.infoObj);
 
       // 量表建议评语等数据
       var obj = {};
@@ -270,7 +272,7 @@ export default {
     // 确认审核
     async hasConfirm() {
       const { data: res } = await this.$http.post("checkList/update", {
-        id:this.infoObj.id,
+        id: this.infoObj.id,
         checkState: "2"
       });
       this.getDetaiList();
