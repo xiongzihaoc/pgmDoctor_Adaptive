@@ -208,23 +208,27 @@ export default {
       QcodeUrl:'',
       Addrules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+<<<<<<< HEAD
         orderType: [{ required: true, message: "请选择体检卡类型", trigger: "blur" }],
         dept: [{ required: true, message: "请选择科室", trigger: "blur" }],
         docName: [
           { required: true, message: "请输入医生姓名", trigger: "blur" }
         ],
+=======
+        orderType: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        dept: [{ required: true, message: "请选择科室" }],
+        docName: [{ required: true, message: "请选择医生姓名" }],
+>>>>>>> 086a07769f978c2a2e195bf872bf57c9986f7f27
         phone: [
           { required: true, message: "请输入手机号码", trigger: "blur" },
           { validator: checkMobile, trigger: "blur" }
         ],
-        gender: [{ required: true, message: "请选择性别", trigger: "blur" }],
+        gender: [{ required: true, message: "请选择性别" }],
         birthday: [{ required: true, message: "请输入出生日期" }],
-        job: [{ required: true, message: "请选择职业", trigger: "blur" }],
-        marriage: [
-          { required: true, message: "请选择婚姻状况", trigger: "blur" }
-        ],
+        job: [{ required: true, message: "请选择职业" }],
+        marriage: [{ required: true, message: "请选择婚姻状况" }],
         age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
-        edu: [{ required: true, message: "请选择教育程度", trigger: "blur" }],
+        edu: [{ required: true, message: "请选择教育程度" }],
         address: [{ required: true, message: "请输入地址", trigger: "blur" }]
         // strUserName: [
         //   { required: true, message: "请选择套餐", trigger: "blur" }
