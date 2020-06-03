@@ -114,6 +114,8 @@ const routes = [{
         component: () => import('@/components/userCenter/userDetails.vue'),
         meta: {
           title: '用户详情',
+          guidePath: true,
+          jumpPath: '/home/userCenter',
         }
       },
       {
@@ -146,6 +148,8 @@ const routes = [{
         component: () => import('@/components/examiningReport/examiningDetail.vue'),
         meta: {
           title: '报告详情',
+          guidePath: true,
+          jumpPath: '/home/examiningReport',
         }
       },
       {

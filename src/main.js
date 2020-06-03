@@ -27,15 +27,15 @@ Vue.use(animated)
 import vueQr from 'vue-qr'
 Vue.use(vueQr)
 
-Vue.prototype.$userUrlInfo = 'http://192.168.0.131:8082/#/lookTeamInfo';
-Vue.prototype.$userUrlLogin = 'http://192.168.0.131:8082/#/login?orderNo=';
+Vue.prototype.$userUrlInfo = 'http://www.phmzykj.com/#/lookTeamInfo';
+Vue.prototype.$userUrlLogin = 'http://www.phmzykj.com/#/login?orderNo=';
 
 // import Print from './plugins/print/Print'
 // Vue.use(Print)
 
 // // 配置axios
-axios.defaults.baseURL = 'http://192.168.0.130:8086/zhuoya-sheet/'
-Vue.prototype.$ajax = 'http://192.168.0.130:8080/zhuoya-web/'
+axios.defaults.baseURL = 'http://www.phmzykj.com/zhuoya-sheet/'
+Vue.prototype.$ajax = 'http://www.phmzykj.com/zhuoya-web/'
 // 设置请求超时时间
 axios.defaults.timeout = 30000;
 // axios请求拦截器

@@ -9,7 +9,7 @@
         active-text-color="#fff"
         :unique-opened="true"
         router
-        :default-active="activePath"
+        :default-active="routerPath"
         ref="menuRef"
       >
         <!-- 一级菜单 -->
@@ -101,7 +101,7 @@ export default {
           name: "检测报告",
           path: "home/examiningReport",
           id: "4"
-        },
+        }
         // {
         //   icon: "iconfont icon-yujing",
         //   name: "预警提醒",
@@ -191,9 +191,11 @@ export default {
     console.log(this.activePath);
     this.activePath = this.$route.path;
   },
-  watch: {
-    activePath: function() {
-      console.log(this.activePath);
+  computed: {
+    routerPath: function() {
+      return this.$route.meta.guidePath
+        ? this.$route.meta.jumpPath
+        : this.$route.path;
     }
   }
 };
