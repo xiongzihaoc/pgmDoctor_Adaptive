@@ -191,6 +191,7 @@
         </el-dialog>
   </div>
 </template>
+
 <script>
 import { timesChangeDate } from "../../assets/js/util";
 export default {
@@ -438,7 +439,9 @@ export default {
   }
 };
 </script>
-<style>
+
+<style >
+
 .AddConnect {
   height: 100%;
 }

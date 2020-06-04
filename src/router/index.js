@@ -50,6 +50,8 @@ const routes = [{
         component: () => import('@/components/TeamCenter/TeamAddCheck.vue'),
         meta: {
           title: '新增检测',
+          guidePath: true,
+          jumpPath: '/home/teamCenter',
         },
       },
       {
@@ -66,6 +68,8 @@ const routes = [{
         component: () => import('@/components/TeamCenter/TeamCheckPackagesDetail.vue'),
         meta: {
           title: '团队套餐',
+          guidePath: true,
+          jumpPath: '/home/teamCenter',
         },
       },
       {
@@ -73,7 +77,9 @@ const routes = [{
         name: 'teamPackagesPrint',
         component: () => import('@/components/TeamCenter/TeamPackagesPrint.vue'),
         meta: {
-          title: '打印团队套餐'
+          title: '打印团队套餐',
+          guidePath: true,
+          jumpPath: '/home/teamCenter',
         }
       },
       {
@@ -81,7 +87,9 @@ const routes = [{
         name: 'teamPatientDeail',
         component: () => import('@/components/TeamCenter/TeamPatientDeail.vue'),
         meta: {
-          title: '检测人员列表'
+          title: '检测人员列表',
+          guidePath: true,
+          jumpPath: '/home/teamCenter',
         }
       },
       {
@@ -89,7 +97,9 @@ const routes = [{
         name: 'teamDeptReportDetail',
         component: () => import('@/components/TeamCenter/TeamDeptReportDetail.vue'),
         meta: {
-          title: '团队检测报告'
+          title: '团队检测报告',
+          guidePath: true,
+          jumpPath: '/home/teamCenter',
         }
       },
       {
@@ -98,6 +108,8 @@ const routes = [{
         component: () => import('@/components/UserList/AddNewPer.vue'),
         meta: {
           title: '个人新增',
+          guidePath: true,
+          jumpPath: '/home/userCenter',
         },
       },
       {
@@ -140,6 +152,8 @@ const routes = [{
         component: () => import('@/components/examiningReport/AnswerDetail.vue'),
         meta: {
           title: '答题详情',
+          guidePath: true,
+          jumpPath: '/home/examiningReport',
         }
       },
       {

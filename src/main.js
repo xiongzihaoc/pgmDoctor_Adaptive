@@ -34,8 +34,8 @@ Vue.prototype.$userUrlLogin = 'http://www.phmzykj.com/#/login?orderNo=';
 // Vue.use(Print)
 
 // // 配置axios
-axios.defaults.baseURL = 'http://www.phmzykj.com/zhuoya-sheet/'
-Vue.prototype.$ajax = 'http://www.phmzykj.com/zhuoya-web/'
+axios.defaults.baseURL = 'http://192.168.0.130:8086/zhuoya-sheet/'
+Vue.prototype.$ajax = 'http://192.168.0.130:8080/zhuoya-web/'
 // 设置请求超时时间
 axios.defaults.timeout = 30000;
 // axios请求拦截器
@@ -50,10 +50,10 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (config) {
   if (config.status != 200) {
     return this.$message.error('服务器异常');
-  }else if(config != null && config.data != null){
-    if(config.data.code == 410){
+  } else if (config != null && config.data != null) {
+    if (config.data.code == 410) {
       return this.$router.push('/');
-    } 
+    }
   }
   Nprogress.done()
   return config;

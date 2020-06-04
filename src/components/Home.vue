@@ -17,7 +17,6 @@
           :index="'/' + item.path"
           v-for="item in menuList"
           :key="item.id"
-          @click="saveNavState('/' + item.path,item)"
         >
           <template slot="title">
             <i :class="item.icon" height="24px"></i>
@@ -90,36 +89,36 @@ export default {
           path: "home/teamCenter",
           id: "8"
         },
-        // {
-        //   icon: "iconfont icon-liangbiao",
-        //   name: "他评量表",
-        //   path: "home/HisScale",
-        //   id: "3"
-        // },
+        {
+          icon: "iconfont icon-liangbiao",
+          name: "他评量表",
+          path: "home/HisScale",
+          id: "3"
+        },
         {
           icon: "iconfont icon-baogao-copy",
           name: "检测报告",
           path: "home/examiningReport",
           id: "4"
+        },
+        {
+          icon: "iconfont icon-yujing",
+          name: "预警提醒",
+          path: "home/warning",
+          id: "5"
+        },
+        {
+          icon: "iconfont icon-huizhen",
+          name: "会诊操作",
+          path: "home/consultation",
+          id: "6"
+        },
+        {
+          icon: "iconfont icon-icon-",
+          name: "数据统计",
+          path: "home/dataStatistics",
+          id: "7"
         }
-        // {
-        //   icon: "iconfont icon-yujing",
-        //   name: "预警提醒",
-        //   path: "home/warning",
-        //   id: "5"
-        // },
-        // {
-        //   icon: "iconfont icon-huizhen",
-        //   name: "会诊操作",
-        //   path: "home/consultation",
-        //   id: "6"
-        // },
-        // {
-        //   icon: "iconfont icon-icon-",
-        //   name: "数据统计",
-        //   path: "home/dataStatistics",
-        //   id: "7"
-        // }
       ],
       passwordType: "password",
       loginRules: {
@@ -156,13 +155,6 @@ export default {
     },
     jumpconsulation() {
       this.$router.push("/home/consultationMessage");
-    },
-    // 保持连接的激活状态
-    saveNavState(activePath, item) {
-      this.activePath = activePath;
-      console.log(item);
-
-      // window.sessionStorage.setItem("activePath", activePath);
     },
     // 修改密码
     editPassword() {
