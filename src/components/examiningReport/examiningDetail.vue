@@ -18,6 +18,7 @@
           size="mini"
           v-show="this.infoObj.checkState != 0"
           v-print="'#printDiv'"
+          @click.prevent.stop="hiddenAnsDetail"
         >打印</el-button>
       </div>
       <div id="printDiv">
@@ -140,6 +141,7 @@
                 plain
                 @click.prevent.stop="jumpAnsDet(item)"
                 class="lookAns"
+                v-show="lookAnsBtn"
               >查看答题详情</el-button>
             </div>
           </li>
@@ -219,6 +221,7 @@ export default {
       reportList: [],
       str: "",
       Arr: [],
+      lookAnsBtn: true,
       chartData: {
         columns: ["type", "def"],
         rows: [
@@ -286,6 +289,11 @@ export default {
         path: "AnsDetail",
         query: { ansUuid: info.ansUuid, Number: this.Number }
       });
+    },
+    // 点击打印隐藏查看答题详情按钮
+    hiddenAnsDetail() {
+      // this.lookAnsBtn = false;
+      // this.getDetaiList();
     }
   }
 };
