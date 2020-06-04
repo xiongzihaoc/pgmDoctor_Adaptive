@@ -354,6 +354,7 @@ export default {
       } else if (this.judge.accountType == 2) {
         this.editAddForm.dept = this.judge.dcDept;
       } else {
+        this.editAddForm.dept = this.judge.dcDept;
       }
     },
     // 点击医生下拉选加载医生数据
