@@ -188,6 +188,8 @@ const routes = [{
         component: () => import('@/components/consultation/consultationList.vue'),
         meta: {
           title: '会诊意见',
+          guidePath: true,
+          jumpPath: '/home/consultation',
         }
       },
       {
@@ -196,6 +198,8 @@ const routes = [{
         component: () => import('@/components/consultation/consultationMessage.vue'),
         meta: {
           title: '会诊消息',
+          guidePath: true,
+          jumpPath: '/home/consultation',
         }
       },
       {
