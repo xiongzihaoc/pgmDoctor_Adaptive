@@ -7,7 +7,7 @@
     </el-breadcrumb>
     <div class="CardBox">
       <el-card class="cardLeft">
-        <!-- <div class="searchBox">
+        <div class="searchBox">
           <el-button type="primary" plain size="small" @click.prevent.stop="perPro">个人进度</el-button>
           <el-button type="primary" size="small">团队进度</el-button>
           <el-input
@@ -25,7 +25,7 @@
             @click.prevent.stop="newAddPerson"
             style="margin-left:2%;display: none;"
           >新增团队</el-button>
-        </div> -->
+        </div>
         <!-- 调用公用表格组件 -->
         <ElTable :data="teamTypeList" :header="tableHeaderBig" style="margin-top:2%;" height="100">
           <el-table-column
@@ -58,7 +58,7 @@
         ></el-pagination>
       </el-card>
       <!-- 右侧卡片 -->
-      <!-- <CardR></CardR> -->
+      <CardR></CardR>
     </div>
   </div>
 </template>

@@ -68,7 +68,7 @@
         ></el-pagination>
       </el-card>
       <!-- 右侧卡片 -->
-      <!-- <CardR>1111</CardR> -->
+      <CardR></CardR>
     </div>
   </div>
 </template>
