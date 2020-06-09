@@ -86,12 +86,12 @@ export default {
           path: "home/index",
           id: "1"
         },
-        // {
-        //   icon: "iconfont icon-yonhu",
-        //   name: "个人中心",
-        //   path: "home/userCenter",
-        //   id: "2"
-        // },
+        {
+          icon: "iconfont icon-yonhu",
+          name: "个人中心",
+          path: "home/userCenter",
+          id: "2"
+        },
         {
           icon: "iconfont icon-hexintuandui",
           name: "团体中心",
