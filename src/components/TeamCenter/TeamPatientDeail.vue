@@ -248,7 +248,7 @@ export default {
   display: flex;
   font-size: 16px;
   color: #c1c2c9;
-  padding: 1% 0 0 5%;
+  padding: 1% 0 1% 5%;
   box-sizing: border-box;
 }
 .deptInfoDiv li .title {
