@@ -27,7 +27,7 @@
           >新增团队</el-button>
         </div>
         <!-- 调用公用表格组件 -->
-        <ElTable :data="teamTypeList" :header="tableHeaderBig" style="margin-top:2%;" height="100">
+        <ElTable :data="teamTypeList" :header="tableHeaderBig" style="margin-top:1%;" height="100">
           <el-table-column
             align="center"
             slot="fixed"

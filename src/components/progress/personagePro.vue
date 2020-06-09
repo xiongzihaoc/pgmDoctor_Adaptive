@@ -123,6 +123,8 @@ export default {
     },
     // 跳转修改
     JumpEdit(info) {
+      console.log(info);
+      
       window.sessionStorage.setItem("editInfo", JSON.stringify(info));
     
       this.$router.push({

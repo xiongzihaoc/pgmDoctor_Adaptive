@@ -2,7 +2,7 @@
   <div class="AddConnect">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/home/index' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>增改个人</el-breadcrumb-item>
+      <el-breadcrumb-item>追加检测</el-breadcrumb-item>
     </el-breadcrumb>
     <div style="height:100%;overflow:hidden">
       <el-card style="height:85%;padding-top:8%;box-sizing:border-box;">

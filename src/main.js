@@ -27,8 +27,10 @@ Vue.use(animated)
 import vueQr from 'vue-qr'
 Vue.use(vueQr)
 
-Vue.prototype.$userUrlInfo = 'http://www.phmzykj.com/phmWebUser/#/lookTeamInfo';
-Vue.prototype.$userUrlLogin = 'http://www.phmzykj.com/phmWebUser/#/login?orderNo=';
+// Vue.prototype.$userUrlInfo = 'http://www.phmzykj.com/phmWebUser/#/lookTeamInfo';
+// Vue.prototype.$userUrlLogin = 'http://www.phmzykj.com/phmWebUser/#/login?orderNo=';
+Vue.prototype.$userUrlInfo = 'http://192.168.0.119:8081/#/lookTeamInfo';
+Vue.prototype.$userUrlLogin = 'http://192.168.0.119:8081/#/login?orderNo=';
 
 Vue.prototype.$userUrlInfo = 'http://192.168.0.119:8081/#/lookTeamInfo';
 Vue.prototype.$userUrlLogin = 'http://192.168.0.119:8081/#/login?orderNo=';

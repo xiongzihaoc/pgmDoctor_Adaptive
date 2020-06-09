@@ -17,7 +17,12 @@
           <!-- 体卡类型  出生日期 -->
           <li style="width:100%;display:flex;justify-content: center;">
             <el-form-item label="体卡类型" prop="orderType" style="margin-right:5%">
-              <el-select disabled v-model="editAddForm.orderType" placeholder="请选择体卡类型" style="width:202px">
+              <el-select
+                disabled
+                v-model="editAddForm.orderType"
+                placeholder="请选择体卡类型"
+                style="width:202px"
+              >
                 <el-option label="虚拟卡" value="虚拟卡"></el-option>
                 <el-option label="实体卡" value="实体卡"></el-option>
               </el-select>
@@ -127,8 +132,8 @@
               ></el-input>
               <ul class="taoCanList" style="wdith:100%" v-show="openOrcls">
                 <li
-                  v-for="(item,index) in taocanList"
-                  :key="index"
+                  v-for="item in taocanList"
+                  :key="item.id"
                   @click="chooseCombo"
                 >{{item.sheetName}}</li>
               </ul>
@@ -148,7 +153,7 @@
         </el-form>
       </el-card>
     </div>
-    <!-- 弹框 -->
+    <!-- 选择套餐弹框 -->
     <el-dialog
       title="选择套餐"
       :visible.sync="dialogVisible"
@@ -172,23 +177,25 @@
         <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
       </span>
     </el-dialog>
-
+    <!-- 检测二维码弹框 -->
     <el-dialog
-            title="检测二维码"
-            :visible.sync="checkQCodeDialogShow"
-            center>
-            <div style="text-align: center;">
-                <vue-qr :text="QcodeUrl" :size="300"></vue-qr>
-                
-            </div>
-            <div style="text-align: center;">
-              <span style="font-size: 17px;font-weight: 600;">[扫描二维码开始检测]</span>
-            </div>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="checkQCodeDialogShow = false">取 消</el-button>
-                <el-button type="primary" @click="checkQCodeDone">确 定</el-button>
-            </span>
-        </el-dialog>
+      title="检测二维码"
+      :visible.sync="checkQCodeDialogShow"
+      center
+      v-dialogDrag
+      @closed="editDialogClosed"
+    >
+      <div style="text-align: center;">
+        <vue-qr :text="QcodeUrl" :size="300"></vue-qr>
+      </div>
+      <div style="text-align: center;">
+        <span style="font-size: 17px;font-weight: 600;">[扫描二维码开始检测]</span>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="checkQCodeDialogShow = false">取 消</el-button>
+        <el-button type="primary" @click="checkQCodeDone">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -205,11 +212,13 @@ export default {
     };
     return {
       timesChangeDate,
-      checkQCodeDialogShow:false,
-      QcodeUrl:'',
+      checkQCodeDialogShow: false,
+      QcodeUrl: "",
       Addrules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        orderType: [{ required: true, message: "请选择体检卡类型", trigger: "blur" }],
+        orderType: [
+          { required: true, message: "请选择体检卡类型", trigger: "blur" }
+        ],
         dept: [{ required: true, message: "请选择科室", trigger: "blur" }],
         docName: [
           { required: true, message: "请输入医生姓名", trigger: "blur" }
@@ -292,11 +301,8 @@ export default {
     };
   },
   created() {
-          console.log(JSON.parse(window.sessionStorage.getItem("editInfo")));
     if (this.$route.query.mess == "修改") {
       this.editAddForm = JSON.parse(window.sessionStorage.getItem("editInfo"));
-
-
       this.editAddForm.gender = JSON.parse(
         window.sessionStorage.getItem("editInfo")
       ).sex;
@@ -307,7 +313,6 @@ export default {
     this.getInfoList();
     this.getDeptList();
     this.judge = JSON.parse(window.localStorage.getItem("mess"));
-    
     this.Judgerole();
   },
   methods: {
@@ -385,22 +390,26 @@ export default {
           orderType: this.editAddForm.orderType,
           orderDept: this.editAddForm.dept,
           packageUuid: this.uuid,
-          edu:this.editAddForm.edu
+          edu: this.editAddForm.edu
         });
         if (res.code != 200) return this.$message.error("添加失败");
         console.log(res);
-        this.QcodeUrl = this.$userUrlLogin+res.data;
+        this.QcodeUrl = this.$userUrlLogin + res.data;
         this.checkQCodeDialogShow = true;
       });
     },
-    checkQCodeDone(){
+    checkQCodeDone() {
       this.$router.push("/home/index");
     },
     getT(val) {
       this.editAddForm.docName = val.name;
       this.editAddForm.uuid = val.uuid;
     },
-    editDialogClosed() {},
+    editDialogClosed() {
+      console.log(1111);
+
+      this.$router.push("/home/index");
+    },
     // 套餐input弹出框
     chooseCombo() {
       this.checkList = [];
@@ -442,7 +451,6 @@ export default {
 </script>
 
 <style >
-
 .AddConnect {
   height: 100%;
 }
