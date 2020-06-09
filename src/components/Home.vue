@@ -2,7 +2,7 @@
   <div class="ConnectHo">
     <div class="asdie">
       <img :src="this.hosMess.hospitalLogo" alt class="logoImg" />
-      <h3>{{hosMess.hospital}}</h3>
+      <h3>{{ hosMess.hospital }}</h3>
       <el-menu
         background-color="#fff"
         text-color="#BFCBD9"
@@ -20,7 +20,7 @@
         >
           <template slot="title">
             <i :class="item.icon" height="24px"></i>
-            <span>{{item.name}}</span>
+            <span>{{ item.name }}</span>
           </template>
         </el-menu-item>
       </el-menu>
@@ -30,10 +30,19 @@
         <div class="loginDiv">
           <span class="userName">
             您好
-            <a href="javascript:;">{{hosMess.name}}</a> 欢迎来到PHM检测中心后台！
+            <a href="javascript:;">{{ hosMess.name }}</a>
+            欢迎来到PHM检测中心后台！
           </span>
-          <span class="editPass" @click.prevent.stop="editPassword" style="color: red;">修改密码</span> |
-          <span class="loginOut" @click="loginOut" style="color: royalblue;">退出登录</span>
+          <span
+            class="editPass"
+            @click.prevent.stop="editPassword"
+            style="color: red;"
+            >修改密码</span
+          >
+          |
+          <span class="loginOut" @click="loginOut" style="color: royalblue;"
+            >退出登录</span
+          >
           <img
             class="warningImg"
             src="../assets/images/warning.png"
@@ -46,31 +55,49 @@
       </div>
     </div>
     <!-- 修改密码弹框 -->
-    <el-dialog title="修改密码" :visible.sync="dialogVisible" @closed="editDialogClosed" v-dialogDrag>
-      <el-form ref="loginFormRef" :model="editAddForm" label-width="80px" :rules="loginRules">
+    <el-dialog
+      title="修改密码"
+      :visible.sync="dialogVisible"
+      @closed="editDialogClosed"
+      v-dialogDrag
+    >
+      <el-form
+        ref="loginFormRef"
+        :model="editAddForm"
+        label-width="80px"
+        :rules="loginRules"
+      >
         <el-form-item label="账号" prop="userName">
           <el-input v-model="this.hosMess.userName" disabled></el-input>
         </el-form-item>
         <el-form-item label="原密码" prop="srcPwd">
-          <el-input :key="passwordType" :type="passwordType" v-model="editAddForm.srcPwd"></el-input>
+          <el-input
+            :key="passwordType"
+            :type="passwordType"
+            v-model="editAddForm.srcPwd"
+          ></el-input>
         </el-form-item>
         <el-form-item label="新密码" prop="password">
-          <el-input :key="passwordType" :type="passwordType" v-model="editAddForm.password"></el-input>
+          <el-input
+            :key="passwordType"
+            :type="passwordType"
+            v-model="editAddForm.password"
+          ></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
       </span>
     </el-dialog>
-
+    <!-- 
     <el-dialog title="退出登录" :visible.sync="logoutDialog" v-dialogDrag center>
       <div>是否退出登录</div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="logoutDialog=false">取 消</el-button>
         <el-button type="primary" @click="logoutDialogEnter">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -78,75 +105,85 @@ export default {
   data() {
     return {
       hosMess: {},
-      logoutDialog:false,
+      logoutDialog: false,
       menuList: [
         {
           icon: "iconfont icon-shouye",
           name: "首   页",
           path: "home/index",
-          id: "1"
+          id: "1",
         },
         {
           icon: "iconfont icon-yonhu",
           name: "个人中心",
           path: "home/userCenter",
-          id: "2"
+          id: "2",
         },
         {
           icon: "iconfont icon-hexintuandui",
           name: "团体中心",
           path: "home/teamCenter",
-          id: "8"
+          id: "8",
         },
         {
           icon: "iconfont icon-liangbiao",
           name: "他评量表",
           path: "home/HisScale",
-          id: "3"
+          id: "3",
         },
         {
           icon: "iconfont icon-baogao-copy",
           name: "检测报告",
           path: "home/examiningReport",
-          id: "4"
+          id: "4",
         },
         {
           icon: "iconfont icon-yujing",
           name: "预警提醒",
           path: "home/warning",
-          id: "5"
+          id: "5",
         },
         {
           icon: "iconfont icon-huizhen",
           name: "会诊操作",
           path: "home/consultation",
-          id: "6"
+          id: "6",
         },
         {
           icon: "iconfont icon-icon-",
           name: "数据统计",
           path: "home/dataStatistics",
-          id: "7"
-        }
+          id: "7",
+        },
       ],
       passwordType: "password",
       loginRules: {
         password: [
           { required: true, message: "请输入新密码", trigger: "blur" },
-          { min: 5, max: 16, message: "长度在 5 到 16 个字符", trigger: "blur" }
+          {
+            min: 5,
+            max: 16,
+            message: "长度在 5 到 16 个字符",
+            trigger: "blur",
+          },
         ],
         srcPwd: [
           { required: true, message: "请输入原密码", trigger: "blur" },
-          { min: 5, max: 16, message: "长度在 5 到 16 个字符", trigger: "blur" }
-        ]
+          {
+            min: 5,
+            max: 16,
+            message: "长度在 5 到 16 个字符",
+            trigger: "blur",
+          },
+        ],
       },
       editAddForm: {
         userName: "",
         srcPwd: "",
-        password: ""
+        password: "",
       },
       dialogVisible: false,
-      activePath: "/home/index"
+      activePath: "/home/index",
     };
   },
   created() {
@@ -155,16 +192,23 @@ export default {
   },
   methods: {
     // 退出
-    loginOut() {
+    async loginOut() {
       this.logoutDialog = true;
-    },
-    async logoutDialogEnter(){
+      const confirmResult = await this.$confirm("你确定退出吗", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).catch((err) => console.log(err));
+      if (confirmResult != "confirm") {
+        return
+      }
       const { data: res } = await this.$http.post("doc/loginOut", {});
       if (res.code != 200) return this.$message.error("退出失败");
       window.sessionStorage.clear();
       window.localStorage.clear();
       this.$router.push("/");
     },
+    async logoutDialogEnter() {},
     jumpconsulation() {
       this.$router.push("/home/consultationMessage");
     },
@@ -173,12 +217,12 @@ export default {
       this.dialogVisible = true;
     },
     dialogVisibleEnter() {
-      this.$refs.loginFormRef.validate(async valid => {
+      this.$refs.loginFormRef.validate(async (valid) => {
         if (!valid) return;
         const { data: res } = await this.$http.post("doc/updPwd", {
           userName: this.hosMess.userName,
           srcPwd: this.$md5(this.editAddForm.srcPwd),
-          password: this.$md5(this.editAddForm.password)
+          password: this.$md5(this.editAddForm.password),
         });
         if (res.code != 200) return this.$message.error(res.data);
         this.$message.success(res.msg);
@@ -189,19 +233,15 @@ export default {
     },
     editDialogClosed() {
       this.editAddForm = {};
-    }
-  },
-  mounted() {
-    console.log(this.activePath);
-    this.activePath = this.$route.path;
+    },
   },
   computed: {
     routerPath: function() {
       return this.$route.meta.guidePath
         ? this.$route.meta.jumpPath
         : this.$route.path;
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
