@@ -1,7 +1,9 @@
 <template>
   <div class="AddConnect">
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/home/index' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home/userCenter' }"
+        >个人中心</el-breadcrumb-item
+      >
       <el-breadcrumb-item>增改个人</el-breadcrumb-item>
     </el-breadcrumb>
     <div style="height:100%;overflow:hidden">
@@ -16,7 +18,11 @@
         >
           <!-- 体卡类型  出生日期 -->
           <li style="width:100%;display:flex;justify-content: center;">
-            <el-form-item label="体卡类型" prop="orderType" style="margin-right:5%">
+            <el-form-item
+              label="体卡类型"
+              prop="orderType"
+              style="margin-right:5%"
+            >
               <el-select
                 disabled
                 v-model="editAddForm.orderType"
@@ -63,7 +69,11 @@
               ></el-cascader>
             </el-form-item>
             <el-form-item label="性  别" prop="gender">
-              <el-select v-model="editAddForm.gender" placeholder="请选择性别" style="width:202px">
+              <el-select
+                v-model="editAddForm.gender"
+                placeholder="请选择性别"
+                style="width:202px"
+              >
                 <el-option label="男" value="男"></el-option>
                 <el-option label="女" value="女"></el-option>
               </el-select>
@@ -81,11 +91,20 @@
                 @focus="handleDocFoucs"
                 @change="getT"
               >
-                <el-option v-for="item in docList" :key="item.id" :label="item.name" :value="item"></el-option>
+                <el-option
+                  v-for="item in docList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item"
+                ></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="职  业" prop="job">
-              <el-select v-model="editAddForm.job" placeholder="请选择职业" style="width:202px">
+              <el-select
+                v-model="editAddForm.job"
+                placeholder="请选择职业"
+                style="width:202px"
+              >
                 <el-option
                   v-for="item in jobList"
                   :key="item.id"
@@ -99,7 +118,6 @@
           <li style="display:flex;justify-content: center;">
             <el-form-item label="文  化" prop="edu" style="margin-right:5%">
               <el-select
-                filterable
                 v-model="editAddForm.edu"
                 placeholder="请选择学历"
                 style="width:202px"
@@ -113,7 +131,11 @@
               </el-select>
             </el-form-item>
             <el-form-item label="婚  姻" prop="marriage">
-              <el-select v-model="editAddForm.marriage" placeholder="请选择" style="width:202px">
+              <el-select
+                v-model="editAddForm.marriage"
+                placeholder="请选择"
+                style="width:202px"
+              >
                 <el-option label="未婚" value="未婚"></el-option>
                 <el-option label="已婚" value="已婚"></el-option>
                 <el-option label="离异" value="离异 "></el-option>
@@ -122,7 +144,11 @@
             </el-form-item>
           </li>
           <li style="display:flex;justify-content: center;">
-            <el-form-item label="套  餐" style="margin-right:5%" prop="strUserName">
+            <el-form-item
+              label="套  餐"
+              style="margin-right:5%"
+              prop="strUserName"
+            >
               <el-input
                 v-model="strUserName"
                 placeholder="请选择套餐"
@@ -135,11 +161,21 @@
                   v-for="item in taocanList"
                   :key="item.id"
                   @click="chooseCombo"
-                >{{item.sheetName}}</li>
+                >
+                  {{ item.sheetName }}
+                </li>
               </ul>
             </el-form-item>
-            <el-form-item label="测  试" prop="marriage" style="visibility: hidden;">
-              <el-select v-model="editAddForm.marriage" placeholder="请选择" style="width:202px">
+            <el-form-item
+              label="测  试"
+              prop="marriage"
+              style="visibility: hidden;"
+            >
+              <el-select
+                v-model="editAddForm.marriage"
+                placeholder="请选择"
+                style="width:202px"
+              >
                 <el-option label="未婚" value="未婚"></el-option>
                 <el-option label="已婚" value="已婚"></el-option>
               </el-select>
@@ -147,7 +183,9 @@
           </li>
           <li style="display:flex;justify-content: center;">
             <el-form-item>
-              <el-button type="primary" @click.prevent.stop="enterSave">确定提交</el-button>
+              <el-button type="primary" @click.prevent.stop="enterSave"
+                >确定提交</el-button
+              >
             </el-form-item>
           </li>
         </el-form>
@@ -161,19 +199,20 @@
       @closed="dialogVisibleCancel"
     >
       <ul class="chooseTac">
-        <li v-for="(item,index) in comboList" :key="index">
-          <h3>{{item.type}}</h3>
+        <li v-for="(item, index) in comboList" :key="index">
+          <h3>{{ item.type }}</h3>
           <el-checkbox-group v-model="checkList">
             <el-checkbox
-              v-for="(subItem,i) in item.package"
+              v-for="(subItem, i) in item.package"
               :key="i"
               :label="subItem"
-            >{{subItem.name}}</el-checkbox>
+              >{{ subItem.name }}</el-checkbox
+            >
           </el-checkbox-group>
         </li>
       </ul>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
       </span>
     </el-dialog>
@@ -189,7 +228,9 @@
         <vue-qr :text="QcodeUrl" :size="300"></vue-qr>
       </div>
       <div style="text-align: center;">
-        <span style="font-size: 17px;font-weight: 600;">[扫描二维码开始检测]</span>
+        <span style="font-size: 17px;font-weight: 600;"
+          >[扫描二维码开始检测]</span
+        >
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="checkQCodeDialogShow = false">取 消</el-button>
@@ -217,15 +258,15 @@ export default {
       Addrules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         orderType: [
-          { required: true, message: "请选择体检卡类型", trigger: "blur" }
+          { required: true, message: "请选择体检卡类型", trigger: "blur" },
         ],
         dept: [{ required: true, message: "请选择科室", trigger: "blur" }],
         docName: [
-          { required: true, message: "请输入医生姓名", trigger: "blur" }
+          { required: true, message: "请输入医生姓名", trigger: "blur" },
         ],
         phone: [
           { required: true, message: "请输入手机号码", trigger: "blur" },
-          { validator: checkMobile, trigger: "change" }
+          { validator: checkMobile, trigger: "change" },
         ],
         gender: [{ required: true, message: "请选择性别" }],
         birthday: [{ required: true, message: "请输入出生日期" }],
@@ -233,7 +274,7 @@ export default {
         marriage: [{ required: true, message: "请选择婚姻状况" }],
         age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
         edu: [{ required: true, message: "请选择教育程度" }],
-        address: [{ required: true, message: "请输入地址", trigger: "blur" }]
+        address: [{ required: true, message: "请输入地址", trigger: "blur" }],
         // strUserName: [
         //   { required: true, message: "请选择套餐", trigger: "blur" }
         // ]
@@ -249,7 +290,7 @@ export default {
         edu: "",
         marriage: "",
         dept: "",
-        uuid: ""
+        uuid: "",
       },
       jobList: [
         { id: 1, name: "国家公务员" },
@@ -264,7 +305,7 @@ export default {
         { id: 10, name: "个体经营者" },
         { id: 11, name: "无业人员" },
         { id: 12, name: "退(离)休人员" },
-        { id: 13, name: "其他" }
+        { id: 13, name: "其他" },
       ],
       eduList: [
         { id: 1, name: "博士" },
@@ -276,7 +317,7 @@ export default {
         { id: 7, name: "高中" },
         { id: 8, name: "初中" },
         { id: 9, name: "小学" },
-        { id: 10, name: "文盲与半文盲" }
+        { id: 10, name: "文盲与半文盲" },
       ],
       taocanList: [],
       dialogVisible: false,
@@ -296,19 +337,47 @@ export default {
         children: "child",
         label: "deptName",
         value: "code",
-        checkStrictly: true
-      }
+        checkStrictly: true,
+      },
+      editId: "",
+      orderNo:"",
     };
   },
   created() {
+    console.log(JSON.parse(window.sessionStorage.getItem("editInfo")));
+
     if (this.$route.query.mess == "修改") {
+      var editObj = JSON.parse(window.sessionStorage.getItem("editInfo"));
+      this.editAddForm.gender = editObj.sex;
+      this.editAddForm.name = editObj.name;
+      this.editAddForm.phone = editObj.phone;
+      this.editAddForm.birthday = editObj.birth;
+      this.editAddForm.job = editObj.job;
+      this.editAddForm.edu = editObj.edu;
+      this.editAddForm.marriage = editObj.marriage;
+      this.editId = editObj.id;
+      this.orderNo = editObj.orderNo;
+      // 套餐回显
+      var taoCan = editObj.orderPackage;
+      var taoCanName = "";
+      var taoCanUuid = "";
+      taoCan.forEach((item) => {
+        taoCanName = item.name + ",";
+        taoCanUuid = item.packageUuid + ",";
+      });
+      if (taoCanName.length > 0) {
+        taoCanUuid = taoCanUuid.substr(0, taoCanUuid.length - 1);
+      }
+      this.strUserName = taoCanName;
+      if (taoCanUuid.length > 0) {
+        taoCanUuid = taoCanUuid.substr(0, taoCanUuid.length - 1);
+      }
+      this.uuid = taoCanUuid;
+    } else if (this.$route.query.mess == "追加检测") {
       this.editAddForm = JSON.parse(window.sessionStorage.getItem("editInfo"));
-      this.editAddForm.gender = JSON.parse(
+      this.editAddForm.edu = JSON.parse(
         window.sessionStorage.getItem("editInfo")
-      ).sex;
-      this.editAddForm.birthday = JSON.parse(
-        window.sessionStorage.getItem("editInfo")
-      ).birth;
+      ).culture;
     }
     this.getInfoList();
     this.getDeptList();
@@ -330,7 +399,7 @@ export default {
         DeptStr = this.selectDeptNum;
       }
       const { data: res } = await this.$http.post("doc/list", {
-        dcDept: DeptStr
+        dcDept: DeptStr,
       });
       if (res.code !== 200) return this.$message.error("获取医生列表失败");
       console.log(res);
@@ -339,7 +408,7 @@ export default {
     // 获取部门列表
     async getDeptList() {
       const { data: res } = await this.$http.post(this.$ajax + "dept/list", {
-        code: this.judge.dcDept
+        code: this.judge.dcDept,
       });
       if (res.code !== 200) return this.$message.error("获取医生列表失败");
       console.log(res);
@@ -374,29 +443,61 @@ export default {
     },
     // 保存信息
     enterSave() {
-      this.$refs.addInfoRef.validate(async valid => {
-        if (!valid) return;
-        if (!this.strUserName) return this.$message.error("请选择套餐");
-        const { data: res } = await this.$http.post("checkList/add", {
-          source: "0",
-          name: this.editAddForm.name,
-          docName: this.editAddForm.docName,
-          docUuid: this.editAddForm.uuid,
-          phone: this.editAddForm.phone,
-          sex: this.editAddForm.gender,
-          birth: this.editAddForm.birthday,
-          job: this.editAddForm.job,
-          marriage: this.editAddForm.marriage,
-          orderType: this.editAddForm.orderType,
-          orderDept: this.editAddForm.dept,
-          packageUuid: this.uuid,
-          edu: this.editAddForm.edu
+      // 修改接口
+      console.log(this.$route.query.mess);
+      
+      if (this.$route.query.mess == "修改") {
+        this.$refs.addInfoRef.validate(async (valid) => {
+          if (!valid) return;
+          if (!this.strUserName) return this.$message.error("请选择套餐");
+          const { data: res } = await this.$http.post("checkList/update", {
+            source: "0",
+            id: this.editId,
+            orderNo:this.orderNo,
+            name: this.editAddForm.name,
+            docName: this.editAddForm.docName,
+            docUuid: this.editAddForm.uuid,
+            phone: this.editAddForm.phone,
+            sex: this.editAddForm.gender,
+            birth: this.editAddForm.birthday,
+            job: this.editAddForm.job,
+            marriage: this.editAddForm.marriage,
+            orderType: this.editAddForm.orderType,
+            orderDept: this.editAddForm.dept,
+            packageUuid: this.uuid,
+            edu: this.editAddForm.edu,
+          });
+          if (res.code != 200) return this.$message.error("修改失败");
+          console.log(res);
+          this.QcodeUrl = this.$userUrlLogin + res.data;
+          this.checkQCodeDialogShow = true;
         });
-        if (res.code != 200) return this.$message.error("添加失败");
-        console.log(res);
-        this.QcodeUrl = this.$userUrlLogin + res.data;
-        this.checkQCodeDialogShow = true;
-      });
+      } else {
+        // 新增  追加检测接口
+        this.$refs.addInfoRef.validate(async (valid) => {
+          if (!valid) return;
+          if (!this.strUserName) return this.$message.error("请选择套餐");
+          const { data: res } = await this.$http.post("checkList/add", {
+            source: "0",
+            name: this.editAddForm.name,
+            docName: this.editAddForm.docName,
+            docUuid: this.editAddForm.uuid,
+            phone: this.editAddForm.phone,
+            sex: this.editAddForm.gender,
+            birth: this.editAddForm.birthday,
+            job: this.editAddForm.job,
+            marriage: this.editAddForm.marriage,
+            orderType: this.editAddForm.orderType,
+            orderDept: this.editAddForm.dept,
+            packageUuid: this.uuid,
+            edu: this.editAddForm.edu,
+          });
+          if (res.code != 200) return this.$message.error("添加失败");
+          console.log(res);
+          this.QcodeUrl = this.$userUrlLogin + res.data;
+          this.checkQCodeDialogShow = true;
+        });
+      }
     },
     checkQCodeDone() {
       this.$router.push("/home/index");
@@ -417,6 +518,8 @@ export default {
     },
     // 提交勾选
     async dialogVisibleEnter() {
+      console.log(this.checkList);
+      
       var arr = this.checkList;
       var str = "";
       var strName = "";
@@ -435,7 +538,7 @@ export default {
       this.strUserName = strName;
       // 发送axios
       const { data: res } = await this.$http.post("/office_package/detail", {
-        uuid: str
+        uuid: str,
       });
       if (res.code != 200) return this.$message.error("操作失败");
       this.taocanList = res.rows;
@@ -445,12 +548,12 @@ export default {
     dialogVisibleCancel() {
       this.str = "";
       this.dialogVisible = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style >
+<style>
 .AddConnect {
   height: 100%;
 }

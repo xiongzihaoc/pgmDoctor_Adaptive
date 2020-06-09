@@ -1,7 +1,9 @@
 <template>
   <div class="AddConnect">
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/home/index' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home/index' }"
+        >个人中心</el-breadcrumb-item
+      >
       <el-breadcrumb-item>追加检测</el-breadcrumb-item>
     </el-breadcrumb>
     <div style="height:100%;overflow:hidden">
@@ -16,8 +18,16 @@
         >
           <!-- 体卡类型  出生日期 -->
           <li style="width:100%;display:flex;justify-content: center;">
-            <el-form-item label="体卡类型" prop="entityCard" style="margin-right:5%">
-              <el-select v-model="editAddForm.entityCard" placeholder="请选择体卡类型" style="width:202px">
+            <el-form-item
+              label="体卡类型"
+              prop="entityCard"
+              style="margin-right:5%"
+            >
+              <el-select
+                v-model="editAddForm.entityCard"
+                placeholder="请选择体卡类型"
+                style="width:202px"
+              >
                 <el-option label="虚拟卡" value="虚拟卡"></el-option>
                 <el-option label="实体卡" value="实体卡"></el-option>
               </el-select>
@@ -57,7 +67,11 @@
               ></el-cascader>
             </el-form-item>
             <el-form-item label="性  别" prop="gender">
-              <el-select v-model="editAddForm.gender" placeholder="请选择性别" style="width:202px">
+              <el-select
+                v-model="editAddForm.gender"
+                placeholder="请选择性别"
+                style="width:202px"
+              >
                 <el-option label="男" value="男"></el-option>
                 <el-option label="女" value="女"></el-option>
               </el-select>
@@ -80,14 +94,22 @@
                   :value="item.uuid"
                 >
                   <div style="display:flex;">
-                    <span style="flex: 1;font-weight:700;">{{ item.name }}</span>
-                    <span style="flex: 1;text-align:center">{{ item.office }}</span>
+                    <span style="flex: 1;font-weight:700;">{{
+                      item.name
+                    }}</span>
+                    <span style="flex: 1;text-align:center">{{
+                      item.office
+                    }}</span>
                   </div>
                 </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="职  业" prop="job">
-              <el-select v-model="editAddForm.job" placeholder="请选择职业" style="width:202px">
+              <el-select
+                v-model="editAddForm.job"
+                placeholder="请选择职业"
+                style="width:202px"
+              >
                 <el-option
                   v-for="item in jobList"
                   :key="item.id"
@@ -99,7 +121,11 @@
           </li>
           <!-- 套餐  婚姻 -->
           <li style="display:flex;justify-content: center;">
-            <el-form-item label="套  餐" style="margin-right:5%" prop="strUserName">
+            <el-form-item
+              label="套  餐"
+              style="margin-right:5%"
+              prop="strUserName"
+            >
               <el-input
                 v-model="strUserName"
                 placeholder="请选择套餐"
@@ -109,14 +135,20 @@
               ></el-input>
               <ul class="taoCanList" style="wdith:100%" v-show="openOrcls">
                 <li
-                  v-for="(item,index) in taocanList"
+                  v-for="(item, index) in taocanList"
                   :key="index"
                   @click="chooseCombo"
-                >{{item.sheetName}}</li>
+                >
+                  {{ item.sheetName }}
+                </li>
               </ul>
             </el-form-item>
             <el-form-item label="婚  姻" prop="marriage">
-              <el-select v-model="editAddForm.marriage" placeholder="请选择" style="width:202px">
+              <el-select
+                v-model="editAddForm.marriage"
+                placeholder="请选择"
+                style="width:202px"
+              >
                 <el-option label="未婚" value="未婚"></el-option>
                 <el-option label="已婚" value="已婚"></el-option>
               </el-select>
@@ -124,7 +156,9 @@
           </li>
           <li style="display:flex;justify-content: center;">
             <el-form-item>
-              <el-button type="primary" @click.prevent.stop="enterSave">确定提交</el-button>
+              <el-button type="primary" @click.prevent.stop="enterSave"
+                >确定提交</el-button
+              >
             </el-form-item>
           </li>
         </el-form>
@@ -138,19 +172,20 @@
       @closed="dialogVisibleCancel"
     >
       <ul class="chooseTac">
-        <li v-for="(item,index) in comboList" :key="index">
-          <h3>{{item.type}}</h3>
+        <li v-for="(item, index) in comboList" :key="index">
+          <h3>{{ item.type }}</h3>
           <el-checkbox-group v-model="checkList">
             <el-checkbox
-              v-for="(subItem,i) in item.package"
+              v-for="(subItem, i) in item.package"
               :key="i"
               :label="subItem"
-            >{{subItem.name}}</el-checkbox>
+              >{{ subItem.name }}</el-checkbox
+            >
           </el-checkbox-group>
         </li>
       </ul>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
       </span>
     </el-dialog>
@@ -172,25 +207,25 @@ export default {
       Addrules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         entityCard: [
-          { required: true, message: "请输入姓名", trigger: "blur" }
+          { required: true, message: "请输入姓名", trigger: "blur" },
         ],
         dept: [{ required: true, message: "请选择科室", trigger: "blur" }],
         docName: [
-          { required: true, message: "请输入医生姓名", trigger: "blur" }
+          { required: true, message: "请输入医生姓名", trigger: "blur" },
         ],
         phone: [
           { required: true, message: "请输入手机号码", trigger: "blur" },
-          { validator: checkMobile, trigger: "blur" }
+          { validator: checkMobile, trigger: "blur" },
         ],
         gender: [{ required: true, message: "请选择性别", trigger: "blur" }],
         birthday: [{ required: true, message: "请输入出生日期" }],
         job: [{ required: true, message: "请选择职业", trigger: "blur" }],
         marriage: [
-          { required: true, message: "请选择婚姻状况", trigger: "blur" }
+          { required: true, message: "请选择婚姻状况", trigger: "blur" },
         ],
         age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
         edu: [{ required: true, message: "请选择教育程度", trigger: "blur" }],
-        address: [{ required: true, message: "请输入地址", trigger: "blur" }]
+        address: [{ required: true, message: "请输入地址", trigger: "blur" }],
         // strUserName: [
         //   { required: true, message: "请选择套餐", trigger: "blur" }
         // ]
@@ -205,19 +240,19 @@ export default {
         job: "",
         marriage: "",
         dept: [],
-        uuid: ""
+        uuid: "",
       },
       jobList: [
         { id: 1, name: "前端" },
         { id: 2, name: "测试" },
-        { id: 3, name: "UI" }
+        { id: 3, name: "UI" },
       ],
       eduList: [
         { id: 1, name: "本科" },
         { id: 2, name: "大专" },
         { id: 3, name: "高中" },
         { id: 4, name: "初中" },
-        { id: 5, name: "其他" }
+        { id: 5, name: "其他" },
       ],
       taocanList: [],
       dialogVisible: false,
@@ -236,16 +271,13 @@ export default {
         children: "child",
         label: "deptName",
         value: "code",
-        checkStrictly: true
-      }
+        checkStrictly: true,
+      },
     };
   },
   created() {
-    if (this.$route.query.mess == "修改") {
-      this.editAddForm = JSON.parse(window.sessionStorage.getItem("editInfo"));
-    } else if (this.$route.query.mess == "追加检测") {
-      this.editAddForm = JSON.parse(this.$route.query.info);
-    }
+    console.log(JSON.parse(window.sessionStorage.getItem("editInfo")));
+    this.editAddForm = JSON.parse(window.sessionStorage.getItem("editInfo"));
     this.getInfoList();
     this.getDocList();
     this.getDeptList();
@@ -261,7 +293,7 @@ export default {
     // 获取医生列表
     async getDocList() {
       const { data: res } = await this.$http.post("doc/list", {
-        dcDept: this.judge.dcDept
+        dcDept: this.judge.dcDept,
       });
       if (res.code !== 200) return this.$message.error("获取医生列表失败");
       console.log(res);
@@ -271,7 +303,7 @@ export default {
     // 获取部门列表
     async getDeptList() {
       const { data: res } = await this.$http.post(this.$ajax + "dept/list", {
-        code: this.judge.dcDept
+        code: this.judge.dcDept,
       });
       if (res.code !== 200) return this.$message.error("获取医生列表失败");
       console.log(res);
@@ -282,7 +314,7 @@ export default {
     },
     // 保存信息
     enterSave() {
-      this.$refs.addInfoRef.validate(async valid => {
+      this.$refs.addInfoRef.validate(async (valid) => {
         if (!valid) return;
         if (!this.strUserName) return this.$message.error("请选择套餐");
         const { data: res } = await this.$http.post("checkList/add", {
@@ -297,7 +329,7 @@ export default {
           marriage: this.editAddForm.marriage,
           orderType: this.editAddForm.entityCard,
           orderDept: this.editAddForm.marriage,
-          packageUuid: this.uuid
+          packageUuid: this.uuid,
         });
         if (res.code != 200) return this.$message.error("添加失败");
         this.$message.success("添加成功");
@@ -330,7 +362,7 @@ export default {
       this.strUserName = strName;
       // 发送axios
       const { data: res } = await this.$http.post("/office_package/detail", {
-        uuid: str
+        uuid: str,
       });
       if (res.code != 200) return this.$message.error("操作失败");
       this.taocanList = res.rows;
@@ -340,8 +372,8 @@ export default {
     dialogVisibleCancel() {
       this.str = "";
       this.dialogVisible = false;
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

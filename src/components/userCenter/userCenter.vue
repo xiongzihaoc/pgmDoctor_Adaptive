@@ -1,9 +1,8 @@
-
 <template>
   <div class="connect">
     <!-- 面包屑 -->
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item>用户中心</el-breadcrumb-item>
+      <el-breadcrumb-item>个人中心</el-breadcrumb-item>
       <el-breadcrumb-item style="font-weight:700;">个人列表</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="card_box">
@@ -22,24 +21,41 @@
             size="small"
             @click.prevent.stop="newAddPerson"
             style="margin-left:2%"
-          >新增个人</el-button>
+            >新增个人</el-button
+          >
         </div>
         <!-- 调用公用表格组件 -->
-        <EleTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
+        <EleTable
+          :data="userList"
+          :header="tableHeaderBig"
+          style="margin-top:1%;"
+        >
           <!-- 出生日期 -->
-          <el-table-column align="center" slot="fixed" fixed="right" label="出生日期" prop="birthday">
+          <el-table-column
+            align="center"
+            slot="fixed"
+            fixed="right"
+            label="出生日期"
+            prop="birthday"
+          >
             <template slot-scope="scope">
-              <div>{{timesChangeDate(scope.row.birthday)}}</div>
+              <div>{{ timesChangeDate(scope.row.birthday) }}</div>
             </template>
           </el-table-column>
           <!-- 操作 -->
-          <el-table-column align="center" slot="fixed" fixed="right" label="操作">
+          <el-table-column
+            align="center"
+            slot="fixed"
+            fixed="right"
+            label="操作"
+          >
             <template slot-scope="scope">
               <el-button
                 type="primary"
                 size="mini"
                 @click.prevent.stop="showEditdialog(scope.row)"
-              >查看</el-button>
+                >查看</el-button
+              >
             </template>
           </el-table-column>
         </EleTable>
@@ -48,7 +64,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChangev"
           :current-page="pageNum"
-          :page-sizes="[10, 20,50]"
+          :page-sizes="[10, 20, 50]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
@@ -71,12 +87,12 @@ export default {
         { prop: "phone", label: "手机号" },
         { prop: "gender", label: "性别" },
         { prop: "job", label: "职业" },
-        { prop: "marriage", label: "婚姻" }
+        { prop: "marriage", label: "婚姻" },
       ],
       pageSize: 10,
       pageNum: 1,
       total: 0,
-      input: ""
+      input: "",
     };
   },
   created() {
@@ -88,7 +104,7 @@ export default {
       const { data: res } = await this.$http.post("doc/getPatients", {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        params: { search: this.input }
+        params: { search: this.input },
       });
       console.log(res);
 
@@ -97,10 +113,10 @@ export default {
     },
     // 查看跳转
     showEditdialog(info) {
-      console.log(info);
+      window.sessionStorage.setItem("editInfo", JSON.stringify(info));
       this.$router.push({
         path: "/home/userCenter/userDetails",
-        query: { id: info.uuid, phone: info.phone }
+        query: { id: info.uuid, phone: info.phone },
       });
     },
     editDialogClosed() {},
@@ -132,11 +148,11 @@ export default {
     },
     newAddPerson() {
       this.$router.push("/home/userCenter/addNewPer");
-    }
-  }
+    },
+  },
 };
 </script>
-<style  scoped>
+<style scoped>
 .connect {
   height: 100%;
 }
@@ -160,4 +176,3 @@ export default {
   max-width: 300px;
 }
 </style>
-
