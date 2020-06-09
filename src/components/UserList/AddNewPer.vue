@@ -340,7 +340,7 @@ export default {
         checkStrictly: true,
       },
       editId: "",
-      orderNo:"",
+      orderNo: "",
     };
   },
   created() {
@@ -357,14 +357,14 @@ export default {
       this.editAddForm.marriage = editObj.marriage;
       this.editId = editObj.id;
       this.orderNo = editObj.orderNo;
-      // 套餐回显
+      // 修改个人 套餐回显
       var taoCan = editObj.orderPackage;
       var taoCanName = "";
       var taoCanUuid = "";
-      taoCan.forEach((item) => {
-        taoCanName = item.name + ",";
-        taoCanUuid = item.packageUuid + ",";
-      });
+      for (var i = 0; i < taoCan.length; i++) {
+        taoCanUuid += taoCan[i].packageUuid + ",";
+        taoCanName += taoCan[i].name + ",";
+      }
       if (taoCanName.length > 0) {
         taoCanUuid = taoCanUuid.substr(0, taoCanUuid.length - 1);
       }
@@ -374,10 +374,16 @@ export default {
       }
       this.uuid = taoCanUuid;
     } else if (this.$route.query.mess == "追加检测") {
-      this.editAddForm = JSON.parse(window.sessionStorage.getItem("editInfo"));
-      this.editAddForm.edu = JSON.parse(
-        window.sessionStorage.getItem("editInfo")
-      ).culture;
+      var editObj = JSON.parse(window.sessionStorage.getItem("editInfo"));
+      console.log(editObj);
+      this.editAddForm.gender = editObj.gender;
+      this.editAddForm.name = editObj.name;
+      this.editAddForm.phone = editObj.phone;
+      this.editAddForm.birthday = editObj.birthday;
+      this.editAddForm.job = editObj.job;
+      this.editAddForm.edu = editObj.culture;
+      this.editAddForm.marriage = editObj.marriage;
+      // 追加检测 套餐回显
     }
     this.getInfoList();
     this.getDeptList();
@@ -445,7 +451,7 @@ export default {
     enterSave() {
       // 修改接口
       console.log(this.$route.query.mess);
-      
+
       if (this.$route.query.mess == "修改") {
         this.$refs.addInfoRef.validate(async (valid) => {
           if (!valid) return;
@@ -453,7 +459,7 @@ export default {
           const { data: res } = await this.$http.post("checkList/update", {
             source: "0",
             id: this.editId,
-            orderNo:this.orderNo,
+            orderNo: this.orderNo,
             name: this.editAddForm.name,
             docName: this.editAddForm.docName,
             docUuid: this.editAddForm.uuid,
@@ -519,7 +525,7 @@ export default {
     // 提交勾选
     async dialogVisibleEnter() {
       console.log(this.checkList);
-      
+
       var arr = this.checkList;
       var str = "";
       var strName = "";
