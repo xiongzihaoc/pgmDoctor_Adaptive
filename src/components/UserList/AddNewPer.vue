@@ -345,7 +345,7 @@ export default {
   },
   created() {
     console.log(JSON.parse(window.sessionStorage.getItem("editInfo")));
-
+    // 修改赋值回显
     if (this.$route.query.mess == "修改") {
       var editObj = JSON.parse(window.sessionStorage.getItem("editInfo"));
       this.editAddForm.gender = editObj.sex;
@@ -357,7 +357,7 @@ export default {
       this.editAddForm.marriage = editObj.marriage;
       this.editId = editObj.id;
       this.orderNo = editObj.orderNo;
-      // 修改个人 套餐回显
+      // 套餐回显
       var taoCan = editObj.orderPackage;
       var taoCanName = "";
       var taoCanUuid = "";
@@ -373,6 +373,7 @@ export default {
         taoCanUuid = taoCanUuid.substr(0, taoCanUuid.length - 1);
       }
       this.uuid = taoCanUuid;
+      // 追加检测赋值回显
     } else if (this.$route.query.mess == "追加检测") {
       var editObj = JSON.parse(window.sessionStorage.getItem("editInfo"));
       console.log(editObj);
