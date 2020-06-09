@@ -27,6 +27,10 @@
           </div>
           </el-card>
           <el-card class="deptPatientCard">
+            <div>
+              <el-button type="primary" @click="importPrient">导入人员</el-button>
+              <el-button type="primary" @click="importPrient">待录入人员</el-button>
+            </div>
             <el-table
               :data="patientList"
               style="margin-top:1%;"
@@ -114,6 +118,39 @@
               :total="total"></el-pagination>
           </el-card>
         </div>
+        <el-dialog 
+        title="导入人员信息"
+        :visible.sync="dialogPrient"
+        v-dialogDrag
+        center>
+        <div class="fileUpload">
+          <a href="https://zykj-resource.oss-cn-hangzhou.aliyuncs.com/Patienttemplate/PhmTemplate.xls"><el-button size="small" type="success">下载模板</el-button></el-button></a>
+          <el-upload
+          style="margin-top: 20px;"
+          class="upload-demo"
+          ref="upload"
+          action="http://192.168.0.130:8086/zhuoya-sheet/teamList/dept/import"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :multiple="false"
+          :limit="1"
+          :data="fileData"
+          :file-list="fileList"
+          :before-upload="fileUploadBefore">
+          <div>
+            上传文件
+            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传execl文件，且不超过5M</div>
+          </div>
+          </el-upload>
+        </div>
+        
+          
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogPrient=false">取 消</el-button>
+          <el-button type="primary" @click="submitUpload">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
 </template>
 <script>
@@ -121,6 +158,9 @@
 export default {
   data () {
     return {
+      fileData:{},
+      fileList: [],
+      dialogPrient:false,
       timesChangeDate,
       deptCode:'',
       teamInfo:'',
@@ -134,9 +174,39 @@ export default {
   created() {
     this.deptCode = this.$route.query.teamTypeCode;
     this.deptCheckInfo = JSON.parse(this.$route.query.packageInfo);
+    this.fileData.teamDept = this.deptCode;
+    this.fileData.teamNo = this.deptCheckInfo.teamNo;
     this.getTeamInfo();
   },
   methods:{
+    submitUpload() {
+      this.dialogPrient = false;
+      this.$refs.upload.submit();
+    },
+    fileUploadBefore(file){
+      const extension = file.name.split('.')[1] === 'xls'
+      const extension2 = file.name.split('.')[1] === 'xlsx'
+      const isLt2M = file.size / 1024 / 1024 < 5
+      if (!extension && !extension2) {
+        this.$message.warning('上传模板只能是 xls、xlsx格式!')
+        return false;
+      }
+      if (!isLt2M) {
+        this.$message.warning('上传模板大小不能超过 5MB!')
+        return false;
+      }
+      return; // 返回false不会自动上传
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    //导入人员信息
+    importPrient(){
+      this.dialogPrient = true;
+    },
     async getTeamInfo(){//获取团队详情
           const {data:res} = await this.$http.post("teamList/dept/info",{
               code:this.deptCode
@@ -169,9 +239,9 @@ export default {
   }
 }
 </script>
-<style lang='less' scoped>
+<style lang='less'>
 .deptInfoCard {
-  height: 21%;
+  height: 26%;
   margin-bottom: 1%;
 }
 .deptInfoDiv li{
@@ -197,8 +267,11 @@ export default {
   box-sizing: border-box;
 }
 .deptPatientCard{
-    height: 83%;
+    height: 70%;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
+}
+.fileUpload .el-icon-close:before{
+  color: #ec0909;
 }
 </style>

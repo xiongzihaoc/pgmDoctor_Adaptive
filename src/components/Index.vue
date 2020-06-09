@@ -13,7 +13,7 @@ export default {
   components: { perPro, TeamPro },
   data() {
     return {
-      currentView: "perPro"
+      currentView: "TeamPro"
     };
   },
   methods: {

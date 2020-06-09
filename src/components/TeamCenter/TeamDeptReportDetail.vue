@@ -239,8 +239,13 @@ export default {
 
                 var checkPeopleProDataInfo = {};
                 checkPeopleProDataInfo.title="百分比";
-                checkPeopleProDataInfo.man = (manData.count/manData.sum*100)+"%";
-                checkPeopleProDataInfo.women = (women.count/manData.sum*100)+"%"
+                if(manData.sum == 0){
+                    checkPeopleProDataInfo.man='0%';
+                    heckPeopleProDataInfo.women='0%';
+                }else {
+                    checkPeopleProDataInfo.man = (manData.count/manData.sum*100)+"%";
+                    checkPeopleProDataInfo.women = (women.count/manData.sum*100)+"%"
+                }
                 checkPeopleProDataInfo.sum = '100%';
                 checkPeopleSumData.push(checkPeopleProDataInfo);
                 staticalData.checkPeopleSumData=checkPeopleSumData;
@@ -284,9 +289,26 @@ export default {
                         factorWomenPeopleChartInstructions+=factorInfo.women+"位"+ factorInfo.factor_name+","
                     }
                     
-                    factorInfo.sumPro = (factorInfo.sum/factorSum*100).toFixed(2)+"%";
-                    factorInfo.manPro = (factorInfo.man/factorMan*100).toFixed(2)+"%";
-                    factorInfo.womenPro = (factorInfo.women/factorWomen*100).toFixed(2)+"%";
+                    if(factorSum == 0){
+                        factorInfo.sumPro = "0%";
+                    }else {
+                        factorInfo.sumPro = (factorInfo.sum/factorSum*100).toFixed(2)+"%";
+                    }
+                    
+                    if(factorMan == 0){
+                        factorInfo.manPro = "0%";
+                    }else {
+                        factorInfo.manPro = (factorInfo.man/factorMan*100).toFixed(2)+"%";
+                    }
+                    if(factorWomen == 0){
+                        factorInfo.womenPro = "0%";
+                    }else {
+                        factorInfo.womenPro = (factorInfo.women/factorWomen*100).toFixed(2)+"%";
+                    }
+                    // factorInfo.manPro = (factorInfo.man/factorMan*100).toFixed(2)+"%";
+                    
+                    
+                    
                     factorSumPeopleChartRowInfo.factorName = factorInfo.factor_name;
                     factorSumPeopleChartRowInfo.count = factorInfo.sum;
                     // factorSumPeopleChartRowInfo.pro= (factorInfo.sum/factorSum*100).toFixed(2)+"%";
