@@ -34,7 +34,7 @@
             <a href="javascript:;">{{hosMess.name}}</a> 欢迎来到PHM检测中心后台！
           </span>
           <span class="editPass" @click.prevent.stop="editPassword" style="color: red;">修改密码</span> |
-          <span class="loginOut" @click.prevent.stop="loginOut" style="color: royalblue;">退出登录</span>
+          <span class="loginOut" @click="loginOut" style="color: royalblue;">退出登录</span>
           <img
             class="warningImg"
             src="../assets/images/warning.png"
@@ -47,9 +47,9 @@
       </div>
     </div>
     <!-- 修改密码弹框 -->
-    <el-dialog title="选择套餐" :visible.sync="dialogVisible" @closed="editDialogClosed" v-dialogDrag>
+    <el-dialog title="修改密码" :visible.sync="dialogVisible" @closed="editDialogClosed" v-dialogDrag>
       <el-form ref="loginFormRef" :model="editAddForm" label-width="80px" :rules="loginRules">
-        <el-form-item label="登录名" prop="userName">
+        <el-form-item label="账号" prop="userName">
           <el-input v-model="this.hosMess.userName" disabled></el-input>
         </el-form-item>
         <el-form-item label="原密码" prop="srcPwd">
@@ -64,6 +64,14 @@
         <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog title="退出登录" :visible.sync="logoutDialog" v-dialogDrag center>
+      <div>是否退出登录</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="logoutDialog=false">取 消</el-button>
+        <el-button type="primary" @click="logoutDialogEnter">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -71,6 +79,7 @@ export default {
   data() {
     return {
       hosMess: {},
+      logoutDialog:false,
       menuList: [
         {
           icon: "iconfont icon-shouye",
@@ -78,12 +87,12 @@ export default {
           path: "home/index",
           id: "1"
         },
-        {
-          icon: "iconfont icon-yonhu",
-          name: "个人中心",
-          path: "home/userCenter",
-          id: "2"
-        },
+        // {
+        //   icon: "iconfont icon-yonhu",
+        //   name: "个人中心",
+        //   path: "home/userCenter",
+        //   id: "2"
+        // },
         {
           icon: "iconfont icon-hexintuandui",
           name: "团体中心",
@@ -147,7 +156,10 @@ export default {
   },
   methods: {
     // 退出
-    async loginOut() {
+    loginOut() {
+      this.logoutDialog = true;
+    },
+    async logoutDialogEnter(){
       const { data: res } = await this.$http.post("doc/loginOut", {});
       if (res.code != 200) return this.$message.error("退出失败");
       window.sessionStorage.clear();

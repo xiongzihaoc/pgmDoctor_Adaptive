@@ -57,12 +57,11 @@
           <span
             style="line-height: 50px;width: 45%;font-weight: 700;padding-left: 5px;box-sizing: border-box;"
           >{{currentTeamInfo.name}}</span>
-          <div style="line-height: 50px;float: right;">
+          <div style="line-height: 50px;float: right;" v-if="isTeamParent">
             <el-button
               type="primary"
               size="small"
               @click.prevent.stop="addCheckPackages"
-              v-if="isTeamParent"
             >新增检测</el-button>
           </div>
         </div>
