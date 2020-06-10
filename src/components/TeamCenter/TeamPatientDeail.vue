@@ -1,5 +1,5 @@
 <template>
-    <div style="height: 80%;">
+    <div style="height: 85%;">
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/home/teamCenter' }">团队中心</el-breadcrumb-item>
             <el-breadcrumb-item>检测人员</el-breadcrumb-item>
@@ -36,6 +36,7 @@
               style="margin-top:1%;"
               :header-cell-style="{ background:'#5BAEFF',height:'50px',color:'#fff'}">
               <el-table-column
+              show-overflow-tooltip
                   align="center"
                   prop="orderNo"
                   label="检测卡号"/>
@@ -48,6 +49,7 @@
                   prop="sex"
                   label="性别"/>
                 <el-table-column
+                show-overflow-tooltip
                     align="center"
                     prop="phone"
                     label="手机"/>
@@ -267,7 +269,7 @@ export default {
   box-sizing: border-box;
 }
 .deptPatientCard{
-    height: 70%;
+    height: 73%;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 }

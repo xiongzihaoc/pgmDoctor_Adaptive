@@ -10,8 +10,8 @@
         <el-table
           :data="menuList"
           :expand-row-keys="[currentTeamCode]"
-          :tree-props="{children: 'child', hasChildren: 'hasChildren'}"
-          :header-cell-style="{background:'#f5f5f5'}"
+          :tree-props="{ children: 'child', hasChildren: 'hasChildren' }"
+          :header-cell-style="{ background: '#f5f5f5' }"
           highlight-current-row
           current-row-key="[currentTeamCode]"
           row-key="code"
@@ -22,7 +22,12 @@
           @header-click="addInside($event)"
           style="width: 100%;margin-bottom: 20px;"
         >
-          <el-table-column align="left" prop="name" label="团队列表" label-class-name="ccc"></el-table-column>
+          <el-table-column
+            align="left"
+            prop="name"
+            label="团队列表"
+            label-class-name="ccc"
+          ></el-table-column>
           <el-table-column
             align="center"
             width="100"
@@ -56,81 +61,145 @@
         <div class="searchBox">
           <span
             style="line-height: 50px;width: 45%;font-weight: 700;padding-left: 5px;box-sizing: border-box;"
-          >{{currentTeamInfo.name}}</span>
+            >{{ currentTeamInfo.name }}</span
+          >
           <div style="line-height: 50px;float: right;" v-if="isTeamParent">
             <el-button
               type="primary"
               size="small"
               @click.prevent.stop="addCheckPackages"
-            >新增检测</el-button>
+              >新增检测</el-button
+            >
           </div>
         </div>
         <div class="teamDetail">
           <li>
-            <span class="title">{{teamTypeTitle}}：{{currentTeamInfo.name}}</span>
-            <span class="title">{{teamTypeAccount}}：{{currentTeamInfo.account}}</span>
-            <span class="title">联系人：{{currentTeamInfo.leader}}</span>
+            <span class="title"
+              >{{ teamTypeTitle }}：{{ currentTeamInfo.name }}</span
+            >
+            <span class="title"
+              >{{ teamTypeAccount }}：{{ currentTeamInfo.account }}</span
+            >
+            <span class="title">联系人：{{ currentTeamInfo.leader }}</span>
           </li>
           <li>
-            <span class="title">联系电话：{{currentTeamInfo.phone}}</span>
-            <span class="title" :style="{visibility:this.currentTeamInfo.pcd == null || this.currentTeamInfo.pcd == ''?'hidden':'visible'}">地址：{{currentTeamInfo.pcd}}</span>
-            <span class="title" style="visibility: hidden;">检测次数：{{total}}</span>
+            <span class="title">联系电话：{{ currentTeamInfo.phone }}</span>
+            <span
+              class="title"
+              :style="{
+                visibility:
+                  this.currentTeamInfo.pcd == null ||
+                  this.currentTeamInfo.pcd == ''
+                    ? 'hidden'
+                    : 'visible',
+              }"
+              >地址：{{ currentTeamInfo.pcd }}</span
+            >
+            <span class="title" style="visibility: hidden;"
+              >检测次数：{{ total }}</span
+            >
           </li>
         </div>
         <!-- 调用公用表格组件 -->
         <el-table
           :data="teamTypeList"
           style="margin-top:1%;"
-          :header-cell-style="{ background:'#5BAEFF',height:'50px',color:'#fff'}"
+          :header-cell-style="{
+            background: '#5BAEFF',
+            height: '50px',
+            color: '#fff',
+          }"
         >
-          <el-table-column align="center" prop="teamNo" label="检测编号" show-overflow-tooltip />
-          <el-table-column v-if="isTeamParent" align="center" prop="teamNumber" label="限定人数" />
+          <el-table-column
+            align="center"
+            prop="teamNo"
+            label="检测编号"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            v-if="isTeamParent"
+            align="center"
+            prop="teamNumber"
+            label="限定人数"
+          />
           <el-table-column align="center" prop="recordNumber" label="已录入" />
 
           <el-table-column align="center" prop="checkNumber" label="已检测" />
 
           <el-table-column align="center" prop="checkNotNum" label="未检测" />
-          <el-table-column align="center" prop="packageName" v-if="isTeamParent" label="套餐" />
+          <el-table-column
+            align="center"
+            prop="packageName"
+            v-if="isTeamParent"
+            label="套餐"
+          />
           <el-table-column align="center" label="状态" prop="state">
             <template slot-scope="scope">
-              <div v-if="scope.row.state==0">未开始</div>
-              <div v-else-if="scope.row.state==1">已开始</div>
+              <div v-if="scope.row.state == 0">未开始</div>
+              <div v-else-if="scope.row.state == 1">已开始</div>
               <div v-else>已结束</div>
             </template>
           </el-table-column>
           <!-- 操作 -->
-          <el-table-column align="center" fixed="right" label="操作" width="249" v-if="isTeamParent">
+          <el-table-column
+            align="center"
+            fixed="right"
+            label="操作"
+            width="249"
+            v-if="isTeamParent"
+          >
             <template slot-scope="scope">
-              <el-button type="primary" size="mini" @click.prevent.stop="checkPatient(scope.row)">人员</el-button>
+              <el-button
+                type="primary"
+                size="mini"
+                @click.prevent.stop="checkPatient(scope.row)"
+                >人员</el-button
+              >
               <el-button
                 type="primary"
                 size="mini"
                 @click.prevent.stop="teamPackages(scope.row)"
-              >检测套餐</el-button>
+                >检测套餐</el-button
+              >
               <!--  -->
-              <el-button 
-                v-if="scope.row.state !=0"
+              <el-button
+                v-if="scope.row.state != 0"
                 type="primary"
                 size="mini"
                 @click.prevent.stop="teamReport(scope.row)"
-              >报告</el-button>
+                >报告</el-button
+              >
               <el-button
-                v-if="scope.row.state ==0"
-                type="danger"
+                v-else
+                plain
+                type="primary"
                 size="mini"
                 @click.prevent.stop="updateCheck(scope.row)"
-              >修改</el-button>
+                >修改</el-button
+              >
             </template>
           </el-table-column>
-          <el-table-column align="center" fixed="right" label="操作" width="150" v-else>
+          <el-table-column
+            align="center"
+            fixed="right"
+            label="操作"
+            width="150"
+            v-else
+          >
             <template slot-scope="scope">
-              <el-button type="primary" size="mini" @click.prevent.stop="checkPatient(scope.row)">人员</el-button>
               <el-button
-                v-if="scope.row.state !=0"
+                type="primary"
+                size="mini"
+                @click.prevent.stop="checkPatient(scope.row)"
+                >人员</el-button
+              >
+              <el-button
+                v-if="scope.row.state != 0"
                 type="primary"
                 size="mini"
                 @click.prevent.stop="teamReport(scope.row)"
-              >报告</el-button>
+                >报告</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -139,7 +208,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChangev"
           :current-page="pageNum"
-          :page-sizes="[10, 20,50]"
+          :page-sizes="[10, 20, 50]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
@@ -159,18 +228,27 @@
           <el-input v-model="teamFram.name" placeholder="请输入名称"></el-input>
         </el-form-item>
         <el-form-item prop="account" :label="teamTypeAccount">
-          <el-input v-model="teamFram.account" placeholder="请输入账号,可使用账号登录,查看团队报告,账号默认密码：12345678"></el-input>
+          <el-input
+            v-model="teamFram.account"
+            placeholder="请输入账号,可使用账号登录,查看团队报告,账号默认密码：12345678"
+          ></el-input>
         </el-form-item>
         <!-- <el-form-item prop="password" :label="teamTypePassword">
           <el-input v-model="teamFram.password" placeholder="请输入密码"></el-input>
         </el-form-item>-->
 
         <el-form-item prop="leader" label="联系人">
-          <el-input v-model="teamFram.leader" placeholder="请输入联系人"></el-input>
+          <el-input
+            v-model="teamFram.leader"
+            placeholder="请输入联系人"
+          ></el-input>
         </el-form-item>
 
         <el-form-item prop="phone" label="联系电话">
-          <el-input v-model="teamFram.phone" placeholder="请输入联系电话"></el-input>
+          <el-input
+            v-model="teamFram.phone"
+            placeholder="请输入联系电话"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="city" label="团队地址" v-if="addressShow">
           <el-cascader
@@ -183,11 +261,14 @@
         </el-form-item>
 
         <el-form-item prop="address" label="详细地址" v-if="addressShow">
-          <el-input v-model="teamFram.address" placeholder="请输入地址"></el-input>
+          <el-input
+            v-model="teamFram.address"
+            placeholder="请输入地址"
+          ></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
       </span>
     </el-dialog>
@@ -206,7 +287,7 @@ export default {
       return cb(new Error("请输入合法的手机号"));
     };
     return {
-      type:'',
+      type: "",
       isTeamParent: true,
       currentTeamInfo: {}, //当前点击的团队/部门/小组数据
       name: "www",
@@ -234,7 +315,7 @@ export default {
         pcd: "",
         city: [],
         address: "",
-        parentCode: ""
+        parentCode: "",
       },
       addTeamTile: "新增团队",
       teamTypeTitle: "团队名称",
@@ -256,12 +337,12 @@ export default {
         //   { required: true, message: "请输入联系人电话", trigger: "blur" },
         //   { validator: checkMobile, trigger: "blur" }
         // ]
-      }
+      },
     };
   },
   created() {
     this.type = this.$route.query.type;
-    if(this.type == 'index'){
+    if (this.type == "index") {
       this.currentTeamCode = this.$route.query.teamCode;
     }
     this.getCity();
@@ -273,14 +354,15 @@ export default {
       const { data: res } = await this.$http.post("teamList/list", {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        teamDept: this.currentTeamTypeCode
+        teamDept: this.currentTeamTypeCode,
       });
       var teamTypeList = res.rows;
-      for(var i=0;i<teamTypeList.length;i++){
+      for (var i = 0; i < teamTypeList.length; i++) {
         var teamCheckInfo = teamTypeList[i];
-        teamCheckInfo.checkNotNum = teamCheckInfo.recordNumber-teamCheckInfo.checkNumber;
+        teamCheckInfo.checkNotNum =
+          teamCheckInfo.recordNumber - teamCheckInfo.checkNumber;
       }
-      console.log('ddddd');
+      console.log("ddddd");
       console.log(this.teamTypeList);
       this.teamTypeList = teamTypeList;
       this.total = res.total;
@@ -301,25 +383,26 @@ export default {
       const { data: res } = await this.$http.post("teamList/dept ", {});
 
       this.menuList = res.data;
-      if(this.menuList != null && this.menuList.length > 0) {
-          if(this.type == 'index'){
-            this.currentTeamCode = this.currentTeamCode;
-            this.currentTeamTypeCode = this.currentTeamCode;
-            this.getTeamInfo();
-          }else {
-            this.currentTeamInfo = this.menuList[0];
-            this.currentTeamCode = this.currentTeamInfo.code;
-            this.currentTeamTypeCode = this.currentTeamInfo.code;
-          }
-          this.getTeamCheckTypeList();
+      if (this.menuList != null && this.menuList.length > 0) {
+        if (this.type == "index") {
+          this.currentTeamCode = this.currentTeamCode;
+          this.currentTeamTypeCode = this.currentTeamCode;
+          this.getTeamInfo();
+        } else {
+          this.currentTeamInfo = this.menuList[0];
+          this.currentTeamCode = this.currentTeamInfo.code;
+          this.currentTeamTypeCode = this.currentTeamInfo.code;
+        }
+        this.getTeamCheckTypeList();
       }
     },
-    async getTeamInfo(){//获取团队详情
-          const {data:res} = await this.$http.post("teamList/dept/info",{
-              code:this.currentTeamCode
-          });
-          this.currentTeamInfo = res.data;
-      },
+    async getTeamInfo() {
+      //获取团队详情
+      const { data: res } = await this.$http.post("teamList/dept/info", {
+        code: this.currentTeamCode,
+      });
+      this.currentTeamInfo = res.data;
+    },
     // 左侧修改
     iconEdit(val) {
       this.addTeamDialogType = 2;
@@ -386,14 +469,14 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning"
+          type: "warning",
         }
-      ).catch(err => console.log(err));
+      ).catch((err) => console.log(err));
       if (confirmResult != "confirm") {
         return this.$message.info("取消删除");
       }
       const { data: res } = await this.$http.post("teamList/dept/del", {
-        id: val.id
+        id: val.id,
       });
       if (res.code != 200) return this.$message.error(res.data);
       this.$message.success("删除成功");
@@ -404,48 +487,48 @@ export default {
       let httpUrl = "";
       let parm = {};
       console.log(this.teamFram);
-      this.$refs.addTeamFormRef.validate(async valid => {
+      this.$refs.addTeamFormRef.validate(async (valid) => {
         if (valid) {
           if (this.addTeamDialogType == 2) {
             httpUrl = "teamList/dept/update";
             if (this.addressShow) {
-              var pcd = '';
-              if(this.teamFram.city != null && this.teamFram.city.length >0){
+              var pcd = "";
+              if (this.teamFram.city != null && this.teamFram.city.length > 0) {
                 pcd = this.teamFram.city.join("-");
               }
               parm = {
                 id: this.editId,
-                account: this.teamFram.account,
-                name: this.teamFram.name,
-                leader: this.teamFram.leader,
-                phone: this.teamFram.phone,
-                address: this.teamFram.address,
-                pcd: pcd
-              };
-            } else {
-              parm = {
-                id: this.editId,
-                account: this.teamFram.account,
-                name: this.teamFram.name,
-                leader: this.teamFram.leader,
-                phone: this.teamFram.phone
-              };
-            }
-          } else {
-            httpUrl = "teamList/dept/add";
-            if (this.addressShow) {
-              var pcd = '';
-              if(this.teamFram.city != null && this.teamFram.city.length >0){
-                pcd = this.teamFram.city.join("-");
-              }
-              parm = {  
                 account: this.teamFram.account,
                 name: this.teamFram.name,
                 leader: this.teamFram.leader,
                 phone: this.teamFram.phone,
                 address: this.teamFram.address,
                 pcd: pcd,
-                parentCode: this.teamFram.parentCode
+              };
+            } else {
+              parm = {
+                id: this.editId,
+                account: this.teamFram.account,
+                name: this.teamFram.name,
+                leader: this.teamFram.leader,
+                phone: this.teamFram.phone,
+              };
+            }
+          } else {
+            httpUrl = "teamList/dept/add";
+            if (this.addressShow) {
+              var pcd = "";
+              if (this.teamFram.city != null && this.teamFram.city.length > 0) {
+                pcd = this.teamFram.city.join("-");
+              }
+              parm = {
+                account: this.teamFram.account,
+                name: this.teamFram.name,
+                leader: this.teamFram.leader,
+                phone: this.teamFram.phone,
+                address: this.teamFram.address,
+                pcd: pcd,
+                parentCode: this.teamFram.parentCode,
               };
             } else {
               parm = {
@@ -453,7 +536,7 @@ export default {
                 name: this.teamFram.name,
                 leader: this.teamFram.leader,
                 phone: this.teamFram.phone,
-                parentCode: this.teamFram.parentCode
+                parentCode: this.teamFram.parentCode,
               };
             }
           }
@@ -522,52 +605,82 @@ export default {
     },
     //新增团队检测
     addCheckPackages() {
-      if(this.currentTeamCode == null || this.currentTeamCode == ''){
-        return this.$message.error('请选择团队');
+      if (this.currentTeamCode == null || this.currentTeamCode == "") {
+        return this.$message.error("请选择团队");
       }
       this.$router.push({
         path: "/home/teamCenter/addTeamCheck",
-        query: { teamCode: this.currentTeamCode }
+        query: { teamCode: this.currentTeamCode },
       });
     },
-    checkPatient(row){//查看检测人员
-      this.$router.push({path:'/home/teamCenter/teamPatientDeail',query:{packageInfo:JSON.stringify(row),teamTypeCode:this.currentTeamTypeCode}})
+    checkPatient(row) {
+      //查看检测人员
+      this.$router.push({
+        path: "/home/teamCenter/teamPatientDeail",
+        query: {
+          packageInfo: JSON.stringify(row),
+          teamTypeCode: this.currentTeamTypeCode,
+        },
+      });
     },
-    teamPackages(row){//查看检测套餐
-      this.$router.push({path:'/home/teamCenter/teamCheckPackagesDetail',query:{teamCode:this.currentTeamCode,teamCheckNum:row.teamNo,type:1}});
+    teamPackages(row) {
+      //查看检测套餐
+      this.$router.push({
+        path: "/home/teamCenter/teamCheckPackagesDetail",
+        query: {
+          teamCode: this.currentTeamCode,
+          teamCheckNum: row.teamNo,
+          type: 1,
+        },
+      });
     },
-    teamReport(row){//查看检测报告
-      this.$router.push({path:'/home/teamCenter/teamDeptReportDetail',query:{packageInfo:JSON.stringify(row),teamTypeCode:this.currentTeamTypeCode}})
+    teamReport(row) {
+      //查看检测报告
+      this.$router.push({
+        path: "/home/teamCenter/teamDeptReportDetail",
+        query: {
+          packageInfo: JSON.stringify(row),
+          teamTypeCode: this.currentTeamTypeCode,
+        },
+      });
     },
-    updateCheck(row){//修改检测套餐
+    updateCheck(row) {
+      //修改检测套餐
       console.log(row);
-      this.$router.push({path:'/home/teamCenter/addTeamCheck',query:{packageInfo:JSON.stringify(row),teamCode:this.currentTeamCode,teamCheckNum:row.teamNo,type:2}});
+      this.$router.push({
+        path: "/home/teamCenter/addTeamCheck",
+        query: {
+          packageInfo: JSON.stringify(row),
+          teamCode: this.currentTeamCode,
+          teamCheckNum: row.teamNo,
+          type: 2,
+        },
+      });
     },
-    rowClick(){
-      alert('www');
-    }
+    rowClick() {
+      alert("www");
+    },
   },
   watch: {
     menuList: function() {
       this.$nextTick(function() {
         console.log(this.currentTeamCode);
-        var teamInfo={};
-        if(this.currentTeamCode != null && this.currentTeamCode != ""){
-          if(this.menuList != null && this.menuList.length > 0){
-            for(var i=0;i<this.menuList.length;i++){
-                if(this.currentTeamCode == this.menuList[i].code){
-                  teamInfo = this.menuList[i];
-                  break;
-                }
+        var teamInfo = {};
+        if (this.currentTeamCode != null && this.currentTeamCode != "") {
+          if (this.menuList != null && this.menuList.length > 0) {
+            for (var i = 0; i < this.menuList.length; i++) {
+              if (this.currentTeamCode == this.menuList[i].code) {
+                teamInfo = this.menuList[i];
+                break;
+              }
             }
           }
-         
         }
-        
+
         this.$refs.singleTable.setCurrentRow(teamInfo);
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

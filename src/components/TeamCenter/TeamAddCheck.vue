@@ -1,7 +1,9 @@
 <template>
   <div class="addTeamCheck" style="height:85%">
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/home/teamCenter' }">团队中心</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home/teamCenter' }"
+        >团队中心</el-breadcrumb-item
+      >
       <el-breadcrumb-item>新增检测</el-breadcrumb-item>
     </el-breadcrumb>
     <div style="height:100%;overflow:hidden">
@@ -12,10 +14,21 @@
           ref="addTeamCheckFromRef"
           :rules="addTeamCheckFromRules"
         >
-          <el-form-item label="检测编号" prop="teamNo" style="width: 50%;margin-left: 25%;">
-            <el-input v-model="addTeamCheckFrom.teamNo" :disabled="true"></el-input>
+          <el-form-item
+            label="检测编号"
+            prop="teamNo"
+            style="width: 50%;margin-left: 25%;"
+          >
+            <el-input
+              v-model="addTeamCheckFrom.teamNo"
+              :disabled="true"
+            ></el-input>
           </el-form-item>
-          <el-form-item label="检测人数" prop="teamNumber" style="width: 50%;margin-left: 25%;">
+          <el-form-item
+            label="检测人数"
+            prop="teamNumber"
+            style="width: 50%;margin-left: 25%;"
+          >
             <el-input
               v-model="addTeamCheckFrom.teamNumber"
               oninput="if(value.length>11)value=value.slice(0,11)"
@@ -28,13 +41,14 @@
           <label class="label_check">检测套餐</label>
           <div
             style="height: 52px;position: relative; margin-right: 10px;"
-            v-for="(item,index) in addTeamCheckFrom.paramList"
+            v-for="(item, index) in addTeamCheckFrom.paramList"
             :key="index"
           >
             <span
               @click="editorPackages(index)"
               style="line-height: 52px;background: #409EFF;padding: 5px 10px;border-radius: 10px;color: white;"
-            >{{item.packageName}}</span>
+              >{{ item.packageName }}</span
+            >
 
             <i
               class="el-icon-error"
@@ -53,12 +67,19 @@
           </div>
         </div>
         <div style="width: 100%;text-align: center;margin-top: 50px;">
-          <el-button type="primary" @click.prevent.stop="saveTeamCheck()">确定提交</el-button>
+          <el-button type="primary" @click.prevent.stop="saveTeamCheck()"
+            >确定提交</el-button
+          >
         </div>
       </el-card>
     </div>
     <!--新增套餐弹框-->
-    <el-dialog title="新增套餐" :visible.sync="addCheckDilogShow" width="60%" v-dialogDrag>
+    <el-dialog
+      title="新增套餐"
+      :visible.sync="addCheckDilogShow"
+      width="60%"
+      v-dialogDrag
+    >
       <el-form
         ref="addCheckPackagesFromRef"
         :model="checkPackageFrom"
@@ -66,7 +87,10 @@
         label-width="80px"
       >
         <el-form-item prop="packageName" label="套餐名称" style="width: 70%;">
-          <el-input v-model="checkPackageFrom.packageName" placeholder="请输入套餐名称"></el-input>
+          <el-input
+            v-model="checkPackageFrom.packageName"
+            placeholder="请输入套餐名称"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="packageNames" label="选择套餐" style="width: 70%;">
           <el-input
@@ -75,32 +99,39 @@
             placeholder="请选择套餐"
           ></el-input>
           <ul
-            style="width: 100%; border: #b9acac solid 1px;border-radius: 5px;"
-            v-if="packagesList.length>0"
+            style="width: 100%; border: #dcdfe6 solid 1px;border-top:none;border-radius: 5px;"
+            v-if="packagesList.length > 0"
           >
             <li
               style="margin-left: 10px;"
-              v-for="(item,index) in packagesList"
+              v-for="(item, index) in packagesList"
               :key="index"
-            >{{item.sheetName}}</li>
+            >
+              {{ item.sheetName }}
+            </li>
           </ul>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addCheckDilogShow=false">取 消</el-button>
+        <el-button @click="addCheckDilogShow = false">取 消</el-button>
         <el-button type="primary" @click="saveCheckPackage()">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="选择量表" :visible.sync="selectedPackagesDialogShow" v-dialogDrag>
+    <el-dialog
+      title="选择量表"
+      :visible.sync="selectedPackagesDialogShow"
+      v-dialogDrag
+    >
       <ul class="sheetPackage">
-        <li v-for="(item,index) in sheetList" :key="index">
-          <h3>{{item.type}}</h3>
+        <li v-for="(item, index) in sheetList" :key="index">
+          <h3>{{ item.type }}</h3>
           <el-checkbox-group v-model="checkList" style="margin-top: 10px;">
             <el-checkbox
-              v-for="(subItem,i) in item.package"
+              v-for="(subItem, i) in item.package"
               :key="i"
               :label="subItem"
-            >{{subItem.name}}</el-checkbox>
+              >{{ subItem.name }}</el-checkbox
+            >
           </el-checkbox-group>
         </li>
       </ul>
@@ -115,40 +146,40 @@
 export default {
   data() {
     return {
-        addOrUpdateType:1,//1:添加 2:修改
-        packageInfoUpdateType:1,//1添加 2：修改
-        packageInfoUpdateIndex:0,//当前修改的套餐下标
-        teamCode:'',//团队Code
-        checkList:[],
-        sheetList:[],
-        packagesList:[],
-        checkPackageFrom:{
-            packageName:'',
-            packageNames:'',
-            packageUuids:'',
-            package:[]
-        },
-        addCheckDilogShow:false,//新增套餐Dialog
-        selectedPackagesDialogShow:false,//选择量表套餐Dialog
-        addTeamCheckFrom:{
-            id:'',
-            teamNo:'',
-            teamNumber:'',
-            paramList:[]
-        },
-        addCheckPackagesRuleFrom:{
-            packageName:[
-                { required: true, message: '请输入套餐名称', trigger: 'blur' },
-            ]
-        },
-        addTeamCheckFromRules:{
-            teamNo:[
-                { required: true, message: '请输入检测编号', trigger: 'blur' },
-            ],
-            teamNumber:[
-                { required: true, message: '请输入检测人数', trigger: 'blur' },
-            ]
-        }
+      addOrUpdateType: 1, //1:添加 2:修改
+      packageInfoUpdateType: 1, //1添加 2：修改
+      packageInfoUpdateIndex: 0, //当前修改的套餐下标
+      teamCode: "", //团队Code
+      checkList: [],
+      sheetList: [],
+      packagesList: [],
+      checkPackageFrom: {
+        packageName: "",
+        packageNames: "",
+        packageUuids: "",
+        package: [],
+      },
+      addCheckDilogShow: false, //新增套餐Dialog
+      selectedPackagesDialogShow: false, //选择量表套餐Dialog
+      addTeamCheckFrom: {
+        id: "",
+        teamNo: "",
+        teamNumber: "",
+        paramList: [],
+      },
+      addCheckPackagesRuleFrom: {
+        packageName: [
+          { required: true, message: "请输入套餐名称", trigger: "blur" },
+        ],
+      },
+      addTeamCheckFromRules: {
+        teamNo: [
+          { required: true, message: "请输入检测编号", trigger: "blur" },
+        ],
+        teamNumber: [
+          { required: true, message: "请输入检测人数", trigger: "blur" },
+        ],
+      },
     };
   },
   created() {
@@ -160,12 +191,12 @@ export default {
       if (this.addTeamCheckFrom != null) {
         var paramList = this.addTeamCheckFrom.paramList;
         if (paramList != null && paramList.length > 0) {
-          paramList.forEach(ele => {
+          paramList.forEach((ele) => {
             var packages = ele.package;
             var names = "",
               uuids = "";
             if (packages != null && packages.length > 0) {
-              packages.forEach(e => {
+              packages.forEach((e) => {
                 names += e.name + ",";
                 uuids += e.uuid + ",";
               });
@@ -207,73 +238,79 @@ export default {
       this.selectedPackagesDialogShow = true;
     },
     async saveCheckPackage(formName) {
-      this.$refs.addCheckPackagesFromRef.validate(valid => {
-            if (valid) {
-                if (this.checkPackageFrom.packageNames == "" ||
-                    this.checkPackageFrom.packageNames == null) {
-                    return this.$message.error("请选择套餐");
-                }
-                if (this.packageInfoUpdateType == 2) {
-                    this.addTeamCheckFrom.paramList.forEach((element, index) => {
-                    if (index == this.packageInfoUpdateIndex) {
-                        element = this.checkPackageFrom;
-                    }
-                    });
-                    this.packageInfoUpdateType = 1;
-                    this.packageInfoUpdateIndex = 0;
-                } else {
-                    this.addTeamCheckFrom.paramList.push(this.checkPackageFrom);
-                }
-                this.addCheckDilogShow = false;
+      this.$refs.addCheckPackagesFromRef.validate((valid) => {
+        if (valid) {
+          if (
+            this.checkPackageFrom.packageNames == "" ||
+            this.checkPackageFrom.packageNames == null
+          ) {
+            return this.$message.error("请选择套餐");
+          }
+          if (this.packageInfoUpdateType == 2) {
+            this.addTeamCheckFrom.paramList.forEach((element, index) => {
+              if (index == this.packageInfoUpdateIndex) {
+                element = this.checkPackageFrom;
+              }
+            });
+            this.packageInfoUpdateType = 1;
+            this.packageInfoUpdateIndex = 0;
+          } else {
+            this.addTeamCheckFrom.paramList.push(this.checkPackageFrom);
+          }
+          this.addCheckDilogShow = false;
+        }
+      });
+    },
+    saveTeamCheck() {
+      //新增团队检测
+      this.$refs.addTeamCheckFromRef.validate(async (valid) => {
+        if (valid) {
+          if (
+            this.addTeamCheckFrom.paramList == null ||
+            this.addTeamCheckFrom.paramList.length == 0
+          ) {
+            return this.$message.error("请添加检测套餐");
+          }
+          var params = {};
+          var url = "teamList/add";
+          console.log(this.addOrUpdateType);
+          if (this.addOrUpdateType == 1) {
+            url = "teamList/add";
+          } else {
+            url = "teamList/update";
+          }
+          if (this.addOrUpdateType == 1) {
+            params = {
+              teamNo: this.addTeamCheckFrom.teamNo,
+              teamNumber: this.addTeamCheckFrom.teamNumber,
+              teamDept: this.teamCode,
+              paramList: this.addTeamCheckFrom.paramList,
+            };
+          } else {
+            params = {
+              id: this.addTeamCheckFrom.id,
+              teamNo: this.addTeamCheckFrom.teamNo,
+              teamNumber: this.addTeamCheckFrom.teamNumber,
+              teamDept: this.teamCode,
+              paramList: this.addTeamCheckFrom.paramList,
+            };
+          }
+          const { data: res } = await this.$http.post(url, params);
+          if (res == null || res.code != 200) {
+            if (this.addOrUpdateType == 1) {
+              return this.$message.error("添加检测失败，请重试");
+            } else {
+              return this.$message.error("修改检测失败，请重试");
             }
-        });
-        
-      },saveTeamCheck(){//新增团队检测
-        this.$refs.addTeamCheckFromRef.validate(async (valid) =>{
-            if(valid){
-                if(this.addTeamCheckFrom.paramList == null || this.addTeamCheckFrom.paramList.length == 0){
-                    return this.$message.error('请添加检测套餐');
-                }
-                var params = {};
-                var url='teamList/add';
-                console.log(this.addOrUpdateType);
-                if(this.addOrUpdateType == 1){
-                    url='teamList/add';
-                }else {
-                    url='teamList/update';
-                }
-                if(this.addOrUpdateType == 1){
-                    params = {
-                        teamNo:this.addTeamCheckFrom.teamNo,
-                        teamNumber:this.addTeamCheckFrom.teamNumber,
-                        teamDept:this.teamCode,
-                        paramList:this.addTeamCheckFrom.paramList
-                    };
-                }else {
-                    params = {
-                        id:this.addTeamCheckFrom.id,
-                        teamNo:this.addTeamCheckFrom.teamNo,
-                        teamNumber:this.addTeamCheckFrom.teamNumber,
-                        teamDept:this.teamCode,
-                        paramList:this.addTeamCheckFrom.paramList
-                    };
-                }
-                const { data: res } = await this.$http.post(url,params);
-                if(res == null || res.code != 200){
-                    if(this.addOrUpdateType == 1){
-                        return this.$message.error('添加检测失败，请重试');
-                    }else {
-                        return this.$message.error('修改检测失败，请重试');
-                    }
-                    
-                }
-                this.addTeamCheckFrom = {};
-                this.$router.push({path:'/home/teamCenter'});
-                console.log(res);
-            }
-        });
-        
-      },async getSheetList() {//获取量表列表
+          }
+          this.addTeamCheckFrom = {};
+          this.$router.push({ path: "/home/teamCenter" });
+          console.log(res);
+        }
+      });
+    },
+    async getSheetList() {
+      //获取量表列表
       const { data: res } = await this.$http.post("/office_package/load", {});
       if (res == null && res.code != 200)
         return this.$message.error("量表列表获取失败");
@@ -312,7 +349,7 @@ export default {
       this.checkPackageFrom.packageNames = packagesName;
       // 发送axios
       const { data: res } = await this.$http.post("/office_package/detail", {
-        uuid: packageIds
+        uuid: packageIds,
       });
       if (res.code != 200) return this.$message.error("操作失败");
       this.packagesList = res.rows;
@@ -328,8 +365,8 @@ export default {
       const confirmResult = await this.$confirm("是否删除套餐?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
-      }).catch(err => console.log(err));
+        type: "warning",
+      }).catch((err) => console.log(err));
       if (confirmResult != "confirm") {
         return this.$message.info("取消删除");
       }
@@ -341,11 +378,11 @@ export default {
       this.packageInfoUpdateType = 2;
       this.checkPackageFrom = this.addTeamCheckFrom.paramList[index];
       this.addCheckDilogShow = true;
-    }
-  }
+    },
+  },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .box-card {
   width: 100%;
   height: 100%;
@@ -387,4 +424,3 @@ export default {
   max-width: 700px;
 }
 </style>
-
