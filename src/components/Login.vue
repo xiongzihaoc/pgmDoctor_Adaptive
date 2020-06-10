@@ -1,6 +1,6 @@
 <template>
   <div class="CONTENTLogin">
-    <div class="login_box">
+    <div class="login_box animated slideInLeft">
       <h3>欢迎登录</h3>
       <el-form ref="LoginFormRef" :model="LoginForm" :rules="loginRules">
         <el-form-item prop="loginName">
@@ -19,10 +19,15 @@
             @keyup.13.native="handleLogin"
           ></el-input>
         </el-form-item>
-        <div class="btnBox">
-          <el-button type="danger" @click.prevent.stop="reset">重 置</el-button>
-          <el-button type="primary" @click.prevent.stop="handleLogin">登 录</el-button>
-        </div>
+
+        <!-- <el-button type="danger" @click.prevent.stop="reset">重 置</el-button> -->
+        <el-button
+          type="primary"
+          @click.prevent.stop="handleLogin"
+          style="width:100%"
+          class="loginBtn"
+          >登 录</el-button
+        >
       </el-form>
     </div>
   </div>
@@ -33,28 +38,38 @@ export default {
     return {
       LoginForm: {
         loginName: "",
-        userPassword: ""
+        userPassword: "",
       },
       loginRules: {
         loginName: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
+          {
+            min: 3,
+            max: 10,
+            message: "长度在 3 到 10 个字符",
+            trigger: "blur",
+          },
         ],
         userPassword: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 5, max: 16, message: "长度在 5 到 16 个字符", trigger: "blur" }
-        ]
-      }
+          {
+            min: 5,
+            max: 16,
+            message: "长度在 5 到 16 个字符",
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   methods: {
     // 登录
     handleLogin() {
-      this.$refs.LoginFormRef.validate(async valid => {
+      this.$refs.LoginFormRef.validate(async (valid) => {
         if (!valid) return;
         const { data: res } = await this.$http.post("doc/login", {
           userName: this.LoginForm.loginName.trim(),
-          password: this.$md5(this.LoginForm.userPassword).trim()
+          password: this.$md5(this.LoginForm.userPassword).trim(),
         });
         if (res.code != 200) return this.$toast.fail(res.data);
         // token 存入 sessionstorage
@@ -62,15 +77,15 @@ export default {
         window.localStorage.setItem("mess", JSON.stringify(res.data));
         // 跳转
         this.$router.push({
-          path: "/home"
+          path: "/home",
         });
       });
     },
     // 重置
     reset() {
       this.LoginForm = {};
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -85,13 +100,12 @@ export default {
 }
 .CONTENTLogin .login_box {
   overflow: hidden;
-  width: 80%;
+  width: 60%;
   max-width: 800px;
   box-sizing: border-box;
   padding: 5%;
   border-radius: 8px;
-  /* background-image: linear-gradient(#3399F0, #000); */
-  background-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .CONTENTLogin form {
@@ -104,9 +118,16 @@ export default {
   font-weight: 700;
   text-align: center;
   padding-bottom: 10%;
+  color: #000046;
 }
 .btnBox {
   float: right;
   overflow: hidden;
+}
+.loginBtn {
+  display: block;
+  margin: 0 auto;
+  border: none;
+  background-image: linear-gradient(60deg, #000046,#1CB5E0,#004e92) !important;
 }
 </style>

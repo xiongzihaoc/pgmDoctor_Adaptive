@@ -83,12 +83,11 @@
           <li style="width:100%;display:flex;justify-content: center;">
             <el-form-item label="医  生" prop="docName" style="margin-right:5%">
               <el-select
-                filterable
+                no-data-text="该部门暂无医生"
                 v-model="editAddForm.docName"
                 placeholder="请选择医生"
                 style="width:202px"
                 :disabled="IsDocDisabled"
-                @focus="handleDocFoucs"
                 @change="getT"
               >
                 <el-option
@@ -115,7 +114,7 @@
             </el-form-item>
           </li>
           <!-- 教育  婚姻 -->
-          <li style="display:flex;justify-content: center;">
+          <li style="width:100%;display:flex;justify-content: center;">
             <el-form-item label="文  化" prop="edu" style="margin-right:5%">
               <el-select
                 v-model="editAddForm.edu"
@@ -143,7 +142,7 @@
               </el-select>
             </el-form-item>
           </li>
-          <li style="display:flex;justify-content: center;">
+          <li style="width:100%;display:flex;justify-content: center;">
             <el-form-item
               label="套  餐"
               style="margin-right:5%"
@@ -181,7 +180,7 @@
               </el-select>
             </el-form-item>
           </li>
-          <li style="display:flex;justify-content: center;">
+          <li style="width:100%;display:flex;justify-content: center;">
             <el-form-item>
               <el-button type="primary" @click.prevent.stop="enterSave"
                 >确定提交</el-button
@@ -275,9 +274,6 @@ export default {
         age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
         edu: [{ required: true, message: "请选择教育程度" }],
         address: [{ required: true, message: "请输入地址", trigger: "blur" }],
-        // strUserName: [
-        //   { required: true, message: "请选择套餐", trigger: "blur" }
-        // ]
       },
       editAddForm: {
         docName: "",
@@ -390,6 +386,7 @@ export default {
     this.getDeptList();
     this.judge = JSON.parse(window.localStorage.getItem("mess"));
     this.Judgerole();
+    this.getCreatDocList();
   },
   methods: {
     // 获取个人信息
@@ -397,7 +394,16 @@ export default {
       const { data: res } = await this.$http.post("/office_package/load", {});
       this.comboList = res.rows;
     },
-    // 获取医生列表
+    // 获取初始医生列表
+    async getCreatDocList() {
+      const { data: res } = await this.$http.post("doc/list", {
+        dcDept: this.judge.dcDept,
+      });
+      if (res.code !== 200) return this.$message.error("获取医生列表失败");
+      console.log(res, 1);
+      this.docList = res.rows;
+    },
+    // 获取选择部门后的医生
     async getDocList() {
       var DeptStr = "";
       if (this.selectDeptNum == "") {
@@ -438,15 +444,12 @@ export default {
         this.editAddForm.dept = this.judge.dcDept;
       }
     },
-    // 点击医生下拉选加载医生数据
-    handleDocFoucs() {
-      this.getDocList();
-    },
     handleChange(val) {
       var valLength = val.length;
       this.selectDeptNum = val[valLength - 1];
       console.log(this.selectDeptNum);
       this.editAddForm.dept = this.selectDeptNum;
+      this.getDocList();
     },
     // 保存信息
     enterSave() {

@@ -46,7 +46,7 @@
           >
             <span
               @click="editorPackages(index)"
-              style="line-height: 52px;background: #409EFF;padding: 5px 10px;border-radius: 10px;color: white;"
+              style="line-height: 52px;background: #409EFF;padding: 5px 10px;border-radius: 5px;color: white;"
               >{{ item.packageName }}</span
             >
 
@@ -57,12 +57,12 @@
             ></i>
           </div>
           <div
-            style="width: 50px;height: 50px;border: #606266 dashed 1px;text-align: center;"
+            style="width: 50px;height: 50px;border: #ccc dashed 1px;text-align: center;"
             @click="addCheckPackage()"
           >
             <i
               class="el-icon-plus"
-              style="font-size: 25px;margin-top: 50%;transform: translateY(-50%);"
+              style="font-size: 20px;color:#ccc;margin-top: 50%;transform: translateY(-50%);"
             ></i>
           </div>
         </div>
