@@ -1,25 +1,35 @@
 <template>
   <div style="height:100%">
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/home/examiningReport' }">检测报告</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/home/examiningReport' }">列表</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home/examiningReport' }"
+        >检测报告</el-breadcrumb-item
+      >
+      <el-breadcrumb-item :to="{ path: '/home/examiningReport' }"
+        >列表</el-breadcrumb-item
+      >
       <el-breadcrumb-item>报告详情</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card class="card_top" style="height:85%;overflow: auto;-webkit-overflow-scrolling: touch;">
+    <el-card
+      class="card_top"
+      style="height:85%;overflow: auto;-webkit-overflow-scrolling: touch;"
+    >
       <div style="float:right;">
         <el-button
           type="primary"
           size="mini"
-          v-show="this.infoObj.checkState == 0"
+          v-if="this.infoObj.checkState == 0"
           @click.prevent.stop="hasConfirm"
-        >确认审核</el-button>
+          >确认审核</el-button
+        >
         <el-button
           type="danger"
           size="mini"
-          v-show="this.infoObj.checkState != 0"
+          v-else
           v-print="'#printDiv'"
+          style="margin-bottom:5px"
           @click.prevent.stop="hiddenAnsDetail"
-        >打印</el-button>
+          >打印</el-button
+        >
       </div>
       <div id="printDiv">
         <div class="titleFlex">
@@ -33,37 +43,37 @@
           <li>
             <span>
               姓名:
-              <i>{{infoObj.name}}</i>
+              <i>{{ infoObj.name }}</i>
             </span>
             <span>
               手机:
-              <i>{{infoObj.phone}}</i>
+              <i>{{ infoObj.phone }}</i>
             </span>
             <span>
               性别:
-              <i>{{infoObj.sex}}</i>
+              <i>{{ infoObj.sex }}</i>
             </span>
             <span>
               年龄:
-              <i>{{infoObj.age}}</i>
+              <i>{{ infoObj.age }}</i>
             </span>
           </li>
           <li>
             <span>
               婚姻状况:
-              <i>{{infoObj.marriage}}</i>
+              <i>{{ infoObj.marriage }}</i>
             </span>
             <span>
               文化程度:
-              <i>{{infoObj.edu}}</i>
+              <i>{{ infoObj.edu }}</i>
             </span>
             <span>
               所属:
-              <i v-text="this.infoObj.source == 0?'个人':'团队'"></i>
+              <i v-text="this.infoObj.source == 0 ? '个人' : '团队'"></i>
             </span>
             <span>
               职业:
-              <i>{{infoObj.job}}</i>
+              <i>{{ infoObj.job }}</i>
             </span>
           </li>
           <!-- <li>
@@ -72,27 +82,27 @@
           <li>
             <span>
               检测卡号:
-              <i>{{infoObj.orderNo}}</i>
+              <i>{{ infoObj.orderNo }}</i>
             </span>
             <span>
               医生:
-              <i>{{infoObj.docName}}</i>
+              <i>{{ infoObj.docName }}</i>
             </span>
           </li>
           <li>
             <span>
               检测时间:
-              <i>{{timesChangeDate(infoObj.createTime)}}</i>
+              <i>{{ timesChangeDate(infoObj.createTime) }}</i>
             </span>
             <span>
               报告时间:
-              <i>{{timesChangeDate(infoObj.createTime)}}</i>
+              <i>{{ timesChangeDate(infoObj.createTime) }}</i>
             </span>
           </li>
           <li>
             <span>
               套餐名称:
-              <i>{{str}}</i>
+              <i>{{ str }}</i>
             </span>
           </li>
         </ul>
@@ -108,42 +118,54 @@
           >
             <div class="liLeft">
               <div class="wenjuanTitle" style="padding-left:30px;">
-                <span>{{item.sheetName}}</span>
+                <span>{{ item.sheetName }}</span>
               </div>
-              <div style="padding: 0 0 7px 25px;">
-                <!-- <span class="score">总分：{{item.score}}</span> -->
-                <span
-                  class="score"
-                  v-for="(subItem,i) in item.factor"
-                  :key="i"
-                >{{subItem.name}}：{{subItem.score}}</span>
+              <div style="padding: 0 0 7px 25px;display:flex">
+                <div style="width:80%">
+                  <span
+                    class="score"
+                    v-for="(subItem, i) in item.factor"
+                    :key="i"
+                    >{{ subItem.name }}：{{ subItem.score }}</span
+                  >
+                </div>
+                <div style="width:20%">
+                  <el-button
+                    type="primary"
+                    size="mini"
+                    plain
+                    @click.prevent.stop="jumpAnsDet(item)"
+                    class="lookAns"
+                    v-show="lookAnsBtn"
+                    >查看答题详情</el-button
+                  >
+                </div>
               </div>
               <!-- 检测评语 -->
               <div class="titleFlex">
                 <span class="orangeYuan"></span>
                 <span class="dataStat">检测评语</span>
               </div>
-              <p v-html="item.comment" style="padding: 5px 0  0 30px;font-size:14px;"></p>
+              <p
+                v-html="item.comment"
+                style="padding: 5px 0  0 30px;font-size:14px;"
+              ></p>
               <!-- 检测建议 -->
               <div class="adviceCard">
                 <div class="titleFlex" style="margin:10px 0;">
                   <span class="orangeYuan"></span>
                   <span class="dataStat">检测建议</span>
                 </div>
-                <p v-html="item.suggestion" style="padding: 5px 0  0 30px;font-size:14px;"></p>
+                <p
+                  v-html="item.suggestion"
+                  style="padding: 5px 0  0 30px;font-size:14px;"
+                ></p>
                 <p></p>
               </div>
             </div>
-            <div class="liRight">
-              <el-button
-                type="primary"
-                size="mini"
-                plain
-                @click.prevent.stop="jumpAnsDet(item)"
-                class="lookAns"
-                v-show="lookAnsBtn"
-              >查看答题详情</el-button>
-            </div>
+            <!-- <div class="liRight">
+             
+            </div> -->
           </li>
         </ul>
         <!-- 单个检测报告图表等 -->
@@ -190,8 +212,8 @@ export default {
     this.chartSettings = {
       labelMap: {
         type: "因子类型",
-        def: "得分"
-      }
+        def: "得分",
+      },
     };
     this.extend = {
       series: {
@@ -199,9 +221,9 @@ export default {
           show: true,
           position: "top",
           color: "#1378B5",
-          fontSize: "22"
+          fontSize: "22",
         },
-        barWidth: 30 //柱图宽度
+        barWidth: 30, //柱图宽度
       },
       color: ["#1378B5"],
       tooltip: {
@@ -209,9 +231,9 @@ export default {
         showDelay: 0, // 显示延迟，添加显示延迟可以避免频繁切换，单位ms
         axisPointer: {
           // 坐标轴指示器，坐标轴触发有效
-          type: "shadow" // 默认为直线，可选为：'line' | 'shadow',
-        }
-      }
+          type: "shadow", // 默认为直线，可选为：'line' | 'shadow',
+        },
+      },
     };
     return {
       timesChangeDate,
@@ -227,9 +249,9 @@ export default {
         rows: [
           { type: 11, def: 22 },
           { type: 12, def: 23 },
-          { type: 13, def: 24 }
-        ]
-      }
+          { type: 13, def: 24 },
+        ],
+      },
     };
   },
   created() {
@@ -242,7 +264,7 @@ export default {
   methods: {
     async getDetaiList() {
       const { data: res } = await this.$http.post("checkList/getReport", {
-        orderNo: this.Number
+        orderNo: this.Number,
       });
       console.log(res);
 
@@ -259,7 +281,7 @@ export default {
 
       // 量表建议评语等数据
       var obj = {};
-      this.reportList.forEach(item => {
+      this.reportList.forEach((item) => {
         item.factor = eval(item.factor);
       });
 
@@ -279,7 +301,7 @@ export default {
     async hasConfirm() {
       const { data: res } = await this.$http.post("checkList/update", {
         id: this.infoObj.id,
-        checkState: "2"
+        checkState: "2",
       });
       this.getDetaiList();
       console.log(res);
@@ -287,18 +309,18 @@ export default {
     jumpAnsDet(info) {
       this.$router.push({
         path: "AnsDetail",
-        query: { ansUuid: info.ansUuid, Number: this.Number }
+        query: { ansUuid: info.ansUuid, Number: this.Number },
       });
     },
     // 点击打印隐藏查看答题详情按钮
     hiddenAnsDetail() {
       // this.lookAnsBtn = false;
       // this.getDetaiList();
-    }
-  }
+    },
+  },
 };
 </script>
-<style lang='less'>
+<style lang="less">
 [v-cloak] {
   display: none;
 }
@@ -370,7 +392,7 @@ h4 {
   font-style: normal;
 }
 .liLeft {
-  width: 80%;
+  width: 100%;
   box-sizing: border-box;
 }
 .liRight {
