@@ -24,7 +24,7 @@
         <el-button
           type="primary"
           @click.prevent.stop="handleLogin"
-          style="width:100%"
+          style="width:50%"
           class="loginBtn"
           >登 录</el-button
         >
@@ -129,5 +129,9 @@ export default {
   margin: 0 auto;
   border: none;
   background-image: linear-gradient(60deg, #000046,#1CB5E0,#004e92) !important;
+}
+.loginBtn:hover {
+  transition: 1s linear;
+  width: 100%!important;
 }
 </style>
