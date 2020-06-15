@@ -28,8 +28,7 @@
           </el-card>
           <el-card class="deptPatientCard">
             <div>
-              <el-button type="primary" @click="importPrient">导入人员</el-button>
-              <el-button type="primary" @click="importPrient">待录入人员</el-button>
+              <el-button type="primary" @click="importPrient" v-if="fileData.teamDept.length==3">导入人员</el-button>
             </div>
             <el-table
               :data="patientList"
@@ -128,17 +127,20 @@
         <div class="fileUpload">
           <a href="https://zykj-resource.oss-cn-hangzhou.aliyuncs.com/Patienttemplate/PhmTemplate.xls"><el-button size="small" type="success">下载模板</el-button></el-button></a>
           <el-upload
-          style="margin-top: 20px;"
-          class="upload-demo"
-          ref="upload"
-          action="http://192.168.0.130:8086/zhuoya-sheet/teamList/dept/import"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :multiple="false"
-          :limit="1"
-          :data="fileData"
-          :file-list="fileList"
-          :before-upload="fileUploadBefore">
+            style="margin-top: 20px;"
+            class="upload-demo"
+            ref="upload"
+            action="http://192.168.0.117:8086/zhuoya-sheet/teamList/dept/import"
+            :headers="config"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :on-success="upload_success"
+            :on-error="upload_error"
+            :multiple="false"
+            :limit="1"
+            :data="fileData"
+            :file-list="fileList"
+            :before-upload="fileUploadBefore">
           <div>
             上传文件
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -146,13 +148,13 @@
           </div>
           </el-upload>
         </div>
-        
-          
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogPrient=false">取 消</el-button>
           <el-button type="primary" @click="submitUpload">确 定</el-button>
         </span>
       </el-dialog>
+
+      <el-dialog></el-dialog>
     </div>
 </template>
 <script>
@@ -160,6 +162,7 @@
 export default {
   data () {
     return {
+      config:{},
       fileData:{},
       fileList: [],
       dialogPrient:false,
@@ -174,6 +177,7 @@ export default {
     };
   },
   created() {
+    this.config.Authorization = window.sessionStorage.getItem('token');
     this.deptCode = this.$route.query.teamTypeCode;
     this.deptCheckInfo = JSON.parse(this.$route.query.packageInfo);
     this.fileData.teamDept = this.deptCode;
@@ -204,6 +208,30 @@ export default {
     },
     handlePreview(file) {
       console.log(file);
+    },
+    upload_success(response){
+      console.log(response);
+      if(response.code == 200){
+        this.$message.success('文件上次成功');
+        return;
+      }
+      if(response.code == 300){
+        var error = response.data.error;
+        var errorData = '';
+        if(error != null && error.length>0){
+          error.forEach(element => {
+            errorData+=element+'<br>';
+        });
+        }
+      
+        this.$alert(errorData, '错误信息', {
+          dangerouslyUseHTMLString: true
+        });
+      }
+      
+    },
+    upload_error(err){
+      console.log(err);
     },
     //导入人员信息
     importPrient(){

@@ -406,7 +406,7 @@ export default {
     // 左侧修改
     iconEdit(val) {
       this.addTeamDialogType = 2;
-      this.addTeamTile = "团体部门";
+      this.addTeamTile = "修改团队";
       this.teamTypeTitle = "团体名称";
       this.teamTypeAccount = "团体账号";
       this.teamTypePassword = "团体密码";
@@ -440,7 +440,7 @@ export default {
     },
     // 左侧新增
     iconAdd(val) {
-      this.addTeamTile = "团体部门";
+      this.addTeamTile = "新增团队";
       this.teamTypeTitle = "团体名称";
       this.teamTypeAccount = "团体账号";
       this.addressShow = true;
@@ -587,7 +587,7 @@ export default {
         this.teamFram = {};
         this.dialogVisible = true;
         this.addTeamDialogType = 1;
-        this.addTeamTile = "团体部门";
+        this.addTeamTile = "新增团队";
         this.teamTypeTitle = "团体名称";
         this.teamTypeAccount = "团体账号";
         this.teamTypePassword = "团体密码";
