@@ -28,9 +28,12 @@
           </el-card>
           <el-card class="deptPatientCard">
             <div>
-              <el-button type="primary" @click="importPrient" v-if="fileData.teamDept.length==3">导入人员</el-button>
+              <el-button type="primary" @click="importPrient" v-if="fileData.teamDept.length==3">导入员工</el-button>
+              <el-button type="primary" @click="exportPrient">导出员工</el-button>
             </div>
             <el-table
+              id="exportTab"
+              ref="exportTab"
               :data="patientList"
               style="margin-top:1%;"
               :header-cell-style="{ background:'#5BAEFF',height:'50px',color:'#fff'}">
@@ -43,6 +46,10 @@
                   align="center"
                   prop="name"
                   label="姓名"/>
+                  <el-table-column
+                  align="center"
+                  prop="idCard"
+                  label="身份证"/>
                 <el-table-column
                   align="center"
                   prop="sex"
@@ -158,6 +165,8 @@
     </div>
 </template>
 <script>
+  //导出Excel
+  import export_table_to_excel from '../../vendor/Export2Excel.js'
   import { timesChangeDate } from "../../assets/js/util";
 export default {
   data () {
@@ -237,6 +246,40 @@ export default {
     importPrient(){
       this.dialogPrient = true;
     },
+    //导出员工信息
+    exportPrient(){
+      require.ensure([], () => {
+  　　　　　　const { export_json_to_excel } = require('../../vendor/Export2Excel.js');
+  　　　　　　const tHeader = ['检测卡号','身份证','性别','手机','生日','婚姻','文化','职业','组织','检测时间','结果'];
+  　　　　　　const filterVal = ['orderNo', 'idCard', 'sex', 'phone', 'birth', 'marriage', 'edu','job','teamDept','checkTime','state'];
+  　　　　　　const list = this.patientList;
+  　　　　　　const data = this.formatJson(filterVal, list);
+            // console.log(data);
+  　　　　　　export_json_to_excel(tHeader, data, '员工信息');
+  　　　　})
+    },
+    formatJson(filterVal, jsonData) {
+      // 　var datas  = jsonData.map(v => filterVal.map(j =>  v[j]));
+　　　　var data = [];//= jsonData.map(v => filterVal.map(j => v[j]));
+      jsonData.forEach(element => {
+        var prient=[];
+        filterVal.forEach(e => {
+          if(e=='state'){
+            if(element[e] == 3){
+              prient.push('已检测');
+            }else {
+              prient.push('未检测');
+            }
+          }else if(e=='checkTime'){
+            prient.push(this.timesChangeDate(element[e]));
+          }else {
+            prient.push(element[e]);
+          }
+        });
+        data.push(prient);
+      });
+        return data;
+　　},
     async getTeamInfo(){//获取团队详情
           const {data:res} = await this.$http.post("teamList/dept/info",{
               code:this.deptCode
