@@ -208,6 +208,8 @@ const routes = [{
         component: () => import('@/components/consultation/consulationExamine.vue'),
         meta: {
           title: '患者信息',
+          guidePath: true,
+          jumpPath: '/home/consultation',
         }
       },
       {

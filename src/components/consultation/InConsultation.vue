@@ -158,11 +158,13 @@ export default {
     },
     // 查看跳转
     showEditdialog(info) {   
+      console.log(info);
+      
       window.sessionStorage.setItem("ConMess", JSON.stringify(info));
-      this.$router.push({
-        path: "/home/consultationExamine",
-        query: { id: info.patientUuid, phone: info.phone }
-      });
+      // this.$router.push({
+      //   path: "/home/consultationExamine",
+      //   query: { id: info.patientUuid, phone: info.phone }
+      // });
     },
     // 开始会诊按钮
     async startConsultation(info) {
