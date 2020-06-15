@@ -13,7 +13,7 @@
           <el-input
             size="small"
             class="searchInput"
-            placeholder="请输入手机号/体检卡号/姓名"
+            placeholder="请输入手机号/检测卡号/姓名"
             prefix-icon="el-icon-search"
             v-model="input"
             @input="searchin"

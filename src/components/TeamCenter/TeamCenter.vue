@@ -701,7 +701,7 @@ export default {
 }
 .connectTeam .searchBox {
   height: 50px;
-  border-bottom: #cec7c7 solid 1px;
+  border-bottom: #ccc solid 1px;
 }
 .connectTeam .searchInput {
   width: 45%;
