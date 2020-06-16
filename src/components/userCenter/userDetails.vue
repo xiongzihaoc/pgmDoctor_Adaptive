@@ -229,6 +229,7 @@ export default {
       const { data: res } = await this.$http.post("doc/getDoctor", {});
       if (res.code !== 200) return this.$message.error("获取医生列表失败");
       this.docList = res.rows;
+      console.log(res);
     },
     JumpAddNewPro(info) {
       console.log(info);

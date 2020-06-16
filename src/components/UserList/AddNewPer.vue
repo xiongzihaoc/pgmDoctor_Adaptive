@@ -563,7 +563,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .AddConnect {
   height: 100%;
 }

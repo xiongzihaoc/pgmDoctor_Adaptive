@@ -77,6 +77,8 @@ export default {
         type: this.type,
         patient_uuid: this.uuid
       });
+      console.log(res);
+      
       if (res.code != 200) return this.$message.error("获取会诊意见失败");
       this.userList = res.data;
     },
