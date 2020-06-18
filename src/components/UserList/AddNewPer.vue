@@ -591,6 +591,7 @@ export default {
   border-radius: 5px;
 }
 .taoCanList li {
+  font-weight: 700;
   border: 1px solid #dcdfe6;
   border-radius: 5px;
   border-top: 0px;
