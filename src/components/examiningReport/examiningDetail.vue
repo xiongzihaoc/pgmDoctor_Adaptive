@@ -160,7 +160,6 @@
                   v-html="item.suggestion"
                   style="padding: 5px 0  0 30px;font-size:14px;"
                 ></p>
-                <p></p>
               </div>
             </div>
             <!-- <div class="liRight">
