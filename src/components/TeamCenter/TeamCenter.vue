@@ -731,4 +731,7 @@ export default {
 .teamDetail li .title {
   flex: 1;
 }
+.connectTeam .el-table .cell {
+  white-space: nowrap;
+}
 </style>
