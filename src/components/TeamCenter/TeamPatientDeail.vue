@@ -117,7 +117,7 @@
                 @click.prevent.stop="checkPatientReport(scope.row)"
                 >报告</el-button
               >
-              <el-button v-else type="info" size="mini" disabled
+              <el-button v-else type="info" plain size="mini" disabled
                 >未检测</el-button
               >
             </template>

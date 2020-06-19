@@ -92,11 +92,11 @@
           <li>
             <span>
               检测时间:
-              <i>{{ timesChangeDate(infoObj.createTime) }}</i>
+              <i>{{ timesChangeDate(infoObj.checkTime) }}</i>
             </span>
             <span>
               报告时间:
-              <i>{{ timesChangeDate(infoObj.createTime) }}</i>
+              <i>{{ timesChangeDate(infoObj.checkTime) }}</i>
             </span>
           </li>
           <li>
