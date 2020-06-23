@@ -94,7 +94,8 @@
                   prop="checkTime"
                   label="检测时间">
                     <template slot-scope="scope">
-                      <div>{{timesChangeDate(scope.row.checkTime)}}</div>
+                      <div v-if="scope.row.checkTime == null"></div>
+                      <div v-else>{{timesChangeDate(scope.row.checkTime)}}</div>
                     </template>
                   </el-table-column>
                 <el-table-column
@@ -196,7 +197,8 @@ export default {
   methods:{
     submitUpload() {
       this.dialogPrient = false;
-      this.$refs.upload.submit();
+      this.getTeamInfo();
+      // this.$refs.upload.submit();
     },
     fileUploadBefore(file){
       const extension = file.name.split('.')[1] === 'xls'
@@ -221,10 +223,10 @@ export default {
     upload_success(response){
       console.log(response);
       if(response.code == 200){
-        this.$message.success('文件上次成功');
+        this.$message.success('文件上传成功');
         return;
-      }
-      if(response.code == 300){
+      }else if(response.code == 300){
+        this.fileList = [];
         var error = response.data.error;
         var errorData = '';
         if(error != null && error.length>0){
@@ -232,10 +234,12 @@ export default {
             errorData+=element+'<br>';
         });
         }
-      
         this.$alert(errorData, '错误信息', {
           dangerouslyUseHTMLString: true
         });
+      }else {
+        this.fileList = [];
+        this.$message.success('文件上传失败');
       }
       
     },
