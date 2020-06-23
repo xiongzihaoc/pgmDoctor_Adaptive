@@ -87,6 +87,7 @@
                 v-model="editAddForm.docName"
                 placeholder="请选择医生"
                 style="width:202px"
+                value-key="id"
                 :disabled="IsDocDisabled"
                 @change="getT"
               >
@@ -513,6 +514,8 @@ export default {
       this.$router.push("/home/index");
     },
     getT(val) {
+      console.log(val);
+      
       this.editAddForm.docName = val.name;
       this.editAddForm.uuid = val.uuid;
     },
@@ -563,7 +566,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .AddConnect {
   height: 100%;
 }
@@ -588,6 +591,7 @@ export default {
   border-radius: 5px;
 }
 .taoCanList li {
+  font-weight: 700;
   border: 1px solid #dcdfe6;
   border-radius: 5px;
   border-top: 0px;

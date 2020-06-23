@@ -103,7 +103,7 @@
             v-if="packagesList.length > 0"
           >
             <li
-              style="margin-left: 10px;"
+              style="margin-left: 10px;font-weight:700;"
               v-for="(item, index) in packagesList"
               :key="index"
             >

@@ -7,9 +7,9 @@
     </el-breadcrumb>
     <div class="CardBox">
       <el-card class="cardLeft">
-        <div class="searchBox">
-          <!-- <el-button type="primary" plain size="small" @click.prevent.stop="perPro">个人进度</el-button> -->
-          <!-- <el-button type="primary" size="small">团队进度</el-button> -->
+        <!-- <div class="searchBox">
+          <el-button type="primary" plain size="small" @click.prevent.stop="perPro">个人进度</el-button>
+          <el-button type="primary" size="small">团队进度</el-button>
           <el-input
             size="small"
             class="searchInput"
@@ -25,7 +25,7 @@
             @click.prevent.stop="newAddPerson"
             style="margin-left:2%;display: none;"
           >新增团队</el-button>
-        </div>
+        </div> -->
         <!-- 调用公用表格组件 -->
         <ElTable :data="teamTypeList" :header="tableHeaderBig" style="margin-top:1%;">
           <el-table-column
@@ -34,8 +34,13 @@
             fixed="right"
             label="状态"
             prop="state"
-            :formatter="ifendcaseJck"
-          ></el-table-column>
+          >
+         <template slot-scope="scope">
+          <span v-if="scope.row.state == 0" style="color:#F56C6C">未开始</span>
+          <span v-else-if="scope.row.state == 1" style="color:#E6A23C">已开始</span>
+          <span v-else style="color:#67C23A">已结束</span>
+         </template>
+          </el-table-column>
           <el-table-column align="center" slot="fixed" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -131,16 +136,6 @@ export default {
       this.pageNum = newPage;
       this.getCardList();
     },
-    // 检测卡类型状态码数字转中文
-    ifendcaseJck(val) {
-      if (val.state == "0") {
-        return "未开始";
-      } else if (val.state == "1") {
-        return "已开始";
-      } else {
-        return "已结束";
-      }
-    }
   }
 };
 </script>

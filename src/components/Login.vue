@@ -19,8 +19,6 @@
             @keyup.13.native="handleLogin"
           ></el-input>
         </el-form-item>
-
-        <!-- <el-button type="danger" @click.prevent.stop="reset">重 置</el-button> -->
         <el-button
           type="primary"
           @click.prevent.stop="handleLogin"
