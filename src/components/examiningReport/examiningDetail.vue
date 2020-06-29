@@ -151,15 +151,15 @@
                 style="padding: 5px 0  0 30px;font-size:14px;"
               ></p>
               <!-- 检测建议 -->
-              <div class="adviceCard">
+              <div class="adviceCard" v-if="item.isZh != 'Y'">
                 <div class="titleFlex" style="margin:10px 0;">
                   <span class="orangeYuan"></span>
                   <span class="dataStat">检测建议</span>
                 </div>
-                <p
+                <div
                   v-html="item.suggestion"
                   style="padding: 5px 0  0 30px;font-size:14px;"
-                ></p>
+                ></div>
               </div>
             </div>
             <!-- <div class="liRight">
@@ -179,20 +179,13 @@
                 :legend-visible="false"
               ></ve-histogram>
         </div>-->
-        <!-- <p class="TitleContent" v-html="item.comment"></p>
-        <div v-if="item.isZh !== 'Y'" class="adviceCard">
-          <p class="title">
-            <span style="border-bottom:2px solid #000;">检测建议</span>
-          </p>
-          <p class="TitleContent" v-html="item.suggestion"></p>
-        </div>-->
-
         <!-- 总建议 -->
         <div v-if="this.infoObj.isZh == 'Y'" class="adviceCard">
-          <!-- <p class="title">
-            <span style="border-bottom:2px solid #000;">检测建议</span>
-          </p>
-          <p class="title" v-html="this.advice"></p>-->
+          <div class="titleFlex" style="margin:10px 0;">
+            <span class="orangeYuan"></span>
+            <span class="dataStat">检测建议</span>
+          </div>
+          <p class="title" v-html="this.advice"></p>
         </div>
       </div>
     </el-card>
@@ -257,33 +250,28 @@ export default {
     this.Number = this.$route.query.orderNo;
     this.getDetaiList();
   },
-  mounted() {
-    this.getDetaiList();
-  },
   methods: {
     async getDetaiList() {
       const { data: res } = await this.$http.post("checkList/getReport", {
         orderNo: this.Number,
       });
       console.log(res);
-
       if (res.code !== 200) {
         return this.$message("获取数据失败");
       } else {
       }
-
       // 个人资料数据
       this.advice = res.data.advice;
       this.infoObj = res.data.info;
       this.reportList = res.data.report;
-      console.log(this.infoObj);
+      console.log(this.reportList);
 
       // 量表建议评语等数据
       var obj = {};
       this.reportList.forEach((item) => {
         item.factor = eval(item.factor);
       });
-
+      console.log(this.reportList);
       // 图表数据
       // console.log(this.reportList);
       // 循环添加量表名称
