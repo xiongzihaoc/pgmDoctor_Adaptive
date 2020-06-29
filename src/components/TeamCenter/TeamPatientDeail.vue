@@ -97,70 +97,66 @@
                   align="center"
                   prop="teamNo"
                   label="检测套餐"/> -->
-          <el-table-column align="center" prop="checkTime" label="检测时间">
-            <template slot-scope="scope">
-              <div>{{ timesChangeDate(scope.row.checkTime) }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" prop="state" label="结果">
-            <template slot-scope="scope">
-              <div v-if="scope.row.state == 3" style="color:#67C23A">已检测</div>
-              <div v-else style="color:#F56C6C;">未检测</div>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" fixed="right" label="操作">
-            <template slot-scope="scope">
-              <el-button
-                v-if="scope.row.state == 3"
-                type="primary"
-                size="mini"
-                @click.prevent.stop="checkPatientReport(scope.row)"
-                >报告</el-button
-              >
-              <el-button v-else type="info" plain size="mini" disabled
-                >未检测</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChangev"
-          :current-page="pageNum"
-          :page-sizes="[10, 20, 50]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        ></el-pagination>
-      </el-card>
-    </div>
-    <el-dialog
-      title="导入人员信息"
-      :visible.sync="dialogPrient"
-      v-dialogDrag
-      center
-    >
-      <div class="fileUpload">
-        <a
-          href="https://zykj-resource.oss-cn-hangzhou.aliyuncs.com/Patienttemplate/PhmTemplate.xls"
-          ><el-button size="small" type="success">下载模板</el-button></a
-        >
-        <el-upload
-          style="margin-top: 20px;"
-          class="upload-demo"
-          ref="upload"
-          action="http://192.168.0.117:8086/zhuoya-sheet/teamList/dept/import"
-          :headers="config"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :on-success="upload_success"
-          :on-error="upload_error"
-          :multiple="false"
-          :limit="1"
-          :data="fileData"
-          :file-list="fileList"
-          :before-upload="fileUploadBefore"
-        >
+                <el-table-column
+                  align="center"
+                  prop="checkTime"
+                  label="检测时间">
+                    <template slot-scope="scope">
+                      <div v-if="scope.row.checkTime == null"></div>
+                      <div v-else>{{timesChangeDate(scope.row.checkTime)}}</div>
+                    </template>
+                  </el-table-column>
+                <el-table-column
+                  align="center"
+                  prop="state"
+                  label="结果">
+                    <template slot-scope="scope">
+                      <div v-if="scope.row.state==3">已检测</div>
+                      <div v-else>未检测</div>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" fixed="right" label="操作">
+                  <template slot-scope="scope">
+                    <el-button v-if="scope.row.state==3"
+                      type="primary"
+                      size="mini"
+                      @click.prevent.stop="checkPatientReport(scope.row)">报告</el-button>
+                    <el-button v-else type="info"  size="mini" disabled>未检测</el-button>
+                  </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChangev"
+              :current-page="pageNum"
+              :page-sizes="[10, 20,50]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"></el-pagination>
+          </el-card>
+        </div>
+        <el-dialog 
+        title="导入人员信息"
+        :visible.sync="dialogPrient"
+        v-dialogDrag
+        center>
+        <div class="fileUpload">
+          <a href="https://zykj-resource.oss-cn-hangzhou.aliyuncs.com/Patienttemplate/PhmTemplate.xls"><el-button size="small" type="success">下载模板</el-button></el-button></a>
+          <el-upload
+            style="margin-top: 20px;"
+            class="upload-demo"
+            ref="upload"
+            action="http://192.168.0.117:8086/zhuoya-sheet/teamList/dept/import"
+            :headers="config"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :on-success="upload_success"
+            :on-error="upload_error"
+            :multiple="false"
+            :limit="1"
+            :data="fileData"
+            :file-list="fileList"
+            :before-upload="fileUploadBefore">
           <div>
             上传文件
             <el-button slot="trigger" size="small" type="primary"
@@ -211,7 +207,8 @@ export default {
   methods: {
     submitUpload() {
       this.dialogPrient = false;
-      this.$refs.upload.submit();
+      this.getTeamInfo();
+      // this.$refs.upload.submit();
     },
     fileUploadBefore(file) {
       const extension = file.name.split(".")[1] === "xls";
@@ -235,11 +232,11 @@ export default {
     },
     upload_success(response) {
       console.log(response);
-      if (response.code == 200) {
-        this.$message.success("文件上次成功");
+      if(response.code == 200){
+        this.$message.success('文件上传成功');
         return;
-      }
-      if (response.code == 300) {
+      }else if(response.code == 300){
+        this.fileList = [];
         var error = response.data.error;
         var errorData = "";
         if (error != null && error.length > 0) {
@@ -247,10 +244,12 @@ export default {
             errorData += element + "<br>";
           });
         }
-
-        this.$alert(errorData, "错误信息", {
-          dangerouslyUseHTMLString: true,
+        this.$alert(errorData, '错误信息', {
+          dangerouslyUseHTMLString: true
         });
+      }else {
+        this.fileList = [];
+        this.$message.success('文件上传失败');
       }
     },
     upload_error(err) {
