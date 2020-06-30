@@ -143,8 +143,8 @@
               </div>
               <!-- 检测评语 -->
               <div class="titleFlex">
-                <span class="orangeYuan"></span>
-                <span class="dataStat">检测评语</span>
+                <span class="orangeFan"></span>
+                <span class="dataStat" style="color:#ff9a00">检测评语</span>
               </div>
               <p
                 v-html="item.comment"
@@ -153,8 +153,8 @@
               <!-- 检测建议 -->
               <div class="adviceCard" v-if="item.isZh != 'Y'">
                 <div class="titleFlex" style="margin:10px 0;">
-                  <span class="orangeYuan"></span>
-                  <span class="dataStat">检测建议</span>
+                  <span class="orangeFan"></span>
+                  <span class="dataStat" style="color:#ff9a00">检测建议</span>
                 </div>
                 <div
                   v-html="item.suggestion"
@@ -162,9 +162,6 @@
                 ></div>
               </div>
             </div>
-            <!-- <div class="liRight">
-             
-            </div> -->
           </li>
         </ul>
         <!-- 单个检测报告图表等 -->
@@ -182,19 +179,13 @@
         <!-- 总建议 -->
         <div v-if="this.infoObj.isZh == 'Y'" class="adviceCard">
           <div class="titleFlex" style="margin:10px 0;">
-            <span class="orangeYuan"></span>
-            <span class="dataStat">检测建议</span>
+            <span class="orangeFan"></span>
+            <span class="dataStat" style="color:#ff9a00">检测建议</span>
           </div>
           <p class="title" v-html="this.advice"></p>
         </div>
       </div>
     </el-card>
-    <!-- <el-card
-      class="card_bottom"
-      style="height:52%;overflow: auto;-webkit-overflow-scrolling: touch;"
-    >
-     
-    </el-card>-->
   </div>
 </template>
 <script>
@@ -392,7 +383,13 @@ h4 {
 }
 .lookAns {
   display: inline-block;
-  margin: 30px 0 0 50%;
+  margin: 0 0 0 50%;
   transform: translate(-50%);
+}
+.orangeFan {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #ff9a00;
 }
 </style>
