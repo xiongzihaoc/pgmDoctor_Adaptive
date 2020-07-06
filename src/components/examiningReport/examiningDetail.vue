@@ -34,7 +34,7 @@
       <div id="printDiv">
         <div class="titleFlex">
           <span class="orangeYuan"></span>
-          <span class="dataStat">个人资料</span>
+          <span class="dataStat" style="font-size:18px">个人资料</span>
         </div>
         <ul
           class="content personalInfo"
@@ -108,17 +108,18 @@
         </ul>
         <div class="titleFlex" style="margin-top:1%;">
           <span class="orangeYuan"></span>
-          <span class="dataStat">检测结果</span>
+          <span class="dataStat" style="font-size:18px;">检测结果</span>
         </div>
         <ul>
+          <!-- 整合量表 -->
           <li
-            style="display:flex;padding:5px 0;border-bottom:1px solid #f3f3f3;"
-            v-for="item in reportList"
+            style="display:flex;padding:5px 0;border-bottom:1px solid #ccc;"
+            v-for="item in isZhYesList"
             :key="item.id"
           >
             <div class="liLeft">
               <div class="wenjuanTitle" style="padding-left:30px;">
-                <span>{{ item.sheetName }}</span>
+                <span style="font-size:16px;">{{ item.sheetName }}</span>
               </div>
               <div style="padding: 0 0 7px 25px;display:flex">
                 <div style="width:80%">
@@ -143,18 +144,89 @@
               </div>
               <!-- 检测评语 -->
               <div class="titleFlex">
-                <span class="orangeFan"></span>
-                <span class="dataStat" style="color:#ff9a00">检测评语</span>
+                <!-- <span class="orangeYuan" style="visibility: hidden;"></span> -->
+                <span class="dataStat" style="padding-left:30px;"
+                  >检测评语</span
+                >
               </div>
               <p
                 v-html="item.comment"
-                style="padding: 5px 0  0 30px;font-size:14px;"
+                style="padding: 5px 0  0 50px;font-size:14px;"
               ></p>
               <!-- 检测建议 -->
               <div class="adviceCard" v-if="item.isZh != 'Y'">
                 <div class="titleFlex" style="margin:10px 0;">
-                  <span class="orangeFan"></span>
-                  <span class="dataStat" style="color:#ff9a00">检测建议</span>
+                  <!-- <span class="orangeYuan"></span> -->
+                  <span class="dataStat" style="padding-left:30px"
+                    >检测建议</span
+                  >
+                </div>
+                <div
+                  v-html="item.suggestion"
+                  style="padding: 5px 0  0 30px;font-size:14px;"
+                ></div>
+              </div>
+            </div>
+          </li>
+          <li style="display:flex;padding:5px 0;border-bottom:1px solid #ccc;">
+            <!-- 整合建议 -->
+            <div v-if="this.infoObj.isZh == 'Y'" class="adviceCard">
+              <div class="titleFlex" style="margin:10px 0;">
+                <span class="orangeYuan"></span>
+                <span class="dataStat" style="font-size:18px;">检测建议</span>
+              </div>
+              <p v-html="this.advice"></p>
+            </div>
+          </li>
+          <!-- 未整合量表 -->
+          <li
+            style="display:flex;padding:5px 0;border-bottom:1px solid #ccc;"
+            v-for="item in isZhNoList"
+            :key="item.id"
+          >
+            <div class="liLeft">
+              <div class="wenjuanTitle" style="padding-left:30px;">
+                <span style="font-size:16px;">{{ item.sheetName }}</span>
+              </div>
+              <div style="padding: 0 0 7px 25px;display:flex">
+                <div style="width:80%">
+                  <span
+                    class="score"
+                    v-for="(subItem, i) in item.factor"
+                    :key="i"
+                    >{{ subItem.name }}：{{ subItem.score }}</span
+                  >
+                </div>
+                <div style="width:20%">
+                  <el-button
+                    type="primary"
+                    size="mini"
+                    plain
+                    @click.prevent.stop="jumpAnsDet(item)"
+                    class="lookAns"
+                    v-show="lookAnsBtn"
+                    >查看答题详情</el-button
+                  >
+                </div>
+              </div>
+              <!-- 检测评语 -->
+              <div class="titleFlex">
+                <!-- <span class="orangeYuan" style="visibility: hidden;"></span> -->
+                <span class="dataStat" style="padding-left:30px;"
+                  >检测评语</span
+                >
+              </div>
+              <p
+                v-html="item.comment"
+                style="padding: 5px 0  0 50px;font-size:14px;"
+              ></p>
+              <!-- 检测建议 -->
+              <div class="adviceCard" v-if="item.isZh != 'Y'">
+                <div class="titleFlex" style="margin:10px 0;">
+                  <!-- <span class="orangeYuan"></span> -->
+                  <span class="dataStat" style="padding-left:30px"
+                    >检测建议</span
+                  >
                 </div>
                 <div
                   v-html="item.suggestion"
@@ -176,14 +248,6 @@
                 :legend-visible="false"
               ></ve-histogram>
         </div>-->
-        <!-- 总建议 -->
-        <div v-if="this.infoObj.isZh == 'Y'" class="adviceCard">
-          <div class="titleFlex" style="margin:10px 0;">
-            <span class="orangeFan"></span>
-            <span class="dataStat" style="color:#ff9a00">检测建议</span>
-          </div>
-          <p class="title" v-html="this.advice"></p>
-        </div>
       </div>
     </el-card>
   </div>
@@ -224,6 +288,8 @@ export default {
       advice: "",
       infoObj: {},
       reportList: [],
+      isZhNoList: [],
+      isZhYesList: [],
       str: "",
       Arr: [],
       lookAnsBtn: true,
@@ -261,8 +327,19 @@ export default {
       var obj = {};
       this.reportList.forEach((item) => {
         item.factor = eval(item.factor);
+        if (item.isZh == "N") {
+          this.isZhNoList.push(item);
+        } else {
+          this.isZhYesList.push(item);
+        }
       });
-      console.log(this.reportList);
+      console.log(this.isZhNoList);
+      console.log(this.isZhYesList);
+
+      // 未整合量表 isZh == N
+
+      // 整合量表 isZh == Y
+
       // 图表数据
       // console.log(this.reportList);
       // 循环添加量表名称
@@ -385,11 +462,5 @@ h4 {
   display: inline-block;
   margin: 0 0 0 50%;
   transform: translate(-50%);
-}
-.orangeFan {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  background-color: #ff9a00;
 }
 </style>
