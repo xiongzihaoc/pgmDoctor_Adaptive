@@ -113,12 +113,16 @@
         <ul>
           <!-- 整合量表 -->
           <li
-            style="display:flex;padding:5px 0;border-bottom:1px solid #ccc;"
+            style="display:flex;padding:20px 0;border-bottom:1px solid #f3f3f3;"
             v-for="item in isZhYesList"
             :key="item.id"
           >
             <div class="liLeft">
               <div class="wenjuanTitle" style="padding-left:30px;">
+                <i
+                  class="iconfont icon-baogao-copy"
+                  style="display:inline-block;color:#ff9a00;margin-right:5px"
+                ></i>
                 <span style="font-size:16px;">{{ item.sheetName }}</span>
               </div>
               <div style="padding: 0 0 7px 25px;display:flex">
@@ -168,7 +172,9 @@
               </div>
             </div>
           </li>
-          <li style="display:flex;padding:5px 0;border-bottom:1px solid #ccc;">
+          <li
+            style="display:flex;padding:5px 0;border-bottom:1px solid #f3f3f3;"
+          >
             <!-- 整合建议 -->
             <div v-if="this.infoObj.isZh == 'Y'" class="adviceCard">
               <div class="titleFlex" style="margin:10px 0;">
@@ -180,12 +186,16 @@
           </li>
           <!-- 未整合量表 -->
           <li
-            style="display:flex;padding:5px 0;border-bottom:1px solid #ccc;"
+            style="display:flex;padding:20px 0;border-bottom:1px solid #f3f3f3;"
             v-for="item in isZhNoList"
             :key="item.id"
           >
             <div class="liLeft">
               <div class="wenjuanTitle" style="padding-left:30px;">
+                <i
+                  class="iconfont icon-baogao-copy"
+                  style="display:inline-block;color:#ff9a00;margin-right:5px"
+                ></i>
                 <span style="font-size:16px;">{{ item.sheetName }}</span>
               </div>
               <div style="padding: 0 0 7px 25px;display:flex">
