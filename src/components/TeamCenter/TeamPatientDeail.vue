@@ -24,9 +24,9 @@
               >创建时间：{{ timesChangeDate(deptCheckInfo.createTime) }}</span
             >
             <span class="title">检测套餐：{{ deptCheckInfo.packageName }}</span>
-            <span class="title">录入人数：{{ deptCheckInfo.checkNumber }}</span>
+            <span class="title">录入人数：{{ deptCheckInfo.recordNumber }}</span>
             <span class="title"
-              >已检测人数：{{ deptCheckInfo.recordNumber }}</span
+              >已检测人数：{{ deptCheckInfo.checkNumber }}</span
             >
           </li>
         </div>
@@ -146,7 +146,7 @@
             style="margin-top: 20px;"
             class="upload-demo"
             ref="upload"
-            action="http://192.168.0.117:8086/zhuoya-sheet/teamList/dept/import"
+            action="http://www.phmzykj.com/zhuoya-sheet/teamList/dept/import"
             :headers="config"
             :on-preview="handlePreview"
             :on-remove="handleRemove"

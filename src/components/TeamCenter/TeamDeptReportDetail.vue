@@ -243,8 +243,8 @@ export default {
                     checkPeopleProDataInfo.man='0%';
                     heckPeopleProDataInfo.women='0%';
                 }else {
-                    checkPeopleProDataInfo.man = (manData.count/manData.sum*100)+"%";
-                    checkPeopleProDataInfo.women = (women.count/manData.sum*100)+"%"
+                    checkPeopleProDataInfo.man = (manData.count/manData.sum*100).toFixed(2)+"%";
+                    checkPeopleProDataInfo.women = (women.count/manData.sum*100).toFixed(2)+"%"
                 }
                 checkPeopleProDataInfo.sum = '100%';
                 checkPeopleSumData.push(checkPeopleProDataInfo);
