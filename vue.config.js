@@ -3,6 +3,20 @@ module.exports = {
   outputDir: "dist",
   // 去除.map文件
   productionSourceMap: false,
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://xxx:20101/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    },
+    // host: "localhost",
+    open: true,
+    port: 8087
+  },
   configureWebpack: () => ({
     optimization: {
       splitChunks: {
@@ -36,7 +50,7 @@ module.exports = {
           },
         }
       }
-    }
+    },
   }),
   // resolve: {
   //   //别名，在引用文件时 使用别名代理真实目录 后面再在目录时以别名代替

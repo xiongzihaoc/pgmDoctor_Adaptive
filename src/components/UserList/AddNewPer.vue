@@ -54,9 +54,8 @@
               <el-input v-model="editAddForm.phone"></el-input>
             </el-form-item>
           </li>
-          <!-- 科室  性别 -->
           <li style="width:100%;display:flex;justify-content: center;">
-            <!-- 医院 部门 -->
+            <!-- 科室 身份证 -->
             <el-form-item label="科  室" prop="dept" style="margin-right:5%">
               <el-cascader
                 :disabled="IsDeptDisabled"
@@ -68,18 +67,11 @@
                 style="width:202px"
               ></el-cascader>
             </el-form-item>
-            <el-form-item label="性  别" prop="gender">
-              <el-select
-                v-model="editAddForm.gender"
-                placeholder="请选择性别"
-                style="width:202px"
-              >
-                <el-option label="男" value="男"></el-option>
-                <el-option label="女" value="女"></el-option>
-              </el-select>
+            <el-form-item label="身  份  证" prop="idCard">
+              <el-input v-model="editAddForm.idCard"></el-input>
             </el-form-item>
           </li>
-          <!-- 医生  职业 -->
+          <!-- 医生  性别 -->
           <li style="width:100%;display:flex;justify-content: center;">
             <el-form-item label="医  生" prop="docName" style="margin-right:5%">
               <el-select
@@ -99,22 +91,18 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="职  业" prop="job">
+            <el-form-item label="性  别" prop="gender">
               <el-select
-                v-model="editAddForm.job"
-                placeholder="请选择职业"
+                v-model="editAddForm.gender"
+                placeholder="请选择性别"
                 style="width:202px"
               >
-                <el-option
-                  v-for="item in jobList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
-                ></el-option>
+                <el-option label="男" value="男"></el-option>
+                <el-option label="女" value="女"></el-option>
               </el-select>
             </el-form-item>
           </li>
-          <!-- 教育  婚姻 -->
+          <!-- 文化  职业 -->
           <li style="width:100%;display:flex;justify-content: center;">
             <el-form-item label="文  化" prop="edu" style="margin-right:5%">
               <el-select
@@ -130,19 +118,22 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="婚  姻" prop="marriage">
+            <el-form-item label="职  业" prop="job">
               <el-select
-                v-model="editAddForm.marriage"
-                placeholder="请选择"
+                v-model="editAddForm.job"
+                placeholder="请选择职业"
                 style="width:202px"
               >
-                <el-option label="未婚" value="未婚"></el-option>
-                <el-option label="已婚" value="已婚"></el-option>
-                <el-option label="离异" value="离异 "></el-option>
-                <el-option label="丧偶" value="丧偶"></el-option>
+                <el-option
+                  v-for="item in jobList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name"
+                ></el-option>
               </el-select>
             </el-form-item>
           </li>
+          <!-- 选择套餐 婚姻 -->
           <li style="width:100%;display:flex;justify-content: center;">
             <el-form-item
               label="套  餐"
@@ -155,6 +146,7 @@
                 @focus="chooseCombo"
                 suffix-icon="el-icon-caret-bottom"
                 readonly
+                style="width:202px"
               ></el-input>
               <ul class="taoCanList" style="wdith:100%" v-show="openOrcls">
                 <li
@@ -166,11 +158,7 @@
                 </li>
               </ul>
             </el-form-item>
-            <el-form-item
-              label="测  试"
-              prop="marriage"
-              style="visibility: hidden;"
-            >
+            <el-form-item label="婚  姻" prop="marriage">
               <el-select
                 v-model="editAddForm.marriage"
                 placeholder="请选择"
@@ -178,6 +166,8 @@
               >
                 <el-option label="未婚" value="未婚"></el-option>
                 <el-option label="已婚" value="已婚"></el-option>
+                <el-option label="离异" value="离异 "></el-option>
+                <el-option label="丧偶" value="丧偶"></el-option>
               </el-select>
             </el-form-item>
           </li>
@@ -251,6 +241,13 @@ export default {
       }
       return cb(new Error("请输入合法的手机号"));
     };
+    var checkidCard = (rule, value, cb) => {
+      const regMoblie = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+      if (regMoblie.test(value)) {
+        return cb();
+      }
+      return cb(new Error("请输入合法的身份证号码"));
+    };
     return {
       timesChangeDate,
       checkQCodeDialogShow: false,
@@ -268,6 +265,10 @@ export default {
           { required: true, message: "请输入手机号码", trigger: "blur" },
           { validator: checkMobile, trigger: "change" },
         ],
+        idCard: [
+          { required: true, message: "请输入身份证号码", trigger: "blur" },
+          { validator: checkidCard, trigger: "blur" },
+        ],
         gender: [{ required: true, message: "请选择性别" }],
         birthday: [{ required: true, message: "请输入出生日期" }],
         job: [{ required: true, message: "请选择职业" }],
@@ -281,6 +282,7 @@ export default {
         orderType: "虚拟卡",
         name: "",
         phone: "",
+        idCard: "",
         gender: "",
         birthday: "",
         job: "",
@@ -349,6 +351,7 @@ export default {
       this.editAddForm.name = editObj.name;
       this.editAddForm.phone = editObj.phone;
       this.editAddForm.birthday = editObj.birth;
+      this.editAddForm.idCard = editObj.idCard;
       this.editAddForm.job = editObj.job;
       this.editAddForm.edu = editObj.edu;
       this.editAddForm.marriage = editObj.marriage;
@@ -377,6 +380,7 @@ export default {
       this.editAddForm.gender = editObj.gender;
       this.editAddForm.name = editObj.name;
       this.editAddForm.phone = editObj.phone;
+      this.editAddForm.idCard = editObj.idCard;
       this.editAddForm.birthday = editObj.birthday;
       this.editAddForm.job = editObj.job;
       this.editAddForm.edu = editObj.culture;
@@ -394,6 +398,7 @@ export default {
     async getInfoList() {
       const { data: res } = await this.$http.post("/office_package/load", {});
       this.comboList = res.rows;
+      console.log(res, 3333);
     },
     // 获取初始医生列表
     async getCreatDocList() {
@@ -456,7 +461,6 @@ export default {
     enterSave() {
       // 修改接口
       console.log(this.$route.query.mess);
-
       if (this.$route.query.mess == "修改") {
         this.$refs.addInfoRef.validate(async (valid) => {
           if (!valid) return;
@@ -472,6 +476,7 @@ export default {
             sex: this.editAddForm.gender,
             birth: this.editAddForm.birthday,
             job: this.editAddForm.job,
+            idCard: this.editAddForm.idCard,
             marriage: this.editAddForm.marriage,
             orderType: this.editAddForm.orderType,
             orderDept: this.editAddForm.dept,
@@ -495,6 +500,7 @@ export default {
             docUuid: this.editAddForm.uuid,
             phone: this.editAddForm.phone,
             sex: this.editAddForm.gender,
+            idCard: this.editAddForm.idCard,
             birth: this.editAddForm.birthday,
             job: this.editAddForm.job,
             marriage: this.editAddForm.marriage,
@@ -515,7 +521,7 @@ export default {
     },
     getT(val) {
       console.log(val);
-      
+
       this.editAddForm.docName = val.name;
       this.editAddForm.uuid = val.uuid;
     },
@@ -591,13 +597,17 @@ export default {
   border-radius: 5px;
 }
 .taoCanList li {
-  font-weight: 700;
+  width: 202px;
   border: 1px solid #dcdfe6;
   border-radius: 5px;
   border-top: 0px;
   padding: 0 10px;
-  overflow: hidden;
+  box-sizing: border-box;
+  font-weight: 700;
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .el-card {
   overflow: auto;

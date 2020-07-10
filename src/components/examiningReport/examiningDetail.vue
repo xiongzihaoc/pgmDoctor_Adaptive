@@ -34,7 +34,7 @@
       <div id="printDiv">
         <div class="titleFlex">
           <span class="orangeYuan"></span>
-          <span class="dataStat">个人资料</span>
+          <span class="dataStat" style="font-size:18px">个人资料</span>
         </div>
         <ul
           class="content personalInfo"
@@ -108,17 +108,22 @@
         </ul>
         <div class="titleFlex" style="margin-top:1%;">
           <span class="orangeYuan"></span>
-          <span class="dataStat">检测结果</span>
+          <span class="dataStat" style="font-size:18px;">检测结果</span>
         </div>
         <ul>
+          <!-- 整合量表 -->
           <li
-            style="display:flex;padding:5px 0;border-bottom:1px solid #f3f3f3;"
-            v-for="item in reportList"
+            style="display:flex;padding:20px 0;border-bottom:1px solid #f3f3f3;"
+            v-for="item in isZhYesList"
             :key="item.id"
           >
             <div class="liLeft">
               <div class="wenjuanTitle" style="padding-left:30px;">
-                <span>{{ item.sheetName }}</span>
+                <i
+                  class="iconfont icon-baogao-copy"
+                  style="display:inline-block;color:#ff9a00;margin-right:5px"
+                ></i>
+                <span style="font-size:16px;">{{ item.sheetName }}</span>
               </div>
               <div style="padding: 0 0 7px 25px;display:flex">
                 <div style="width:80%">
@@ -143,28 +148,102 @@
               </div>
               <!-- 检测评语 -->
               <div class="titleFlex">
-                <span class="orangeYuan"></span>
-                <span class="dataStat">检测评语</span>
+                <!-- <span class="orangeYuan" style="visibility: hidden;"></span> -->
+                <span class="dataStat" style="padding-left:30px;"
+                  >检测评语</span
+                >
               </div>
               <p
                 v-html="item.comment"
-                style="padding: 5px 0  0 30px;font-size:14px;"
+                style="padding: 5px 0  0 50px;font-size:14px;"
               ></p>
               <!-- 检测建议 -->
-              <div class="adviceCard">
+              <div class="adviceCard" v-if="item.isZh != 'Y'">
                 <div class="titleFlex" style="margin:10px 0;">
-                  <span class="orangeYuan"></span>
-                  <span class="dataStat">检测建议</span>
+                  <!-- <span class="orangeYuan"></span> -->
+                  <span class="dataStat" style="padding-left:30px"
+                    >检测建议</span
+                  >
                 </div>
-                <p
+                <div
                   v-html="item.suggestion"
                   style="padding: 5px 0  0 30px;font-size:14px;"
-                ></p>
+                ></div>
               </div>
             </div>
-            <!-- <div class="liRight">
-             
-            </div> -->
+          </li>
+          <li
+            style="display:flex;padding:5px 0;border-bottom:1px solid #f3f3f3;"
+          >
+            <!-- 整合建议 -->
+            <div v-if="this.infoObj.isZh == 'Y'" class="adviceCard">
+              <div class="titleFlex" style="margin:10px 0;">
+                <span class="orangeYuan"></span>
+                <span class="dataStat" style="font-size:18px;">检测建议</span>
+              </div>
+              <p v-html="this.advice"></p>
+            </div>
+          </li>
+          <!-- 未整合量表 -->
+          <li
+            style="display:flex;padding:20px 0;border-bottom:1px solid #f3f3f3;"
+            v-for="item in isZhNoList"
+            :key="item.id"
+          >
+            <div class="liLeft">
+              <div class="wenjuanTitle" style="padding-left:30px;">
+                <i
+                  class="iconfont icon-baogao-copy"
+                  style="display:inline-block;color:#ff9a00;margin-right:5px"
+                ></i>
+                <span style="font-size:16px;">{{ item.sheetName }}</span>
+              </div>
+              <div style="padding: 0 0 7px 25px;display:flex">
+                <div style="width:80%">
+                  <span
+                    class="score"
+                    v-for="(subItem, i) in item.factor"
+                    :key="i"
+                    >{{ subItem.name }}：{{ subItem.score }}</span
+                  >
+                </div>
+                <div style="width:20%">
+                  <el-button
+                    type="primary"
+                    size="mini"
+                    plain
+                    @click.prevent.stop="jumpAnsDet(item)"
+                    class="lookAns"
+                    v-show="lookAnsBtn"
+                    >查看答题详情</el-button
+                  >
+                </div>
+              </div>
+              <!-- 检测评语 -->
+              <div class="titleFlex">
+                <!-- <span class="orangeYuan" style="visibility: hidden;"></span> -->
+                <span class="dataStat" style="padding-left:30px;"
+                  >检测评语</span
+                >
+              </div>
+              <p
+                v-html="item.comment"
+                style="padding: 5px 0  0 50px;font-size:14px;"
+              ></p>
+              <!-- 检测建议 -->
+              <div class="adviceCard" v-if="item.isZh != 'Y'">
+                <div class="titleFlex" style="margin:10px 0;">
+                  <!-- <span class="orangeYuan"></span> -->
+                  <span class="dataStat" style="padding-left:30px"
+                    >检测建议</span
+                  >
+                </div>
+                <div
+                  v-html="item.suggestion"
+                  style="padding: 5px 0  0 30px;font-size:14px;"
+                ></div>
+              </div>
+            </div>
           </li>
         </ul>
         <!-- 单个检测报告图表等 -->
@@ -179,29 +258,8 @@
                 :legend-visible="false"
               ></ve-histogram>
         </div>-->
-        <!-- <p class="TitleContent" v-html="item.comment"></p>
-        <div v-if="item.isZh !== 'Y'" class="adviceCard">
-          <p class="title">
-            <span style="border-bottom:2px solid #000;">检测建议</span>
-          </p>
-          <p class="TitleContent" v-html="item.suggestion"></p>
-        </div>-->
-
-        <!-- 总建议 -->
-        <div v-if="this.infoObj.isZh == 'Y'" class="adviceCard">
-          <!-- <p class="title">
-            <span style="border-bottom:2px solid #000;">检测建议</span>
-          </p>
-          <p class="title" v-html="this.advice"></p>-->
-        </div>
       </div>
     </el-card>
-    <!-- <el-card
-      class="card_bottom"
-      style="height:52%;overflow: auto;-webkit-overflow-scrolling: touch;"
-    >
-     
-    </el-card>-->
   </div>
 </template>
 <script>
@@ -240,6 +298,8 @@ export default {
       advice: "",
       infoObj: {},
       reportList: [],
+      isZhNoList: [],
+      isZhYesList: [],
       str: "",
       Arr: [],
       lookAnsBtn: true,
@@ -257,32 +317,38 @@ export default {
     this.Number = this.$route.query.orderNo;
     this.getDetaiList();
   },
-  mounted() {
-    this.getDetaiList();
-  },
   methods: {
     async getDetaiList() {
       const { data: res } = await this.$http.post("checkList/getReport", {
         orderNo: this.Number,
       });
       console.log(res);
-
       if (res.code !== 200) {
         return this.$message("获取数据失败");
       } else {
       }
-
       // 个人资料数据
       this.advice = res.data.advice;
       this.infoObj = res.data.info;
       this.reportList = res.data.report;
-      console.log(this.infoObj);
+      console.log(this.reportList);
 
       // 量表建议评语等数据
       var obj = {};
       this.reportList.forEach((item) => {
         item.factor = eval(item.factor);
+        if (item.isZh == "N") {
+          this.isZhNoList.push(item);
+        } else {
+          this.isZhYesList.push(item);
+        }
       });
+      console.log(this.isZhNoList);
+      console.log(this.isZhYesList);
+
+      // 未整合量表 isZh == N
+
+      // 整合量表 isZh == Y
 
       // 图表数据
       // console.log(this.reportList);
@@ -404,7 +470,7 @@ h4 {
 }
 .lookAns {
   display: inline-block;
-  margin: 30px 0 0 50%;
+  margin: 0 0 0 50%;
   transform: translate(-50%);
 }
 </style>

@@ -7,7 +7,7 @@
     <div class="card_box">
       <el-card class="cardLeft">
         <div class="searchBox">
-          <!-- <el-button  
+          <el-button  
           :plain="peopleButtonType"
           type="primary"
           size="mini"
@@ -17,7 +17,7 @@
           type="primary"
           size="mini"
           style="margin-left: 20px;"
-          @click="teamReport()">团队报告</el-button> -->
+          @click="teamReport()">团队报告</el-button>
           <el-input
             size="small"
             class="searchInput"
@@ -98,7 +98,7 @@ export default {
       timesChangeDate,
       peopleButtonType:false,
       teamButtonType:true,
-      reportType:1,//0个人报告 1：团队报告
+      reportType:0,//0个人报告 1：团队报告
       tableHeaderBig: [
         { prop: "orderNo", label: "检测卡号" },
         { prop: "name", label: "姓名" },

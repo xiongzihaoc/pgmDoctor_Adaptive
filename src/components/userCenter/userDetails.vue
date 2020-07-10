@@ -85,21 +85,20 @@
         <el-table-column align="center" slot="fixed" fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button
-              type="info"
-              plain
+              type="primary"
               size="mini"
               v-if="scope.row.state == 3"
-              disabled
+              @click.prevent.stop="JumpReport(scope.row)"
               >查看</el-button
             >
-            <el-button
+            <!-- <el-button
               type="primary"
               size="mini"
               plain
               @click.prevent.stop="JumpAddNewPro(scope.row)"
               v-else
               >修改</el-button
-            >
+            > -->
           </template>
         </el-table-column>
       </ElTable>
@@ -231,14 +230,21 @@ export default {
       this.docList = res.rows;
       console.log(res);
     },
-    JumpAddNewPro(info) {
-      console.log(info);
-      window.sessionStorage.setItem("editInfo", JSON.stringify(info));
+    // 查看跳转到报告
+    JumpReport(info) {
       this.$router.push({
-        path: "/home/userCenter/addNewPer",
-        query: { mess: "修改" },
+        path: "/home/examiningReport/examiningDetail",
+        query: { orderNo: info.orderNo },
       });
     },
+    // JumpAddNewPro(info) {
+    //   console.log(info);
+    //   window.sessionStorage.setItem("editInfo", JSON.stringify(info));
+    //   this.$router.push({
+    //     path: "/home/userCenter/addNewPer",
+    //     query: { mess: "修改" },
+    //   });
+    // },
     // 会诊
     consultation() {
       this.dialogVisible = true;

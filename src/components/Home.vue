@@ -188,7 +188,7 @@ export default {
   },
   created() {
     this.hosMess = JSON.parse(window.localStorage.getItem("mess"));
-    console.log(this.hosMess);
+    // console.log(this.hosMess);
   },
   methods: {
     // 退出

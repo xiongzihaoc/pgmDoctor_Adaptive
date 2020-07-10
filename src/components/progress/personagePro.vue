@@ -9,7 +9,13 @@
       <el-card class="cardLeft">
         <div class="searchBox">
           <el-button type="primary" size="small">个人进度</el-button>
-          <el-button type="primary" plain size="small" @click.prevent.stop="TeamPro">团队进度</el-button>
+          <el-button
+            type="primary"
+            plain
+            size="small"
+            @click.prevent.stop="TeamPro"
+            >团队进度</el-button
+          >
           <el-input
             size="small"
             class="searchInput"
@@ -23,36 +29,62 @@
             size="small"
             @click.prevent.stop="newAddPerson"
             style="margin-left:2%"
-          >新增个人</el-button>
+            >新增个人</el-button
+          >
         </div>
         <!-- 调用公用表格组件 -->
-        <ElTable :data="userList" :header="tableHeaderBig" style="margin-top:1%;">
-          <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
+        <ElTable
+          :data="userList"
+          :header="tableHeaderBig"
+          style="margin-top:1%;"
+        >
+          <el-table-column
+            align="center"
+            slot="fixed"
+            fixed="right"
+            label="录入时间"
+            prop="createTime"
+          >
             <template slot-scope="scope">
-              <div>{{scope.row.createTime}}</div>
+              <div>{{ scope.row.createTime }}</div>
             </template>
           </el-table-column>
-          <el-table-column align="center" slot="fixed" fixed="right" label="测试情况" prop="state">
+          <el-table-column
+            align="center"
+            slot="fixed"
+            fixed="right"
+            label="测试情况"
+            prop="state"
+          >
             <template slot-scope="scope">
-              <span v-if="scope.row.state == 3" style="color:#67C23A">已检测</span>
+              <span v-if="scope.row.state == 3" style="color:#67C23A"
+                >已检测</span
+              >
               <span v-else style="color:#F56C6C">未检测</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" slot="fixed" fixed="right" label="操作">
+          <el-table-column
+            align="center"
+            slot="fixed"
+            fixed="right"
+            label="操作"
+          >
             <template slot-scope="scope">
               <el-button
-                v-if="scope.row.state!=3"
+                v-if="scope.row.state != 3"
                 type="primary"
                 size="mini"
                 plain
                 @click.prevent.stop="JumpEdit(scope.row)"
-              >修改</el-button>
+                >修改</el-button
+              >
               <el-button
                 type="primary"
                 size="mini"
                 @click.prevent.stop="JumpUserCenter(scope.row)"
                 v-else
-              >查看</el-button>
+                >查看</el-button
+              >
             </template>
           </el-table-column>
         </ElTable>
@@ -61,7 +93,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChangev"
           :current-page="pageNum"
-          :page-sizes="[10, 20,50]"
+          :page-sizes="[10, 20, 50]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
@@ -82,14 +114,14 @@ export default {
       tableHeaderBig: [
         { prop: "orderNo", label: "检测卡号" },
         { prop: "name", label: "姓名" },
-        { prop: "phone", label: "手机号" }
+        { prop: "phone", label: "手机号" },
       ],
       userList: [],
       pageSize: 10,
       pageNum: 1,
       total: 0,
       input: "",
-      screen: ""
+      screen: "",
     };
   },
   created() {
@@ -101,7 +133,7 @@ export default {
       const { data: res } = await this.$http.post("checkList/list", {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        params: { search: this.input }
+        params: { search: this.input },
       });
       console.log(res);
       this.userList = res.rows;
@@ -118,18 +150,16 @@ export default {
     JumpUserCenter(info) {
       this.$router.push({
         path: "/home/examiningReport/examiningDetail",
-        query: { orderNo: info.orderNo }
+        query: { orderNo: info.orderNo },
       });
     },
     // 跳转修改
     JumpEdit(info) {
       console.log(info);
-      
       window.sessionStorage.setItem("editInfo", JSON.stringify(info));
-    
       this.$router.push({
         path: "/home/userCenter/addNewPer",
-        query: { mess: "修改" }
+        query: { mess: "修改" },
       });
     },
     TeamPro() {
@@ -142,8 +172,8 @@ export default {
     handleCurrentChangev(newPage) {
       this.pageNum = newPage;
       this.getCardList();
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
