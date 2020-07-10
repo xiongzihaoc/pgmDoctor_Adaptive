@@ -88,14 +88,12 @@
               医生:
               <i>{{ infoObj.docName }}</i>
             </span>
-          </li>
-          <li>
-            <span>
-              检测时间:
-              <i>{{ timesChangeDate(infoObj.checkTime) }}</i>
-            </span>
             <span>
               报告时间:
+              <i>{{ timesChangeDate(infoObj.checkTime) }}</i>
+            </span>
+            <span style="visibility: hidden;">
+              检测时间:
               <i>{{ timesChangeDate(infoObj.checkTime) }}</i>
             </span>
           </li>

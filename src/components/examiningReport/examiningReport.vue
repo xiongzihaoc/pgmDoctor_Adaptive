@@ -7,7 +7,7 @@
     <div class="card_box">
       <el-card class="cardLeft">
         <div class="searchBox">
-          <el-button  
+          <!-- <el-button  
           :plain="peopleButtonType"
           type="primary"
           size="mini"
@@ -17,7 +17,7 @@
           type="primary"
           size="mini"
           style="margin-left: 20px;"
-          @click="teamReport()">团队报告</el-button>
+          @click="teamReport()">团队报告</el-button> -->
           <el-input
             size="small"
             class="searchInput"
@@ -27,8 +27,9 @@
             @input="serchIn"
           ></el-input>
         </div>
+        <!-- 个人 -->
         <!-- 调用公用表格组件 -->
-        <ElTable :data="reoprtList" :header="tableHeaderBig" style="margin-top:1%;" v-if="reportType==0">
+        <!-- <ElTable :data="reoprtList" :header="tableHeaderBig" style="margin-top:1%;" v-if="reportType==0">
           <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
             <template slot-scope="scope">
               <div>{{timesChangeDate(scope.row.createTime)}}</div>
@@ -50,27 +51,54 @@
               >查看</el-button>
             </template>
           </el-table-column>
-        </ElTable>
-        <ElTable :data="teamReoprtList" :header="teamtableHeaderBig" style="margin-top:1%;" v-else>
-          <el-table-column align="center" slot="fixed" fixed="right" label="录入时间" prop="createTime">
+        </ElTable> -->
+        <!-- 团队 -->
+        <ElTable
+          :data="teamReoprtList"
+          :header="teamtableHeaderBig"
+          style="margin-top:1%;"
+        >
+          <el-table-column
+            align="center"
+            slot="fixed"
+            fixed="right"
+            label="录入时间"
+            prop="createTime"
+          >
             <template slot-scope="scope">
-              <div>{{timesChangeDate(scope.row.createTime)}}</div>
+              <div>{{ timesChangeDate(scope.row.createTime) }}</div>
             </template>
           </el-table-column>
-          <el-table-column align="center" slot="fixed" fixed="right" label="审核状态" prop="checkState">
+          <el-table-column
+            align="center"
+            slot="fixed"
+            fixed="right"
+            label="审核状态"
+            prop="checkState"
+          >
             <template slot-scope="scope">
-              <span v-if="scope.row.checkState== 0" style="color:#F56C6C">未审核</span>
-              <span v-else-if="scope.row.checkState== 1" style="color:#67C23A">已审核</span>
+              <span v-if="scope.row.checkState == 0" style="color:#F56C6C"
+                >未审核</span
+              >
+              <span v-else-if="scope.row.checkState == 1" style="color:#67C23A"
+                >已审核</span
+              >
               <span v-else style="color:#E6A23C">已打印</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" slot="fixed" fixed="right" label="操作">
+          <el-table-column
+            align="center"
+            slot="fixed"
+            fixed="right"
+            label="操作"
+          >
             <template slot-scope="scope">
               <el-button
                 type="primary"
                 size="mini"
                 @click.prevent.stop="JumpUserCenter(scope.row)"
-              >查看</el-button>
+                >查看</el-button
+              >
             </template>
           </el-table-column>
         </ElTable>
@@ -79,7 +107,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChangev"
           :current-page="pageNum"
-          :page-sizes="[10, 20,50]"
+          :page-sizes="[10, 20, 50]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
@@ -96,26 +124,26 @@ export default {
   data() {
     return {
       timesChangeDate,
-      peopleButtonType:false,
-      teamButtonType:true,
-      reportType:0,//0个人报告 1：团队报告
+      peopleButtonType: false,
+      teamButtonType: true,
+      reportType: 1, //0个人报告 1：团队报告
       tableHeaderBig: [
         { prop: "orderNo", label: "检测卡号" },
         { prop: "name", label: "姓名" },
-        { prop: "phone", label: "手机号" }
+        { prop: "phone", label: "手机号" },
       ],
       teamtableHeaderBig: [
         { prop: "orderNo", label: "检测卡号" },
         { prop: "name", label: "姓名" },
         { prop: "phone", label: "手机号" },
-        { prop: "teamName", label: "团队" }
+        { prop: "teamName", label: "团队" },
       ],
       reoprtList: [],
       pageSize: 10,
       pageNum: 1,
       total: 0,
       input: "",
-      teamReoprtList:[]
+      teamReoprtList: [],
     };
   },
   created() {
@@ -126,24 +154,24 @@ export default {
     async getReportList() {
       const { data: res } = await this.$http.post("checkList/list", {
         state: "3",
-        source:this.reportType,
+        source: this.reportType,
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        params: { search: this.input }
+        params: { search: this.input },
       });
-      if(this.reportType == 0) {
+      console.log(res);
+      if (this.reportType == 0) {
         this.reoprtList = res.rows;
-      }else {
+      } else {
         this.teamReoprtList = res.rows;
       }
       // this.reoprtList = res.rows;
       this.total = res.total;
-      console.log(res);
     },
     JumpUserCenter(info) {
       this.$router.push({
         path: "/home/examiningReport/examiningDetail",
-        query: { orderNo: info.orderNo }
+        query: { orderNo: info.orderNo },
       });
     },
     // 搜索
@@ -168,24 +196,24 @@ export default {
       this.pageNum = newPage;
       this.getReportList();
     },
-    peopleReport(){
+    peopleReport() {
       this.reportType = 0;
       this.getReportList();
-      this.peopleButtonType=false;
-      this.teamButtonType=true;
+      this.peopleButtonType = false;
+      this.teamButtonType = true;
       // window.location.reload();
     },
-    teamReport(){
+    teamReport() {
       this.reportType = 1;
       this.getReportList();
-      this.peopleButtonType=true;
-      this.teamButtonType=false;
+      this.peopleButtonType = true;
+      this.teamButtonType = false;
       // window.location.reload();
-    }
-  }
+    },
+  },
 };
 </script>
-<style scoped>
+<style scoped>
 .connect {
   height: 100%;
 }
@@ -199,7 +227,7 @@ export default {
   display: flex;
 }
 .searchInput {
-  margin-left: 20px;
+  /* margin-left: 20px; */
   width: 25%;
   max-width: 300px;
 }
