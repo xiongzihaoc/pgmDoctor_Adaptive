@@ -146,6 +146,7 @@
                 @focus="chooseCombo"
                 suffix-icon="el-icon-caret-bottom"
                 readonly
+                style="width:202px"
               ></el-input>
               <ul class="taoCanList" style="wdith:100%" v-show="openOrcls">
                 <li
@@ -596,13 +597,17 @@ export default {
   border-radius: 5px;
 }
 .taoCanList li {
-  font-weight: 700;
+  width: 202px;
   border: 1px solid #dcdfe6;
   border-radius: 5px;
   border-top: 0px;
   padding: 0 10px;
-  overflow: hidden;
+  box-sizing: border-box;
+  font-weight: 700;
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .el-card {
   overflow: auto;
