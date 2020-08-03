@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router'
 import './plugins/element.js'
 import './assets/css/Global.css'
-import './assets/iconfont/iconfont.css'
 // nprogress 请求进度条导入
 import Nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -27,20 +26,20 @@ Vue.use(animated)
 import vueQr from 'vue-qr'
 Vue.use(vueQr)
 
-Vue.prototype.$userUrlInfo = 'http://www.phmzykj.com/phmWebUser/#/lookTeamInfo';
-Vue.prototype.$userUrlLogin = 'http://www.phmzykj.com/phmWebUser/#/login?orderNo=';
+// Vue.prototype.$userUrlInfo = 'http://www.phmzykj.com/phmWebUser/#/lookTeamInfo';
+// Vue.prototype.$userUrlLogin = 'http://www.phmzykj.com/phmWebUser/#/login?orderNo=';
 
-// Vue.prototype.$userUrlInfo = 'http://192.168.0.142:8089/#/lookTeamInfo';
-// Vue.prototype.$userUrlLogin = 'http://192.168.0.142:8089/#/login?orderNo=';
+Vue.prototype.$userUrlInfo = 'http://192.168.0.110:8089/#/lookTeamInfo';
+Vue.prototype.$userUrlLogin = 'http://192.168.0.110:8089/#/login?orderNo=';
 
 // import Print from './plugins/print/Print'
 // Vue.use(Print)
 
 // // 配置axios
-axios.defaults.baseURL = 'http://www.phmzykj.com/zhuoya-sheet/'
-Vue.prototype.$ajax = 'http://www.phmzykj.com/zhuoya-web/'
-// axios.defaults.baseURL = 'http://192.168.0.117:8086/zhuoya-sheet/'
-// Vue.prototype.$ajax = 'http://192.168.0.117:8080/zhuoya-web/'
+// axios.defaults.baseURL = 'http://www.phmzykj.com/zhuoya-sheet/'
+// Vue.prototype.$ajax = 'http://www.phmzykj.com/zhuoya-web/'
+axios.defaults.baseURL = 'http://192.168.0.108:8086/zhuoya-sheet/'
+Vue.prototype.$ajax = 'http://192.168.0.108:8080/zhuoya-web/'
 // 设置请求超时时间
 axios.defaults.timeout = 30000;
 // axios请求拦截器

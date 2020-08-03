@@ -90,14 +90,6 @@
         <el-button type="primary" @click="dialogVisibleEnter">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 
-    <el-dialog title="退出登录" :visible.sync="logoutDialog" v-dialogDrag center>
-      <div>是否退出登录</div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="logoutDialog=false">取 消</el-button>
-        <el-button type="primary" @click="logoutDialogEnter">确 定</el-button>
-      </span>
-    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -108,53 +100,53 @@ export default {
       logoutDialog: false,
       menuList: [
         {
-          icon: "iconfont icon-shouye",
+          icon: "iconfont iconicon",
           name: "首   页",
           path: "home/index",
           id: "1",
         },
-        // {
-        //   icon: "iconfont icon-yonhu",
-        //   name: "个人中心",
-        //   path: "home/userCenter",
-        //   id: "2",
-        // },
         {
-          icon: "iconfont icon-hexintuandui",
+          icon: "iconfont iconuser-fill",
+          name: "个人中心",
+          path: "home/userCenter",
+          id: "2",
+        },
+        {
+          icon: "iconfont icontuanti",
           name: "团体中心",
           path: "home/teamCenter",
           id: "8",
         },
-        // {
-        //   icon: "iconfont icon-liangbiao",
-        //   name: "他评量表",
-        //   path: "home/HisScale",
-        //   id: "3",
-        // },
         {
-          icon: "iconfont icon-baogao-copy",
+          icon: "iconfont iconliangbiao",
+          name: "他评量表",
+          path: "home/HisScale",
+          id: "3",
+        },
+        {
+          icon: "iconfont iconbaogao-copy",
           name: "检测报告",
           path: "home/examiningReport",
           id: "4",
         },
-        // {
-        //   icon: "iconfont icon-yujing",
-        //   name: "预警提醒",
-        //   path: "home/warning",
-        //   id: "5",
-        // },
-        // {
-        //   icon: "iconfont icon-huizhen",
-        //   name: "会诊操作",
-        //   path: "home/consultation",
-        //   id: "6",
-        // },
-        // {
-        //   icon: "iconfont icon-icon-",
-        //   name: "数据统计",
-        //   path: "home/dataStatistics",
-        //   id: "7",
-        // },
+        {
+          icon: "iconfont iconyujing",
+          name: "预警提醒",
+          path: "home/warning",
+          id: "5",
+        },
+        {
+          icon: "iconfont iconhuizhen",
+          name: "会诊操作",
+          path: "home/consultation",
+          id: "6",
+        },
+        {
+          icon: "iconfont iconicon-",
+          name: "数据统计",
+          path: "home/dataStatistics",
+          id: "7",
+        },
       ],
       passwordType: "password",
       loginRules: {

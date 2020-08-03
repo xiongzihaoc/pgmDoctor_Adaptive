@@ -6,7 +6,7 @@
 <script>
 export default {
   name: "app",
-  components: {}
+  components: {},
 };
 </script>
 <style>
@@ -20,7 +20,7 @@ body {
   height: 100%;
 }
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: PingFang SC;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;

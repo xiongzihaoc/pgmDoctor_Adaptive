@@ -8,8 +8,8 @@
     <div class="CardBox">
       <el-card class="cardLeft">
         <div class="searchBox">
-          <!-- <el-button type="primary" plain size="small" @click.prevent.stop="perPro">个人进度</el-button> -->
-          <!-- <el-button type="primary" size="small">团队进度</el-button> -->
+          <el-button type="primary" plain size="small" @click.prevent.stop="perPro">个人进度</el-button>
+          <el-button type="primary" size="small">团队进度</el-button>
           <el-input
             size="small"
             class="searchInput"

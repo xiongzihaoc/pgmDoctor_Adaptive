@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%">
+  <div style="height:100%;" class="reportContent">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/home/examiningReport' }"
         >检测报告</el-breadcrumb-item
@@ -9,9 +9,8 @@
       >
       <el-breadcrumb-item>报告详情</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card
-      class="card_top"
-      style="height:85%;overflow: auto;-webkit-overflow-scrolling: touch;"
+    <div
+      style="width:100%;margin:0 auto;margin-top:30px;padding:0 3% 3% 3%;height:85%;overflow: auto;-webkit-overflow-scrolling: touch;box-sizing: border-box;"
     >
       <div style="float:right;">
         <el-button
@@ -34,230 +33,207 @@
       <div id="printDiv">
         <div class="titleFlex">
           <span class="orangeYuan"></span>
-          <span class="dataStat" style="font-size:18px">个人资料</span>
+          <span class="dataStat">个人资料</span>
         </div>
-        <ul
-          class="content personalInfo"
-          style="background:#f5f5f5;padding:1%;box-sizing:border-box;margin-top: 10px;"
-        >
-          <li>
-            <span>
-              姓名:
-              <i>{{ infoObj.name }}</i>
-            </span>
-            <span>
-              手机:
-              <i>{{ infoObj.phone }}</i>
-            </span>
-            <span>
-              性别:
-              <i>{{ infoObj.sex }}</i>
-            </span>
-            <span>
-              年龄:
-              <i>{{ infoObj.age }}</i>
-            </span>
-          </li>
-          <li>
-            <span>
-              婚姻状况:
-              <i>{{ infoObj.marriage }}</i>
-            </span>
-            <span>
-              文化程度:
-              <i>{{ infoObj.edu }}</i>
-            </span>
-            <span>
-              所属:
-              <i v-text="this.infoObj.source == 0 ? '个人' : '团队'"></i>
-            </span>
-            <span>
-              职业:
-              <i>{{ infoObj.job }}</i>
-            </span>
-          </li>
-          <!-- <li>
+        <!-- 个人信息部分 -->
+        <el-card>
+          <ul class="content personalInfo">
+            <li class="testNum">
+              <span>
+                姓名:
+                <i>{{ infoObj.name }}</i>
+              </span>
+              <span>
+                手机:
+                <i>{{ infoObj.phone }}</i>
+              </span>
+              <span>
+                性别:
+                <i>{{ infoObj.sex }}</i>
+              </span>
+              <span>
+                年龄:
+                <i>{{ infoObj.age }}</i>
+              </span>
+            </li>
+            <li class="testNum">
+              <span>
+                婚姻状况:
+                <i>{{ infoObj.marriage }}</i>
+              </span>
+              <span>
+                文化程度:
+                <i>{{ infoObj.edu }}</i>
+              </span>
+              <span>
+                所属:
+                <i v-text="this.infoObj.source == 0 ? '个人' : '团队'"></i>
+              </span>
+              <span>
+                职业:
+                <i>{{ infoObj.job }}</i>
+              </span>
+            </li>
+            <!-- <li>
             <span>科室:</span>
           </li>-->
-          <li>
-            <span>
-              检测卡号:
-              <i>{{ infoObj.orderNo }}</i>
-            </span>
-            <span>
-              医生:
-              <i>{{ infoObj.docName }}</i>
-            </span>
-            <span>
-              报告时间:
-              <i>{{ timesChangeDate(infoObj.checkTime) }}</i>
-            </span>
-            <span style="visibility: hidden;">
-              检测时间:
-              <i>{{ timesChangeDate(infoObj.checkTime) }}</i>
-            </span>
-          </li>
-          <li>
-            <span>
-              套餐名称:
-              <i>{{ str }}</i>
-            </span>
-          </li>
-        </ul>
+            <li class="testNum">
+              <span>
+                检测卡号:
+                <i>{{ infoObj.orderNo }}</i>
+              </span>
+              <span>
+                医生:
+                <i>{{ infoObj.docName }}</i>
+              </span>
+              <span>
+                报告时间:
+                <i>{{ timesChangeDate(infoObj.checkTime) }}</i>
+              </span>
+              <span style="visibility: hidden;">
+                检测时间:
+                <i>{{ timesChangeDate(infoObj.checkTime) }}</i>
+              </span>
+            </li>
+            <li>
+              <span>
+                套餐名称:
+                <i>{{ str }}</i>
+              </span>
+            </li>
+          </ul>
+        </el-card>
         <div class="titleFlex" style="margin-top:1%;">
           <span class="orangeYuan"></span>
           <span class="dataStat" style="font-size:18px;">检测结果</span>
         </div>
-        <ul>
-          <!-- 整合量表 -->
-          <li
-            style="display:flex;padding:20px 0;border-bottom:1px solid #f3f3f3;"
-            v-for="item in isZhYesList"
-            :key="item.id"
-          >
-            <div class="liLeft">
-              <div class="wenjuanTitle" style="padding-left:30px;">
-                <i
-                  class="iconfont icon-baogao-copy"
-                  style="display:inline-block;color:#ff9a00;margin-right:5px"
-                ></i>
-                <span style="font-size:16px;">{{ item.sheetName }}</span>
-              </div>
-              <div style="padding: 0 0 7px 25px;display:flex">
-                <div style="width:80%">
-                  <span
-                    class="score"
-                    v-for="(subItem, i) in item.factor"
-                    :key="i"
-                    >{{ subItem.name }}：{{ subItem.score }}</span
+        <!-- 量表信息部门 -->
+        <ul class="reportInfo">
+          <li>
+            <el-card>
+              <!-- 量表名称 查看答题详情按钮 -->
+              <div class="reportList">
+                <div class="reportNameCss">
+                  <img src="../../assets/images/reportName.png" />
+                  <span class="reportName">社会支持量表</span>
+                  <span class="reportInstr"
+                    >（由得里克博士于1988年研制，用于测定社会支持度的量表）</span
                   >
                 </div>
-                <div style="width:20%">
-                  <el-button
-                    type="primary"
-                    size="mini"
-                    plain
-                    @click.prevent.stop="jumpAnsDet(item)"
-                    class="lookAns"
-                    v-show="lookAnsBtn"
-                    >查看答题详情</el-button
+                <el-button type="primary" size="mini">查看答题详情</el-button>
+              </div>
+              <!-- 总分 -->
+              <div class="total">
+                总得分：285
+              </div>
+              <!-- 量表 评语 -->
+              <div class="mainContentBox">
+                <div class="mainContentBox_left"></div>
+                <div class="mainContentBox_right">
+                  <div
+                    style="display:flex;align-items:center;margin-bottom:5px;"
                   >
+                    <img src="../../assets/images/pingyu.png" />
+                    <span style="color:#FE9A00;margin-left:5px;font-weight:700">评语：</span>
+                  </div>
+                  <span style="font-weight:700;color: #1B2338;">
+                    提示您状态一般，该测试结果表明您会不自觉的对自己身体上出现的一些小症状过度关注，时不时会感觉自己生病了，长期保持这样的状态对于身体健康的恢复也是非常不利的！我们将给到您一些能够缓解躯体化症状的方法，希望您能够采纳！如左图中，测试结果显示
+                    : 854位健康;313 位亚健康，偶有轻微不适感 ;193 位有轻度症状，
+                    身体感觉不太良好 ;54 位有中度症状，经常有较
+                    为明显的躯体不适感 ;3 位有重度症状，有严重的 不健康感觉 。
+                  </span>
                 </div>
               </div>
-              <!-- 检测评语 -->
-              <div class="titleFlex">
-                <!-- <span class="orangeYuan" style="visibility: hidden;"></span> -->
-                <span class="dataStat" style="padding-left:30px;"
-                  >检测评语</span
-                >
-              </div>
-              <p
-                v-html="item.comment"
-                style="padding: 5px 0  0 50px;font-size:14px;"
-              ></p>
-              <!-- 检测建议 -->
-              <div class="adviceCard" v-if="item.isZh != 'Y'">
-                <div class="titleFlex" style="margin:10px 0;">
-                  <!-- <span class="orangeYuan"></span> -->
-                  <span class="dataStat" style="padding-left:30px"
-                    >检测建议</span
-                  >
-                </div>
-                <div
-                  v-html="item.suggestion"
-                  style="padding: 5px 0  0 30px;font-size:14px;"
-                ></div>
-              </div>
-            </div>
+            </el-card>
           </li>
-          <li
-            style="display:flex;padding:5px 0;border-bottom:1px solid #f3f3f3;"
-          >
-            <!-- 整合建议 -->
-            <div v-if="this.infoObj.isZh == 'Y'" class="adviceCard">
-              <div class="titleFlex" style="margin:10px 0;">
-                <span class="orangeYuan"></span>
-                <span class="dataStat" style="font-size:18px;">检测建议</span>
-              </div>
-              <p v-html="this.advice"></p>
-            </div>
-          </li>
-          <!-- 未整合量表 -->
-          <li
-            style="display:flex;padding:20px 0;border-bottom:1px solid #f3f3f3;"
-            v-for="item in isZhNoList"
-            :key="item.id"
-          >
-            <div class="liLeft">
-              <div class="wenjuanTitle" style="padding-left:30px;">
-                <i
-                  class="iconfont icon-baogao-copy"
-                  style="display:inline-block;color:#ff9a00;margin-right:5px"
-                ></i>
-                <span style="font-size:16px;">{{ item.sheetName }}</span>
-              </div>
-              <div style="padding: 0 0 7px 25px;display:flex">
-                <div style="width:80%">
-                  <span
-                    class="score"
-                    v-for="(subItem, i) in item.factor"
-                    :key="i"
-                    >{{ subItem.name }}：{{ subItem.score }}</span
+          <li>
+            <el-card>
+              <!-- 量表名称 查看答题详情按钮 -->
+              <div class="reportList">
+                <div class="reportNameCss">
+                  <img src="../../assets/images/reportName.png" />
+                  <span class="reportName">焦虑自评问卷</span>
+                  <span class="reportInstr"
+                    >（注：由美国哥伦比亚大学Robert L.
+                    Spitzer博士于2006年编制）</span
                   >
                 </div>
-                <div style="width:20%">
-                  <el-button
-                    type="primary"
-                    size="mini"
-                    plain
-                    @click.prevent.stop="jumpAnsDet(item)"
-                    class="lookAns"
-                    v-show="lookAnsBtn"
-                    >查看答题详情</el-button
+                <el-button type="primary" size="mini">查看答题详情</el-button>
+              </div>
+              <!-- 总分 -->
+              <div class="total">
+                总得分：285
+              </div>
+              <!-- 量表 评语 -->
+              <div class="mainContentBox">
+                <div class="mainContentBox_left"></div>
+                <div class="mainContentBox_right">
+                  <div
+                    style="display:flex;align-items:center;margin-bottom:5px;"
                   >
+                    <img src="../../assets/images/pingyu.png" />
+                    <span style="color:#FE9A00;margin-left:5px;font-weight:700">评语：</span>
+                  </div>
+                  <span style="font-weight:700;color: #1B2338;">
+                    提示您状态一般，该测试结果表明您会不自觉的对自己身体上出现的一些小症状过度关注，时不时会感觉自己生病了，长期保持这样的状态对于身体健康的恢复也是非常不利的！我们将给到您一些能够缓解躯体化症状的方法，希望您能够采纳！如左图中，测试结果显示
+                    : 854位健康;313 位亚健康，偶有轻微不适感 ;193 位有轻度症状，
+                    身体感觉不太良好 ;54 位有中度症状，经常有较
+                    为明显的躯体不适感 ;3 位有重度症状，有严重的 不健康感觉 。
+                  </span>
                 </div>
               </div>
-              <!-- 检测评语 -->
-              <div class="titleFlex">
-                <!-- <span class="orangeYuan" style="visibility: hidden;"></span> -->
-                <span class="dataStat" style="padding-left:30px;"
-                  >检测评语</span
-                >
-              </div>
-              <p
-                v-html="item.comment"
-                style="padding: 5px 0  0 50px;font-size:14px;"
-              ></p>
-              <!-- 检测建议 -->
-              <div class="adviceCard" v-if="item.isZh != 'Y'">
-                <div class="titleFlex" style="margin:10px 0;">
-                  <!-- <span class="orangeYuan"></span> -->
-                  <span class="dataStat" style="padding-left:30px"
-                    >检测建议</span
-                  >
-                </div>
-                <div
-                  v-html="item.suggestion"
-                  style="padding: 5px 0  0 30px;font-size:14px;"
-                ></div>
-              </div>
-            </div>
+            </el-card>
           </li>
         </ul>
-        <!-- 单个检测报告图表等 -->
-        <!-- <p class="sheetName">{{item.sheetName}}</p> -->
-        <!-- <div v-if="item.isZh !== 'Y'" style="width:60%;margin:0 auto;">
-              <p class="title">检测结果统计图</p>
-  
-              <ve-histogram
-                :data="chartData"
-                :extend="extend"
-                :settings="chartSettings"
-                :legend-visible="false"
-              ></ve-histogram>
-        </div>-->
       </div>
-    </el-card>
+      <!-- 检测建议 -->
+      <div class="titleFlex">
+        <span class="orangeYuan"></span>
+        <span class="dataStat">检测建议</span>
+      </div>
+      <ul class="testAdvice">
+        <li>
+          <el-card>
+            <div class="reportNameCss">
+              <img src="../../assets/images/jianyi.png" />
+              <span class="testAdvice_title">饮食习惯</span>
+            </div>
+            <li class="testAdvice_content">
+              为了不影响您在公共场合下的社交行为，建议您在夜间和出席公共社交场合前限制饮水，但每天水的摄入量不应该少于1500毫升。
+            </li>
+            <li class="testAdvice_content">
+              为了不影响您在公共场合下的社交行为，建议您在夜间和出席公共社交场合前限制饮水，但每天水的摄入量不应该少于1500毫升。
+            </li>
+            <li class="testAdvice_content">
+              为了不影响您在公共场合下的社交行为，建议您在夜间和出席公共社交场合前限制饮水，但每天水的摄入量不应该少于1500毫升。
+            </li>
+            <li class="testAdvice_content">
+              为了不影响您在公共场合下的社交行为，建议您在夜间和出席公共社交场合前限制饮水，但每天水的摄入量不应该少于1500毫升。
+            </li>
+          </el-card>
+        </li>
+        <li>
+          <el-card>
+            <div class="reportNameCss">
+              <img src="../../assets/images/jianyi.png" />
+              <span class="testAdvice_title">饮食习惯</span>
+            </div>
+            <li class="testAdvice_content">
+              为了不影响您在公共场合下的社交行为，建议您在夜间和出席公共社交场合前限制饮水，但每天水的摄入量不应该少于1500毫升。
+            </li>
+            <li class="testAdvice_content">
+              为了不影响您在公共场合下的社交行为，建议您在夜间和出席公共社交场合前限制饮水，但每天水的摄入量不应该少于1500毫升。
+            </li>
+            <li class="testAdvice_content">
+              为了不影响您在公共场合下的社交行为，建议您在夜间和出席公共社交场合前限制饮水，但每天水的摄入量不应该少于1500毫升。
+            </li>
+            <li class="testAdvice_content">
+              为了不影响您在公共场合下的社交行为，建议您在夜间和出席公共社交场合前限制饮水，但每天水的摄入量不应该少于1500毫升。
+            </li>
+          </el-card>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 <script>
@@ -383,7 +359,7 @@ export default {
   },
 };
 </script>
-<style lang="less">
+<style lang="less" scope>
 [v-cloak] {
   display: none;
 }
@@ -429,7 +405,11 @@ h4 {
   border-radius: 7px;
 }
 .dataStat {
+  color: #1b2338;
+  font-family: PingFang SC !important;
   font-weight: 700;
+  font-size: 18px;
+  line-height: normal;
   padding-left: 5px;
   box-sizing: border-box;
 }
@@ -449,26 +429,77 @@ h4 {
 .personalInfo li span {
   flex: 1;
 }
+
+.testNum span:nth-child(1) {
+  flex: 1.4;
+}
 .personalInfo li i {
   color: #2c3e50;
   font-weight: 700;
   font-style: normal;
 }
-.liLeft {
-  width: 100%;
-  box-sizing: border-box;
+.reportInfo li {
+  margin-bottom: 20px;
 }
-.liRight {
-  width: 20%;
+.reportList {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.wenjuanTitle {
-  box-sizing: border-box;
+.reportNameCss {
+  display: flex;
+  align-items: center;
+}
+.reportContent img {
+  width: 32px;
+  height: 32px;
+}
+.reportName {
+  font-size: 22px;
+  color: #2c8cf0;
+  margin-left: 5px;
+}
+.reportInstr {
+  font-size: 16px;
+  color: #b4b5bf;
+}
+.total {
+  color: #fe9a00;
+  font-size: 16px;
   font-weight: 700;
-  padding: 5px 0;
+  padding: 10px 3px;
 }
-.lookAns {
-  display: inline-block;
-  margin: 0 0 0 50%;
-  transform: translate(-50%);
+.mainContentBox {
+  display: flex;
+}
+.mainContentBox_left {
+  flex: 1;
+}
+.mainContentBox_right {
+  flex: 1;
+  padding: 15px;
+  background: #fff9eb;
+  border-radius: 10px;
+}
+.testAdvice .testAdvice_title {
+  font-size: 22px;
+  color: #fe9a00;
+  margin-left: 5px;
+}
+
+.testAdvice_content {
+  padding: 15px;
+  box-sizing: border-box;
+  margin-top: 10px;
+  background: #fff9eb;
+  border-radius: 10px;
+  color: #1b2338;
+  font-weight: 700;
+}
+.reportContent .el-card.is-always-shadow,
+.el-card.is-hover-shadow:focus,
+.el-card.is-hover-shadow:hover {
+  border-radius: 15px;
+  margin: 10px 0;
 }
 </style>
