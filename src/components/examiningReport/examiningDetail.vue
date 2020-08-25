@@ -20,11 +20,18 @@
           @click.prevent.stop="hasConfirm"
           >确认审核</el-button
         >
-        <el-button
+        <!-- <el-button
           type="danger"
           size="mini"
           v-else
           v-print="'#printDiv'"
+          style="margin-bottom:5px"
+          @click.prevent.stop="hiddenAnsDetail"
+          >打印</el-button -->
+        <el-button
+          type="danger"
+          size="mini"
+          v-else
           style="margin-bottom:5px"
           @click.prevent.stop="hiddenAnsDetail"
           >打印</el-button
@@ -109,7 +116,7 @@
         </div>
         <!-- 量表信息部门 -->
         <ul class="reportInfo">
-          <li>
+          <li v-for="item in reportList" :key="item.id">
             <el-card>
               <!-- 量表名称 查看答题详情按钮 -->
               <div class="reportList">
@@ -120,7 +127,9 @@
                     >（由得里克博士于1988年研制，用于测定社会支持度的量表）</span
                   >
                 </div>
-                <el-button type="primary" size="mini">查看答题详情</el-button>
+                <el-button type="primary" size="mini" @click="jumpAnsDet"
+                  >查看答题详情</el-button
+                >
               </div>
               <!-- 总分 -->
               <div class="total">
@@ -128,13 +137,17 @@
               </div>
               <!-- 量表 评语 -->
               <div class="mainContentBox">
-                <div class="mainContentBox_left"></div>
+                <div class="mainContentBox_left">
+                  <ve-bar :data="chartData" :settings="chartSettings"></ve-bar>
+                </div>
                 <div class="mainContentBox_right">
                   <div
                     style="display:flex;align-items:center;margin-bottom:5px;"
                   >
                     <img src="../../assets/images/pingyu.png" />
-                    <span style="color:#FE9A00;margin-left:5px;font-weight:700">评语：</span>
+                    <span style="color:#FE9A00;margin-left:5px;font-weight:700"
+                      >评语：</span
+                    >
                   </div>
                   <span style="font-weight:700;color: #1B2338;">
                     提示您状态一般，该测试结果表明您会不自觉的对自己身体上出现的一些小症状过度关注，时不时会感觉自己生病了，长期保持这样的状态对于身体健康的恢复也是非常不利的！我们将给到您一些能够缓解躯体化症状的方法，希望您能够采纳！如左图中，测试结果显示
@@ -166,15 +179,22 @@
               </div>
               <!-- 量表 评语 -->
               <div class="mainContentBox">
-                <div class="mainContentBox_left"></div>
+                <!-- 图表 -->
+                <div class="mainContentBox_left">
+                  <ve-bar :data="chartData" :settings="chartSettings"></ve-bar>
+                </div>
                 <div class="mainContentBox_right">
                   <div
                     style="display:flex;align-items:center;margin-bottom:5px;"
                   >
                     <img src="../../assets/images/pingyu.png" />
-                    <span style="color:#FE9A00;margin-left:5px;font-weight:700">评语：</span>
+                    <span style="color:#FE9A00;margin-left:5px;font-weight:700"
+                      >评语：</span
+                    >
                   </div>
-                  <span style="font-weight:700;color: #1B2338;">
+                  <span
+                    style="display:inline-block;font-weight:700;color: #1B2338;"
+                  >
                     提示您状态一般，该测试结果表明您会不自觉的对自己身体上出现的一些小症状过度关注，时不时会感觉自己生病了，长期保持这样的状态对于身体健康的恢复也是非常不利的！我们将给到您一些能够缓解躯体化症状的方法，希望您能够采纳！如左图中，测试结果显示
                     : 854位健康;313 位亚健康，偶有轻微不适感 ;193 位有轻度症状，
                     身体感觉不太良好 ;54 位有中度症状，经常有较
@@ -241,29 +261,8 @@ import { timesChangeDate } from "../../assets/js/util";
 export default {
   data() {
     this.chartSettings = {
-      labelMap: {
-        type: "因子类型",
-        def: "得分",
-      },
-    };
-    this.extend = {
-      series: {
-        label: {
-          show: true,
-          position: "top",
-          color: "#1378B5",
-          fontSize: "22",
-        },
-        barWidth: 30, //柱图宽度
-      },
-      color: ["#1378B5"],
-      tooltip: {
-        trigger: "axis",
-        showDelay: 0, // 显示延迟，添加显示延迟可以避免频繁切换，单位ms
-        axisPointer: {
-          // 坐标轴指示器，坐标轴触发有效
-          type: "shadow", // 默认为直线，可选为：'line' | 'shadow',
-        },
+      stack: {
+        xxx: ["访问用户", "下单用户"],
       },
     };
     return {
@@ -276,13 +275,15 @@ export default {
       isZhYesList: [],
       str: "",
       Arr: [],
-      lookAnsBtn: true,
       chartData: {
-        columns: ["type", "def"],
+        columns: ["日期", "访问用户", "下单用户", "下单率"],
         rows: [
-          { type: 11, def: 22 },
-          { type: 12, def: 23 },
-          { type: 13, def: 24 },
+          { 日期: "1/1", 访问用户: 1393, 下单用户: 1093, 下单率: 0.32 },
+          { 日期: "1/2", 访问用户: 3530, 下单用户: 3230, 下单率: 0.26 },
+          { 日期: "1/3", 访问用户: 2923, 下单用户: 2623, 下单率: 0.76 },
+          { 日期: "1/4", 访问用户: 1723, 下单用户: 1423, 下单率: 0.49 },
+          { 日期: "1/5", 访问用户: 3792, 下单用户: 3492, 下单率: 0.323 },
+          { 日期: "1/6", 访问用户: 4593, 下单用户: 4293, 下单率: 0.78 },
         ],
       },
     };
@@ -323,9 +324,7 @@ export default {
       // 未整合量表 isZh == N
 
       // 整合量表 isZh == Y
-
       // 图表数据
-      // console.log(this.reportList);
       // 循环添加量表名称
       var arr = res.data.report;
       var sheetNameList = "";
@@ -352,9 +351,11 @@ export default {
       });
     },
     // 点击打印隐藏查看答题详情按钮
-    hiddenAnsDetail() {
-      // this.lookAnsBtn = false;
-      // this.getDetaiList();
+    hiddenAnsDetail(info) {
+      this.$router.push({
+        path: "Print",
+        query: { ansUuid: info.ansUuid, Number: this.Number },
+      });
     },
   },
 };
@@ -471,8 +472,11 @@ h4 {
 }
 .mainContentBox {
   display: flex;
+  align-items: flex-start;
 }
 .mainContentBox_left {
+  // padding-right: 20px;
+  // box-sizing: border-box;
   flex: 1;
 }
 .mainContentBox_right {

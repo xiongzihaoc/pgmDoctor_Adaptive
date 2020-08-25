@@ -157,6 +157,16 @@ const routes = [{
         }
       },
       {
+        path: '/home/examiningReport/print',
+        name: "Print",
+        component: () => import('@/components/examiningReport/print.vue'),
+        meta: {
+          title: '打印页面',
+          guidePath: true,
+          jumpPath: '/home/examiningReport',
+        }
+      },
+      {
         path: '/home/examiningReport/examiningDetail',
         name: "examiningDetail",
         component: () => import('@/components/examiningReport/examiningDetail.vue'),
