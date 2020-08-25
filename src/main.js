@@ -29,8 +29,8 @@ Vue.use(vueQr)
 // Vue.prototype.$userUrlInfo = 'http://www.phmzykj.com/phmWebUser/#/lookTeamInfo';
 // Vue.prototype.$userUrlLogin = 'http://www.phmzykj.com/phmWebUser/#/login?orderNo=';
 
-Vue.prototype.$userUrlInfo = 'http://192.168.0.110:8089/#/lookTeamInfo';
-Vue.prototype.$userUrlLogin = 'http://192.168.0.110:8089/#/login?orderNo=';
+Vue.prototype.$userUrlInfo = 'http://192.168.0.115:8089/#/lookTeamInfo';
+Vue.prototype.$userUrlLogin = 'http://192.168.0.115:8089/#/login?orderNo=';
 
 // import Print from './plugins/print/Print'
 // Vue.use(Print)
@@ -38,8 +38,8 @@ Vue.prototype.$userUrlLogin = 'http://192.168.0.110:8089/#/login?orderNo=';
 // // 配置axios
 // axios.defaults.baseURL = 'http://www.phmzykj.com/zhuoya-sheet/'
 // Vue.prototype.$ajax = 'http://www.phmzykj.com/zhuoya-web/'
-axios.defaults.baseURL = 'http://192.168.0.108:8086/zhuoya-sheet/'
-Vue.prototype.$ajax = 'http://192.168.0.108:8080/zhuoya-web/'
+axios.defaults.baseURL = 'http://192.168.0.113:8086/zhuoya-sheet/'
+Vue.prototype.$ajax = 'http://192.168.0.113:8080/zhuoya-web/'
 // 设置请求超时时间
 axios.defaults.timeout = 30000;
 // axios请求拦截器
